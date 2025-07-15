@@ -40,9 +40,10 @@
     <nav id="navbar" class="navbar nav-menu">
       <ul>
         <li><a href="#hero" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>Home</span></a></li>
-        <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>Sobre mí</span></a></li>
+        <li><a href="#skills" class="nav-link scrollto"><i class="bx bx-code-alt"></i> <span>Skills</span></a></li>
         <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>Portfolio</span></a></li>
         <li><a href="#services" class="nav-link scrollto"><i class="bx bx-server"></i> <span>Servicios</span></a></li>
+        <li><a href="#posts" class="nav-link scrollto"><i class="bx bx-edit"></i> <span>Posts</span></a></li>
       </ul>
     </nav><!-- .nav-menu -->
 
@@ -52,7 +53,7 @@
   <section id="hero" class="d-flex flex-column justify-content-center">
     <div class="container" data-aos="zoom-in" data-aos-delay="100">
       <h1 class="CentrarEsteTexto">Angelo Castillo</h1>
-      <p class="CentrarEsteTexto">I'm: <span class="typed CentrarEsteTexto" data-typed-items="Data Analyst"></span></p>
+              <p class="CentrarEsteTexto">I'm: <span class="typed CentrarEsteTexto" data-typed-items="Especialista en Tecnología"></span></p>
       <div class="social-links CentrarEsteTexto">
         <a href="https://twitter.com/AngeloCastilloJ" class="twitter"><i class="bx bxl-twitter"></i></a>
         <a href="https://www.facebook.com/angelocastilloperz" class="facebook"><i class="bx bxl-facebook"></i></a>
@@ -64,124 +65,228 @@
 
   <main id="main">
 
-    <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-      <div class="container" data-aos="fade-up">
 
-        <div class="section-title fst-Times">
-          <h2>RESUMEN</h2>
-          <p>¡Hola! Me llamo Angelo Jeffrey Castillo Pérez, y soy un apasionado del análisis de datos, con un espíritu autodidacta profundamente arraigado. Originario de Perú y con 29 años, he dedicado mi carrera profesional a especializarme en el análisis de datos y la creación de dashboards intuitivos y reveladores.
-            
-            Estoy comprometido con el desarrollo continuo de mis habilidades y siempre estoy buscando proyectos desafiantes que me permitan aplicar mi pasión por hacer una diferencia tangible a través del poder de los datos. 
-            ¡Hablemos de cómo puedo aportar a tu próximo proyecto para llevarlo al siguiente nivel!
-          
-          </p>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-3">
-            <img src="assets/img/profile-img.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-8 pt-4 pt-lg-0 content">
-            <h3>Data Analyst &amp; Ingeniero Industrial.</h3>
-            <p class="fst-Times">
-              Mi pasión por la Ciencia de datos me permite desarrollar proyectos profesionales y personales mediante la aplicación de
-              técnicas y herramientas de estadística e ingeniería.
-            </p>
-            <div class="row">
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>29</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>City:</strong> <span>Lima, Péru</span></li>
-                </ul>
-              </div>
-              <div class="col-lg-6">
-                <ul>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>angelocastilloperez@outlook.es</span></li>
-                  <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Disponible</span></li>
-                </ul>
-              </div>
-            </div>
-            <h4> Voluntariados:</h4>
-            <p>Voluntariado de desarrollo -JEDIMA : capacitaciones y rediseño de procesos relacionados al área administrativa. 
-              Periodo:"2020-2021"</p>
-            <p>Voluntariado CO-VISIBLES:
-            Líder del proyecto "Cultura viva" / Líder del proyecto CICO "Centro de idiomas Co-Visibles"
-              Periodo:"2023"</p>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End About Section -->
 
     <!-- ======= Skills Section ======= -->
     <section id="skills" class="skills section-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
-          <h2>Skills</h2>
-          <p class="fst-Times CentrarEsteTexto">Mi experiencia
-          abarca una variedad de herramientas y tecnologías, desde Python y SQL hasta el manejo de plataformas como Azure
-          Data Factory. Como analista BI actualmente, empleo estas habilidades para crear soluciones impactantes.
-          
-          Mi enfoque se basa en la aplicación de técnicas avanzadas de estadística e ingeniería, combinadas con mi experiencia en
-          Power BI, Tableau y otras herramientas líderes del sector. Estoy comprometido en desarrollar tanto proyectos
-          profesionales como personales que realmente marquen la diferencia, aprovechando mi experiencia para crear resultados
-          significativos.</p>
+          <h2>HABILIDADES TÉCNICAS</h2>
+          <p class="fst-Times CentrarEsteTexto">Especializado en herramientas de análisis de datos y Business Intelligence, con experiencia práctica en el desarrollo de dashboards, análisis estadístico y automatización de procesos.</p>
         </div>
 
-        <div class="row skills-content">
-
-          <div class="col-lg-6">
-
-            <div class="progress">
-              <span class="skill">M. Excel <i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="skills-carousel-container">
+          <div class="skills-carousel">
+            <div class="skill-item" data-tooltip="Microsoft Excel" data-icon="excel">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/excel.png" alt="Microsoft Excel" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#217346"/>
+                  <rect x="4" y="4" width="6" height="2" fill="#ffffff"/>
+                  <rect x="4" y="7" width="4" height="2" fill="#ffffff"/>
+                  <rect x="4" y="10" width="8" height="2" fill="#ffffff"/>
+                  <rect x="4" y="13" width="6" height="2" fill="#ffffff"/>
+                  <rect x="4" y="16" width="10" height="2" fill="#ffffff"/>
+                  <rect x="14" y="4" width="6" height="6" fill="#ffffff" opacity="0.3"/>
+                  <text x="17" y="8" text-anchor="middle" font-size="3" font-weight="bold" fill="#217346">X</text>
+                </svg>
               </div>
+              <span class="skill-description">Análisis de datos</span>
             </div>
-
-            <div class="progress">
-              <span class="skill">PowerBI <i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            
+            <div class="skill-item" data-tooltip="Power BI" data-icon="powerbi">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/powerbi.png" alt="Power BI" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#F2C811"/>
+                  <rect x="5" y="14" width="3" height="6" fill="#000" rx="0.5"/>
+                  <rect x="9" y="11" width="3" height="9" fill="#000" rx="0.5"/>
+                  <rect x="13" y="8" width="3" height="12" fill="#000" rx="0.5"/>
+                  <rect x="17" y="5" width="2" height="15" fill="#000" rx="0.5"/>
+                  <circle cx="6.5" cy="13" r="1" fill="#F2C811"/>
+                  <circle cx="10.5" cy="10" r="1" fill="#F2C811"/>
+                  <circle cx="14.5" cy="7" r="1" fill="#F2C811"/>
+                  <circle cx="18" cy="4" r="1" fill="#F2C811"/>
+                  <path d="M6.5 13 L10.5 10 L14.5 7 L18 4" stroke="#F2C811" stroke-width="1.5" fill="none"/>
+                </svg>
               </div>
+              <span class="skill-description">Dashboards interactivos</span>
             </div>
-
-            <div class="progress">
-              <span class="skill">Tableau <i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            
+            <div class="skill-item" data-tooltip="Tableau" data-icon="tableau">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/tableau.png" alt="Tableau" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#E97627"/>
+                  <rect x="11" y="4" width="2" height="16" fill="#ffffff"/>
+                  <rect x="4" y="11" width="16" height="2" fill="#ffffff"/>
+                  <rect x="8" y="7" width="8" height="2" fill="#ffffff"/>
+                  <rect x="8" y="15" width="8" height="2" fill="#ffffff"/>
+                  <rect x="6" y="9" width="2" height="6" fill="#ffffff"/>
+                  <rect x="16" y="9" width="2" height="6" fill="#ffffff"/>
+                  <rect x="9" y="5" width="6" height="1" fill="#ffffff"/>
+                  <rect x="9" y="18" width="6" height="1" fill="#ffffff"/>
+                  <rect x="5" y="11.5" width="1" height="1" fill="#ffffff"/>
+                  <rect x="18" y="11.5" width="1" height="1" fill="#ffffff"/>
+                </svg>
               </div>
+              <span class="skill-description">Visualización de datos</span>
             </div>
-
+            
+            <div class="skill-item" data-tooltip="Microsoft Azure" data-icon="azure">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/azure.png" alt="Microsoft Azure" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#0078D4"/>
+                  <path d="M7 6 L17 6 L15 10 L9 10 Z" fill="#ffffff"/>
+                  <path d="M6 11 L12 11 L10 15 L8 15 Z" fill="#ffffff"/>
+                  <path d="M13 11 L18 11 L16 15 L14 15 Z" fill="#ffffff"/>
+                  <path d="M9 16 L15 16 L13 20 L11 20 Z" fill="#ffffff"/>
+                  <circle cx="8" cy="5" r="1" fill="#ffffff" opacity="0.6"/>
+                  <circle cx="16" cy="5" r="1" fill="#ffffff" opacity="0.6"/>
+                  <circle cx="5" cy="9" r="1" fill="#ffffff" opacity="0.6"/>
+                  <circle cx="19" cy="9" r="1" fill="#ffffff" opacity="0.6"/>
+                  <circle cx="12" cy="21" r="1" fill="#ffffff" opacity="0.6"/>
+                </svg>
+              </div>
+              <span class="skill-description">Servicios en la nube</span>
+            </div>
+            
+            <div class="skill-item" data-tooltip="SQL" data-icon="sql">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/sql.png" alt="SQL" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#336791"/>
+                  <ellipse cx="12" cy="7" rx="7" ry="2" fill="#ffffff"/>
+                  <ellipse cx="12" cy="12" rx="7" ry="2" fill="#ffffff"/>
+                  <ellipse cx="12" cy="17" rx="7" ry="2" fill="#ffffff"/>
+                  <rect x="5" y="5" width="14" height="2" fill="#336791"/>
+                  <rect x="5" y="10" width="14" height="2" fill="#336791"/>
+                  <rect x="5" y="15" width="14" height="2" fill="#336791"/>
+                  <circle cx="7" cy="7" r="0.5" fill="#336791"/>
+                  <circle cx="12" cy="7" r="0.5" fill="#336791"/>
+                  <circle cx="17" cy="7" r="0.5" fill="#336791"/>
+                  <circle cx="7" cy="12" r="0.5" fill="#336791"/>
+                  <circle cx="12" cy="12" r="0.5" fill="#336791"/>
+                  <circle cx="17" cy="12" r="0.5" fill="#336791"/>
+                  <circle cx="7" cy="17" r="0.5" fill="#336791"/>
+                  <circle cx="12" cy="17" r="0.5" fill="#336791"/>
+                  <circle cx="17" cy="17" r="0.5" fill="#336791"/>
+                </svg>
+              </div>
+              <span class="skill-description">Gestión de bases de datos</span>
+            </div>
+            
+            <div class="skill-item" data-tooltip="Python" data-icon="python">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/python.png" alt="Python" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#3776AB"/>
+                  <path d="M7 5 C6 5 5 6 5 7 L5 11 C5 12 6 13 7 13 L12 13 L12 12 L7 12 C6.5 12 6 11.5 6 11 L6 7 C6 6.5 6.5 6 7 6 L11 6 C11.5 6 12 6.5 12 7 L12 8 L13 8 L13 7 C13 6 12 5 11 5 L7 5 Z" fill="#FFD43B"/>
+                  <path d="M17 11 C18 11 19 12 19 13 L19 17 C19 18 18 19 17 19 L13 19 C12 19 11 18 11 17 L11 16 L12 16 L12 17 C12 17.5 12.5 18 13 18 L17 18 C17.5 18 18 17.5 18 17 L18 13 C18 12.5 17.5 12 17 12 L12 12 L12 11 L17 11 Z" fill="#FFD43B"/>
+                  <circle cx="8" cy="7" r="1" fill="#3776AB"/>
+                  <circle cx="16" cy="17" r="1" fill="#3776AB"/>
+                  <rect x="10" y="10" width="4" height="4" fill="#FFD43B" opacity="0.3"/>
+                </svg>
+              </div>
+              <span class="skill-description">Programación y análisis</span>
+            </div>
+            
+            <div class="skill-item" data-tooltip="Visual Studio Code" data-icon="vscode">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/vscode.png" alt="Visual Studio Code" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#007ACC"/>
+                  <path d="M17 3 L17 8 L11 12 L17 16 L17 21 L7 17 L11 12 L7 7 L17 3 Z" fill="#ffffff"/>
+                  <path d="M17 3 L19 3 L19 6 L17 8 L17 3 Z" fill="#ffffff"/>
+                  <path d="M17 16 L19 18 L19 21 L17 21 L17 16 Z" fill="#ffffff"/>
+                  <circle cx="7" cy="7" r="1" fill="#007ACC"/>
+                  <circle cx="7" cy="12" r="1" fill="#007ACC"/>
+                  <circle cx="7" cy="17" r="1" fill="#007ACC"/>
+                  <rect x="20" y="4" width="1" height="16" fill="#ffffff" opacity="0.3"/>
+                </svg>
+              </div>
+              <span class="skill-description">Editor de código</span>
+            </div>
+            
+            <div class="skill-item" data-tooltip="n8n" data-icon="n8n">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/n8n.png" alt="n8n" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#EA4B71"/>
+                  <circle cx="7" cy="7" r="2" fill="#ffffff"/>
+                  <circle cx="17" cy="7" r="2" fill="#ffffff"/>
+                  <circle cx="7" cy="17" r="2" fill="#ffffff"/>
+                  <circle cx="17" cy="17" r="2" fill="#ffffff"/>
+                  <circle cx="12" cy="12" r="2" fill="#ffffff"/>
+                  <path d="M7 7 L12 12" stroke="#EA4B71" stroke-width="2" fill="none"/>
+                  <path d="M17 7 L12 12" stroke="#EA4B71" stroke-width="2" fill="none"/>
+                  <path d="M7 17 L12 12" stroke="#EA4B71" stroke-width="2" fill="none"/>
+                  <path d="M17 17 L12 12" stroke="#EA4B71" stroke-width="2" fill="none"/>
+                  <text x="12" y="4" text-anchor="middle" font-size="3" font-weight="bold" fill="#ffffff">n8n</text>
+                </svg>
+              </div>
+              <span class="skill-description">Automatización workflows</span>
+            </div>
+            
+            <div class="skill-item" data-tooltip="Make" data-icon="make">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/make.png" alt="Make" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#6C57F7"/>
+                  <circle cx="6" cy="6" r="2" fill="#ffffff"/>
+                  <circle cx="18" cy="6" r="2" fill="#ffffff"/>
+                  <circle cx="12" cy="12" r="2" fill="#ffffff"/>
+                  <circle cx="6" cy="18" r="2" fill="#ffffff"/>
+                  <circle cx="18" cy="18" r="2" fill="#ffffff"/>
+                  <path d="M6 6 L12 12" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+                  <path d="M18 6 L12 12" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+                  <path d="M12 12 L6 18" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+                  <path d="M12 12 L18 18" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+                  <rect x="10" y="2" width="4" height="2" fill="#ffffff" opacity="0.5"/>
+                  <rect x="10" y="20" width="4" height="2" fill="#ffffff" opacity="0.5"/>
+                  <rect x="2" y="10" width="2" height="4" fill="#ffffff" opacity="0.5"/>
+                  <rect x="20" y="10" width="2" height="4" fill="#ffffff" opacity="0.5"/>
+                </svg>
+              </div>
+              <span class="skill-description">Integración de procesos</span>
+            </div>
+            
+            <div class="skill-item" data-tooltip="LLMs" data-icon="llms">
+              <div class="skill-circle">
+                <img class="skill-icon" src="assets/img/skills/llms.png" alt="LLMs" width="64" height="64" 
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <svg class="skill-icon-fallback" width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+                  <rect x="2" y="2" width="20" height="20" rx="2" fill="#00D4AA"/>
+                  <circle cx="8" cy="7" r="1.5" fill="#ffffff"/>
+                  <circle cx="16" cy="7" r="1.5" fill="#ffffff"/>
+                  <circle cx="6" cy="12" r="1.5" fill="#ffffff"/>
+                  <circle cx="12" cy="12" r="1.5" fill="#ffffff"/>
+                  <circle cx="18" cy="12" r="1.5" fill="#ffffff"/>
+                  <circle cx="8" cy="17" r="1.5" fill="#ffffff"/>
+                  <circle cx="16" cy="17" r="1.5" fill="#ffffff"/>
+                  <path d="M8 7 Q10 9 12 12" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.7"/>
+                  <path d="M16 7 Q14 9 12 12" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.7"/>
+                  <path d="M6 12 Q9 14 12 12" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.7"/>
+                  <path d="M18 12 Q15 14 12 12" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.7"/>
+                  <path d="M12 12 Q10 15 8 17" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.7"/>
+                  <path d="M12 12 Q14 15 16 17" stroke="#ffffff" stroke-width="1" fill="none" opacity="0.7"/>
+                  <text x="12" y="4" text-anchor="middle" font-size="2.5" font-weight="bold" fill="#ffffff">AI</text>
+                </svg>
+              </div>
+              <span class="skill-description">Inteligencia artificial</span>
+            </div>
           </div>
-
-          <div class="col-lg-6">
-
-            <div class="progress">
-              <span class="skill">M. Azure <i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">SQL <i class="val">100%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-            <div class="progress">
-              <span class="skill">Python <i class="val">80%</i></span>
-              <div class="progress-bar-wrap">
-                <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-              </div>
-            </div>
-
-          </div>
-
         </div>
 
       </div>
@@ -193,9 +298,6 @@
     
         <div class="section-title">
           <h2>Portfolio</h2>
-          <p class="fst-Times CentrarEsteTexto">En esta sección podrás encontrar una muestra de mi trabajo en diferentes áreas, desde análisis de datos hasta desarrollo
-          de distintos reportes. Cada proyecto fue cuidadosamente diseñado y desarrollado para demostrar mis habilidades y
-          experiencia en diversas tecnologías y herramientas como Tableau, Power BI, Python y SQL.</p>
         </div>
     
         <div class="row">
@@ -214,14 +316,16 @@
     
           <div class="col-lg-4 col-md-6 portfolio-item filter-tableau">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-1.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-1.gif" class="img-fluid" alt="Sales Dashboard">
               <div class="portfolio-info">
-                <h4>Sales Dashboard</h4>
-                <p>Tableau</p>
-                <a href="https://github.com/AngeloCastilloPerez/Sales-Project-in-Tableau">www.AngeloCastillo-Github.com</a>
+                <h4>Sales Dashboard Interactivo</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-1.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Sales Dashboard"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-1.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Sales Dashboard">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Sales-Project-in-Tableau" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -229,14 +333,16 @@
     
           <div class="col-lg-4 col-md-6 portfolio-item filter-tableau">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-2.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-2.gif" class="img-fluid" alt="London Bikes Analysis">
               <div class="portfolio-info">
-                <h4>London Bikes Rides</h4>
-                <p>Tableau </p>
-                <a href="https://github.com/AngeloCastilloPerez/LondonBikeRides">www.AngeloCastillo-Github.com</a>
+                <h4>Análisis de Bicicletas de Londres</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-2.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="London Bikes Rides"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-2.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="London Bikes Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/LondonBikeRides" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -244,14 +350,16 @@
     
           <div class="col-lg-4 col-md-6 portfolio-item filter-tableau">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-3.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-3.gif" class="img-fluid" alt="Netflix Analysis">
               <div class="portfolio-info">
-                <h4>Netflix Project</h4>
-                <p>Tableau</p>
-                <a href="https://github.com/AngeloCastilloPerez/Netflix-Project">www.AngeloCastillo-Github.com</a>
+                <h4>Análisis de Contenido Netflix</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-3.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Netflix Project"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-3.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Netflix Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Netflix-Project" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -259,14 +367,16 @@
     
           <div class="col-lg-4 col-md-6 portfolio-item filter-tableau">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-4.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-4.gif" class="img-fluid" alt="Startups Analysis">
               <div class="portfolio-info">
-                <h4>Stardups Project</h4>
-                <p>Tableau</p>
-                <a href="https://github.com/AngeloCastilloPerez/Tableau-Startups">www.AngeloCastillo-Github.com</a>
+                <h4>Análisis del Ecosistema Startups</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-4.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Stardups Project"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-4.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Startups Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Tableau-Startups" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -274,14 +384,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-16.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-16.gif" class="img-fluid" alt="Dashboard Aunor">
               <div class="portfolio-info">
-                <h4>Dashboard Aunor</h4>
-                <p>Power Bi</p>
-                <a href="https://github.com/AngeloCastilloPerez/Project---Aunor/tree/main">www.AngeloCastillo-Github.com</a>
+                <h4>Dashboard Corporativo AUNOR</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-16.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Dashboard Aunor"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-16.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Dashboard Aunor">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Project---Aunor/tree/main" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -289,14 +401,16 @@
     
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-17.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-17.gif" class="img-fluid" alt="Dashboard ASTARA">
               <div class="portfolio-info">
-                <h4>Dashboard ASTARA</h4>
-                <p>Power Bi</p>
-                <a href="https://github.com/AngeloCastilloPerez/Proyecto-Astara/tree/main">www.AngeloCastillo-Github.com</a>
+                <h4>Dashboard Corporativo ASTARA</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-17.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Dashboard ASTARA"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-17.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Dashboard ASTARA">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Proyecto-Astara/tree/main" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -304,14 +418,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-6.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-6.gif" class="img-fluid" alt="Yu-Gi-Oh Analysis">
               <div class="portfolio-info">
-                <h4>Yu-Gi-Oh PRoject</h4>
-                <p>Power Bi</p>
-                <a href="https://github.com/AngeloCastilloPerez/Project-YuGiHo">www.AngeloCastillo-Github.com</a>
+                <h4>Análisis Trading Cards Yu-Gi-Oh</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-6.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Project in honor of Kazuki Takahashi"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-6.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Yu-Gi-Oh Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Project-YuGiHo" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -319,14 +435,16 @@
     
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-7.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-7.gif" class="img-fluid" alt="CO2 Emissions Analysis">
               <div class="portfolio-info">
-                <h4>Global and Latin American Co2 emission up to 2021</h4>
-                <p>Power Bi</p>
-                <a href="https://github.com/AngeloCastilloPerez/Project_Co2">www.AngeloCastillo-Github.com</a>
+                <h4>Análisis Global de Emisiones CO2</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-7.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Global and Latin American Co2 emission up to 2021"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-7.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="CO2 Emissions Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Project_Co2" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -334,14 +452,16 @@
     
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-8.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-8.gif" class="img-fluid" alt="Household Waste Analysis">
               <div class="portfolio-info">
-                <h4>Household Waste Project</h4>
-                <p>Power Bi</p>
-                <a href="https://github.com/AngeloCastilloPerez/Project-Desechos">www.AngeloCastillo-Github.com</a>
+                <h4>Análisis de Desechos Domésticos</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-8.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Household Waste Project"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-8.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Household Waste Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Project-Desechos" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -349,14 +469,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-15.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-15.gif" class="img-fluid" alt="SharePoint Intranet">
               <div class="portfolio-info">
-                <h4>Desarrollo de Interfaz Sharepoint - Intranet</h4>
-                <p>Sharepoint</p>
-                <a href="https://github.com/AngeloCastilloPerez/Front-end/tree/main">www.AngeloCastillo-Sharepoint-Enapu.com</a>
+                <h4>Intranet Corporativa ENAPU</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-15.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="ENAPU - INTRANET"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-15.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="SharePoint Intranet">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Front-end/tree/main" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -364,14 +486,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-web">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-10.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-10.gif" class="img-fluid" alt="CO2 Emissions Website">
               <div class="portfolio-info">
-                <h4>Emissions Co2 Google Sites</h4>
-                <p>Google Sites</p>
-                <a href="https://sites.google.com/view/emissions-co2/home?pli=1">www.AngeloCastillo-GoogleSites.com</a>
+                <h4>Portal Web Emisiones CO2</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-10.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Emissions Co2"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-10.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="CO2 Emissions Website">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://sites.google.com/view/emissions-co2/home?pli=1" target="_blank">
+                    <i class="bx bx-link-external"></i> Visitar
+                  </a>
                 </div>
               </div>
             </div>
@@ -380,14 +504,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-11.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-11.gif" class="img-fluid" alt="Consumer Protection Analysis">
               <div class="portfolio-info">
-                <h4>Defensa y protección del consumidor - ARG</h4>
-                <p>Power Bi</p>
-                <a href="https://app.powerbi.com/view?r=eyJrIjoiNTk5OTkxOWItNWE2MS00OGRkLThkZmEtM2M5ZjE0OWUzYWEzIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9">www.AngeloCastillo-PowerBi.com</a>
+                <h4>Defensa del Consumidor Argentina</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-11.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Defensa y protección del consumidor - ARGENTINA"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-11.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Consumer Protection Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://app.powerbi.com/view?r=eyJrIjoiNTk5OTkxOWItNWE2MS00OGRkLThkZmEtM2M5ZjE0OWUzYWEzIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9" target="_blank">
+                    <i class="bx bx-link-external"></i> Live Demo
+                  </a>
                 </div>
               </div>
             </div>
@@ -395,15 +521,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-12.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-12.gif" class="img-fluid" alt="Opportunity Analysis">
               <div class="portfolio-info">
-                <h4>Análisis de oportunidad y Márgenes</h4>
-                <p>Power Bi</p>
-                <a
-                  href="https://app.powerbi.com/view?r=eyJrIjoiOWM4MjViZDAtMjVjZS00MmViLTlkYjctYTczMzFmYzY5YmMwIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9">www.AngeloCastillo-PowerBi.com</a>
+                <h4>Análisis de Oportunidades y Márgenes</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-12.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Análisis de oportunidad y Márgenes"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-12.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Opportunity Analysis">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://app.powerbi.com/view?r=eyJrIjoiOWM4MjViZDAtMjVjZS00MmViLTlkYjctYTczMzFmYzY5YmMwIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9" target="_blank">
+                    <i class="bx bx-link-external"></i> Live Demo
+                  </a>
                 </div>
               </div>
             </div>
@@ -411,15 +538,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-13.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-13.gif" class="img-fluid" alt="Tractchun Tickets">
               <div class="portfolio-info">
-                <h4>Tractchun - Histórico de Tickets</h4>
-                <p>Power Bi</p>
-                <a
-                  href="https://app.powerbi.com/view?r=eyJrIjoiOWM4MjViZDAtMjVjZS00MmViLTlkYjctYTczMzFmYzY5YmMwIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9">www.AngeloCastillo-PowerBi.com</a>
+                <h4>Sistema de Tickets Tractchun</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-13.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Tractchun - Histórico de Tickets"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-13.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Tractchun Tickets">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://app.powerbi.com/view?r=eyJrIjoiOWM4MjViZDAtMjVjZS00MmViLTlkYjctYTczMzFmYzY5YmMwIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9" target="_blank">
+                    <i class="bx bx-link-external"></i> Live Demo
+                  </a>
                 </div>
               </div>
             </div>
@@ -427,15 +555,16 @@
 
           <div class="col-lg-4 col-md-6 portfolio-item filter-Microsoft-Azure">
             <div class="portfolio-wrap">
-              <img src="assets/img/portfolio/portfolio-14.gif" class="img-fluid" alt="">
+              <img src="assets/img/portfolio/portfolio-14.gif" class="img-fluid" alt="Azure Data Factory">
               <div class="portfolio-info">
-                <h4>Microsoft Azure Data Factory</h4>
-                <p>Microsoft Azure</p>
-                <a
-                  href="https://github.com/AngeloCastilloPerez/Proyecto---YAMAHA/tree/main">www.AngeloCastillo-Github.com.com</a>
+                <h4>Data Factory Azure - Yamaha Motors</h4>
                 <div class="portfolio-links">
-                  <a href="assets/img/portfolio/portfolio-14.gif" data-gallery="portfolioGallery" class="portfolio-lightbox"
-                    title="Microsoft Azure Data Factory - YAMAHA MOTORS"><i class="bx bx-plus"></i></a>
+                  <a href="assets/img/portfolio/portfolio-14.gif" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Azure Data Factory">
+                    <i class="bx bx-show"></i> Ver Demo
+                  </a>
+                  <a href="https://github.com/AngeloCastilloPerez/Proyecto---YAMAHA/tree/main" target="_blank">
+                    <i class="bx bxl-github"></i> Código
+                  </a>
                 </div>
               </div>
             </div>
@@ -452,14 +581,11 @@
 
         <div class="section-title">
           <h2>Servicios</h2>
-          <p class="fst-Times CentrarEsteTexto">Ofrezco servicios de análisis y visualización de datos para empresas, utilizando Python, Power BI, Tableau y Excel
-          avanzado. Desde análisis exploratorio hasta creación de dashboards interactivos para tomar decisiones informadas y
-          estratégicas basadas en datos.</p>
         </div>
 
         <div class="row">
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box iconbox-orange ">
               <div class="icon">
                 <svg width="100" height="100" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
@@ -467,14 +593,12 @@
                 </svg>
                 <i class="bx bx-file"></i>
               </div>
-              <h4><a href="">Data Analyst</a></h4>
-              <p>Desarrollo y diseño de bases de datos para almacenar y procesar datos de manera eficiente. Realizo análisis estadísticos
-              y exploratorios de datos para identificar patrones y tendencias, y presento mis resultados a través de gráficos y
-              tablas.</p>
+              <h4><a href="">Especialista en Tecnología</a></h4>
+              <p>Análisis estadístico y exploratorio de datos para identificar patrones, tendencias y insights valiosos que impulsen decisiones estratégicas empresariales.</p>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="100">
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="200">
             <div class="icon-box iconbox-yellow">
               <div class="icon">
                 <svg width="100" height="100" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
@@ -482,14 +606,12 @@
                 </svg>
                 <i class="bx bx-layer"></i>
               </div>
-              <h4><a href="">ETL</a></h4>
-              <p>Extracción, transformación y carga de datos utilizando SQL y Python para procesar grandes conjuntos de datos. Realizo
-                una limpieza y transformación rigurosa de los datos para asegurar la calidad y precisión de los resultados finales.
-              </p>
+              <h4><a href="">Arquitectura de Datos</a></h4>
+              <p>Diseño de arquitecturas escalables y eficientes que optimizan el almacenamiento, integración y flujo de datos empresariales.</p>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="200">
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="300">
             <div class="icon-box iconbox-red">
               <div class="icon">
                 <svg width="100" height="100" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
@@ -498,9 +620,20 @@
                 <i class="bx bx-slideshow"></i>
               </div>
               <h4><a href="">Dashboards</a></h4>
-              <p>Creación de dashboards y reportes interactivos personalizados que permiten a los usuarios visualizar los datos de
-                manera clara y precisa. Utilizo Power BI y Tableau para crear visualizaciones avanzadas que ayudan a tomar decisiones
-                informadas y estratégicas.</p>
+              <p>Creación de dashboards interactivos y visualizaciones avanzadas con Power BI y Tableau para facilitar la toma de decisiones estratégicas.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="zoom-in" data-aos-delay="400">
+            <div class="icon-box iconbox-blue">
+              <div class="icon">
+                <svg width="100" height="100" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke="none" stroke-width="0" fill="#f5f5f5" d="M300,521.0016835830174C376.1290562159157,517.8887921683347,466.0731472004068,529.7835943286574,510.70327084640275,468.03025145048787C554.3714126377745,407.6079735673963,508.03601936045806,328.9844924480964,491.2728898941984,256.3432110539036C474.5976632858925,184.082847569629,479.9380746630129,96.60480741107993,416.23090153303,58.64404602377083C348.86323505073057,18.502131276798302,261.93793281208167,40.57373210992963,193.5410806939664,78.93577620505333C130.42746243093433,114.334589627462,98.30271207620316,179.96522072025542,76.75703585869454,249.04625023123273C51.97151888228291,328.5150500222984,13.704378332031375,421.85034740162234,66.52175969318436,486.19268352777647C119.04800174914682,550.1803526380478,217.28368757567262,524.383925680826,300,521.0016835830174"></path>
+                </svg>
+                <i class="bx bx-bot"></i>
+              </div>
+              <h4><a href="">Automatizaciones con IA</a></h4>
+              <p>Desarrollo de soluciones inteligentes con IA generativa y machine learning para automatizar procesos y optimizar la productividad empresarial.</p>
             </div>
           </div>
 
@@ -508,6 +641,27 @@
 
       </div>
     </section><!-- End Services Section -->
+
+    <!-- ======= Posts Section ======= -->
+    <section id="posts" class="posts">
+      <div class="container">
+        <div class="section-title">
+          <h2>Posts & Artículos</h2>
+          <p>Mis últimas publicaciones sobre análisis de datos, inteligencia artificial y tendencias tecnológicas</p>
+        </div>
+      </div>
+      <div class="posts-carousel-container">
+        <button class="posts-nav-btn prev" onclick="scrollPostsCarousel('left')">
+          <i class="bx bx-chevron-left"></i>
+        </button>
+        <div class="posts-carousel">
+          <!-- Aquí se insertan dinámicamente las cards de Medium con JS -->
+        </div>
+        <button class="posts-nav-btn next" onclick="scrollPostsCarousel('right')">
+          <i class="bx bx-chevron-right"></i>
+        </button>
+      </div>
+    </section><!-- End Posts Section -->
 
   </main><!-- End #main -->
 
@@ -550,6 +704,10 @@
   <script src="assets/vendor/typed.js/typed.min.js"></script>
   <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Social Media Integration Config -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/linkedin-posts.js"></script>
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>

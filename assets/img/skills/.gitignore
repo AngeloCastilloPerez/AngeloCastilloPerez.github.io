@@ -1,0 +1,12 @@
+# Ignorar todos los archivos de imagen temporales
+*.tmp
+*.temp
+*.bak
+
+# Mantener solo los iconos finales
+# Descomenta las siguientes líneas si quieres ignorar los iconos hasta que estén listos
+# *.png
+# *.jpg
+# *.jpeg
+# *.gif
+# *.svg 
