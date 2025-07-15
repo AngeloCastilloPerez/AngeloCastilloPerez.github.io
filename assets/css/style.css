@@ -1911,10 +1911,10 @@ section {
 .posts-carousel {
   display: flex;
   flex-direction: row;
-  gap: 14px;
-  padding: 0 60px;
+  gap: 20px;
+  padding: 0 40px;
   flex: 1;
-  justify-content: flex-start;
+  justify-content: space-evenly;
   align-items: stretch;
   overflow-x: auto;
   overflow-y: visible;
@@ -2025,9 +2025,9 @@ section {
 }
 
 .post-item {
-  flex: 0 0 320px;
-  min-width: 320px;
-  max-width: 320px;
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 300px;
+  max-width: 450px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 6px 24px rgba(0,0,0,0.10);
@@ -2621,16 +2621,53 @@ section {
   margin: 0 !important;
 }
 
+/* Media queries para distribución responsive sin espacios vacíos */
+@media (min-width: 1400px) {
+  .posts-carousel {
+    justify-content: space-between !important;
+    gap: 30px;
+  }
+  .post-item {
+    flex: 1 1 calc(25% - 30px);
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .posts-carousel {
+    justify-content: space-around !important;
+    gap: 15px;
+    padding: 0 30px;
+  }
+  .post-item {
+    flex: 1 1 calc(50% - 15px);
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .posts-carousel {
+    justify-content: flex-start !important;
+    gap: 15px;
+    padding: 0 20px;
+  }
+  .post-item {
+    flex: 0 0 280px;
+    min-width: 280px;
+    max-width: 280px;
+  }
+}
+
 /* Asegurar que el carrusel siempre ocupe todo el espacio disponible */
 .posts-carousel {
-  justify-content: flex-start !important;
+  justify-content: space-evenly !important;
   width: 100% !important;
 }
 
-/* Garantizar que las cards se muestren desde el inicio */
+/* Garantizar que las cards ocupen el espacio disponible */
 .posts-carousel .post-item {
-  flex-shrink: 0;
-  flex-grow: 0;
+  flex-shrink: 1;
+  flex-grow: 1;
 }
 
 

@@ -956,12 +956,14 @@ function scrollPostsCarousel(direction) {
   const carousel = document.querySelector('.posts-carousel');
   if (!carousel) return;
   
-  const scrollAmount = 350; // Ancho de una card + gap
+  // Calcular el scroll amount basado en el ancho del contenedor
+  const containerWidth = carousel.clientWidth;
+  const scrollAmount = containerWidth * 0.8; // Scroll 80% del ancho visible
   const currentScroll = carousel.scrollLeft;
   
   if (direction === 'left') {
     carousel.scrollTo({
-      left: currentScroll - scrollAmount,
+      left: Math.max(0, currentScroll - scrollAmount),
       behavior: 'smooth'
     });
   } else if (direction === 'right') {
@@ -987,18 +989,31 @@ function scrollPostsCarousel(direction) {
     
     const posts = carousel.querySelectorAll('.post-item');
     const containerWidth = carousel.clientWidth;
-    const totalWidth = posts.length * (320 + 14); // card width + gap
     
-    console.log(`🔧 Ajustando navegación: ${posts.length} posts, contenedor: ${containerWidth}px, total: ${totalWidth}px`);
+    console.log(`🔧 Ajustando navegación: ${posts.length} posts, contenedor: ${containerWidth}px`);
     
-    // Mostrar botones siempre si hay más de 2 posts
-    if (posts.length > 2) {
+    // En pantallas grandes (>1200px), si tenemos 4 o menos posts, no necesitamos navegación
+    // En pantallas medianas (768-1200px), si tenemos 2 o menos posts, no necesitamos navegación
+    // En pantallas pequeñas (<768px), siempre mostrar navegación si hay más de 1 post
+    
+    const screenWidth = window.innerWidth;
+    let needsNavigation = false;
+    
+    if (screenWidth >= 1200) {
+      needsNavigation = posts.length > 3;
+    } else if (screenWidth >= 768) {
+      needsNavigation = posts.length > 2;
+    } else {
+      needsNavigation = posts.length > 1;
+    }
+    
+    if (needsNavigation) {
       prevBtn.style.display = 'flex';
       nextBtn.style.display = 'flex';
       console.log('✅ Botones de navegación mostrados');
     } else {
       prevBtn.style.display = 'none';
       nextBtn.style.display = 'none';
-      console.log('🔒 Botones de navegación ocultos (pocos posts)');
+      console.log('🔒 Botones de navegación ocultos - las cards ocupan todo el espacio');
     }
   }
