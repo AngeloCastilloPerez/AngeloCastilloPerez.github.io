@@ -387,592 +387,461 @@
   // Initialize particles when DOM is loaded
   window.addEventListener('load', createFloatingParticles);
 
-  /**
-   * Posts Carousel Functionality
-   */
-  function initializePostsCarousel() {
-    const postsCarousel = select('.posts-carousel');
-    const postItems = select('.post-item', true);
-    const indicators = select('.indicator', true);
+  // Global variables para el sistema de posts
+  let allPosts = [];
+  let currentFilter = 'all';
+
+  // Función para renderizar el feed de posts desde Medium
+  async function loadMediumPosts() {
+    console.log('📝 Iniciando carga de posts de Medium...');
+    const mediumFeed = 'https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@angelocastilloperz';
     
-    if (!postsCarousel || !postItems || postItems.length === 0) {
-      return; // Exit if posts section doesn't exist
-    }
-
-    let currentSlide = 0;
-    let autoAdvanceInterval;
-    
-    // Configuración fija del carrusel
-    const carouselConfig = {
-      itemWidth: 350,  // Ancho fijo definido en CSS
-      gap: 30,         // Gap fijo definido en CSS
-      padding: 15,     // Padding horizontal del carrusel
-      getItemsPerView() {
-        if (window.innerWidth <= 576) return 1;
-        if (window.innerWidth <= 1024) return 2;
-        return 3;
-      }
-    };
-    
-    function getTotalSlides() {
-      return Math.ceil(postItems.length / carouselConfig.getItemsPerView());
-    }
-
-    // Function to update carousel position
-    function updateCarousel() {
-      const itemsPerView = carouselConfig.getItemsPerView();
-      const moveDistance = (carouselConfig.itemWidth + carouselConfig.gap) * currentSlide;
-      
-      postsCarousel.style.transform = `translateX(-${moveDistance}px)`;
-      
-      // Update indicators
-      if (indicators && indicators.length > 0) {
-        indicators.forEach((indicator, index) => {
-          indicator.classList.toggle('active', index === currentSlide);
-        });
-      }
-    }
-
-    // Function to go to next slide
-    function nextPost() {
-      const totalSlides = getTotalSlides();
-      currentSlide = (currentSlide + 1) % totalSlides;
-      updateCarousel();
-    }
-
-    // Function to go to previous slide
-    function prevPost() {
-      const totalSlides = getTotalSlides();
-      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-      updateCarousel();
-    }
-
-    // Function to go to specific slide
-    function currentPost(slideIndex) {
-      currentSlide = slideIndex - 1;
-      updateCarousel();
-    }
-
-    // Auto-advance carousel every 5 seconds
-    function startAutoAdvance() {
-      autoAdvanceInterval = setInterval(nextPost, 5000);
-    }
-
-    function stopAutoAdvance() {
-      if (autoAdvanceInterval) {
-        clearInterval(autoAdvanceInterval);
-      }
-    }
-
-    // Pause auto-advance on hover
-    postsCarousel.addEventListener('mouseenter', stopAutoAdvance);
-    postsCarousel.addEventListener('mouseleave', startAutoAdvance);
-
-    // Touch/swipe support for mobile
-    let startX = 0;
-    let currentX = 0;
-    let isSwipe = false;
-
-    postsCarousel.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      isSwipe = true;
-    });
-
-    postsCarousel.addEventListener('touchmove', (e) => {
-      if (!isSwipe) return;
-      currentX = e.touches[0].clientX;
-    });
-
-    postsCarousel.addEventListener('touchend', () => {
-      if (!isSwipe) return;
-      const diffX = startX - currentX;
-      
-      if (Math.abs(diffX) > 50) {
-        if (diffX > 0) {
-          nextPost();
-        } else {
-          prevPost();
-        }
-      }
-      
-      isSwipe = false;
-    });
-
-    // Make functions global for button onclick events
-    window.nextPost = nextPost;
-    window.prevPost = prevPost;
-    window.currentPost = currentPost;
-
-    // Initialize carousel
-    updateCarousel();
-    startAutoAdvance();
-    adjustNavigationButtons();
-
-    // Update carousel on resize
-    window.addEventListener('resize', () => {
-      updateCarousel();
-      adjustNavigationButtons();
-    });
-  }
-
-  // Initialize posts carousel when DOM is ready
-  window.addEventListener('load', initializePostsCarousel);
-
-  /**
-   * Medium RSS Feed Integration
-   */
-  async function fetchMediumPosts() {
     try {
-      // Verificar configuración
-      if (!window.MEDIUM_CONFIG || window.MEDIUM_CONFIG.USERNAME === 'tu-username') {
-        throw new Error('USERNAME no configurado');
-      }
-      
-      // Configuración del usuario de Medium
-      const MEDIUM_USERNAME = window.MEDIUM_CONFIG.USERNAME;
-      
-      // URL del RSS feed de Medium convertido a JSON
-      const RSS_TO_JSON_API = `${window.MEDIUM_CONFIG.RSS_TO_JSON_API}?rss_url=https://medium.com/feed/@${MEDIUM_USERNAME}`;
-      
-      // Mostrar estado de carga
-      const postsContainer = select('.posts-carousel');
-      if (postsContainer) {
-        postsContainer.innerHTML = `
-          <div class="post-item loading-state">
-            <div class="loading-content">
-              <div class="loading-spinner"></div>
-              <h3>${window.MEDIUM_CONFIG.TEXTS.LOADING}</h3>
-              <p>${window.MEDIUM_CONFIG.TEXTS.LOADING_SUBTITLE}</p>
-            </div>
-          </div>
-        `;
-      }
-
-      const response = await fetch(RSS_TO_JSON_API);
-      
-      if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
-      }
-      
+      console.log('🌐 Consultando Medium API...');
+      const response = await fetch(mediumFeed);
       const data = await response.json();
       
-      if (data.status !== 'ok') {
-        throw new Error('Error al obtener el RSS feed de Medium');
-      }
-
-      return data.items || [];
-    } catch (error) {
-      console.error('Error al obtener publicaciones de Medium:', error);
-      return [];
-    }
-  }
-
-  /**
-   * Extraer imagen thumbnail de la descripción HTML
-   */
-  function extractThumbnailFromDescription(description) {
-    try {
-      const match = description.match(/<img[^>]+src="([^">]+)"/);
-      return match ? match[1] : null;
-    } catch (error) {
-      console.error('Error al extraer thumbnail:', error);
-      return null;
-    }
-  }
-
-  /**
-   * Limpiar el HTML del contenido del post
-   */
-  function cleanPostContent(content) {
-    try {
-      // Crear un elemento temporal para parsear el HTML
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = content;
+      console.log('📊 Respuesta de Medium:', {
+        status: data.status,
+        itemsCount: data.items?.length || 0
+      });
       
-      // Extraer solo el texto, sin etiquetas HTML
-      const textContent = tempDiv.textContent || tempDiv.innerText || '';
-      
-      // Limitar según configuración
-      const maxLength = window.MEDIUM_CONFIG?.MAX_CONTENT_LENGTH || 150;
-      if (textContent.length > maxLength) {
-        return textContent.substring(0, maxLength) + '...';
-      }
-      
-      return textContent;
-    } catch (error) {
-      console.error('Error al limpiar contenido:', error);
-      return 'Error al procesar el contenido del post...';
-    }
-  }
-
-  /**
-   * Formatear fecha en español
-   */
-  function formatPostDate(dateString) {
-    try {
-      const date = new Date(dateString);
-      const months = [
-        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-      ];
-      
-      return {
-        day: date.getDate().toString().padStart(2, '0'),
-        month: months[date.getMonth()],
-        year: date.getFullYear().toString()
-      };
-    } catch (error) {
-      console.error('Error al formatear fecha:', error);
-      return {
-        day: '01',
-        month: 'Ene',
-        year: '2024'
-      };
-    }
-  }
-
-  /**
-   * Estimar tiempo de lectura
-   */
-  function estimateReadingTime(content) {
-    try {
-      const wordsPerMinute = window.MEDIUM_CONFIG?.WORDS_PER_MINUTE || 200;
-      const textContent = content.replace(/<[^>]*>/g, ''); // Remover HTML
-      const wordCount = textContent.trim().split(/\s+/).length;
-      const readingTime = Math.ceil(wordCount / wordsPerMinute);
-      
-      return readingTime < 1 ? 1 : readingTime;
-    } catch (error) {
-      console.error('Error al estimar tiempo de lectura:', error);
-      return 5; // Valor por defecto
-    }
-  }
-
-  /**
-   * Extraer categoría del post basado en las etiquetas
-   */
-  function extractCategory(categories) {
-    try {
-      if (!categories || categories.length === 0) {
-        return window.MEDIUM_CONFIG?.DEFAULT_CATEGORY || 'Medium';
-      }
-      
-      // Tomar la primera categoría y capitalizar
-      const category = categories[0];
-      return category.charAt(0).toUpperCase() + category.slice(1);
-    } catch (error) {
-      console.error('Error al extraer categoría:', error);
-      return window.MEDIUM_CONFIG?.DEFAULT_CATEGORY || 'Medium';
-    }
-  }
-
-  /**
-   * Renderizar posts de todas las plataformas en el carrusel
-   */
-  function renderSocialMediaPosts(posts) {
-    const postsContainer = select('.posts-carousel');
-    if (!postsContainer) {
-      console.error('❌ No se encontró el contenedor .posts-carousel');
-      return;
-    }
-
-    console.log('📝 Renderizando', posts.length, 'publicaciones en total');
-    console.log('📋 Publicaciones:', posts.map(p => `${p.title} (${p.category || 'Sin categoría'})`));
-
-    if (posts.length === 0) {
-      console.warn('⚠️ No hay publicaciones para mostrar');
-      postsContainer.innerHTML = `
-        <div class="post-item error-state">
-          <div class="error-content">
-            <h3>No hay publicaciones disponibles</h3>
-            <p>No se pudieron cargar las publicaciones. Revisa la consola para más detalles.</p>
-            <a href="${window.LINKEDIN_CONFIG?.PROFILE_URL || '#'}" target="_blank" class="post-btn">
-              Ver perfil de LinkedIn
-            </a>
-          </div>
-        </div>
-      `;
-      return;
-    }
-
-    let postsHTML = '';
-    
-    posts.forEach((post, index) => {
-      // Detectar si es de Medium o LinkedIn
-      const isLinkedIn = post.category === 'LinkedIn' || !post.description;
-      
-      let thumbnail, cleanContent, postDate, readingTime, category;
-      
-      if (isLinkedIn) {
-        // Procesamiento para LinkedIn - usar siempre la imagen predefinida
-        thumbnail = "assets/img/Linkedin.png";
-        cleanContent = post.content.length > 150 ? post.content.substring(0, 150) + '...' : post.content;
-        postDate = formatPostDate(post.date);
-        readingTime = Math.ceil(post.content.split(' ').length / 200);
-        category = post.category;
+      if (data.status === 'ok' && data.items) {
+        const mediumPosts = data.items.slice(0, 10).map(post => ({
+          title: post.title,
+          description: post.description.replace(/<[^>]*>/g, '').substring(0, 120) + '...',
+          link: post.link,
+          pubDate: new Date(post.pubDate),
+          image: extractImageFromContent(post.content) || 'assets/img/portfolio/portfolio-1.gif',
+          platform: 'medium',
+          readTime: calculateReadTime(post.content)
+        }));
+        
+        allPosts = [...allPosts, ...mediumPosts];
+        console.log('✅ Medium posts cargados:', mediumPosts.length);
       } else {
-        // Procesamiento para Medium
-        thumbnail = extractThumbnailFromDescription(post.description);
-        cleanContent = cleanPostContent(post.description);
-        postDate = formatPostDate(post.pubDate);
-        readingTime = estimateReadingTime(post.description);
-        category = extractCategory(post.categories);
+        console.warn('⚠️ No se pudieron cargar posts de Medium:', data.message || 'Error desconocido');
       }
+    } catch (error) {
+      console.error('❌ Error loading Medium posts:', error);
+    }
+  }
+
+  // Función para cargar posts de LinkedIn
+  function loadLinkedInPosts() {
+    console.log('📱 Iniciando carga de posts de LinkedIn...');
+    
+    try {
+      console.log('🔍 Verificando LINKEDIN_POSTS_MANAGER:', {
+        exists: !!window.LINKEDIN_POSTS_MANAGER,
+        hasPosts: !!(window.LINKEDIN_POSTS_MANAGER && window.LINKEDIN_POSTS_MANAGER.getPosts)
+      });
+      if (window.LINKEDIN_POSTS_MANAGER && window.LINKEDIN_POSTS_MANAGER.getPosts) {
+        const rawLinkedInPosts = window.LINKEDIN_POSTS_MANAGER.getPosts();
+        console.log('📊 Posts raw de LinkedIn:', rawLinkedInPosts.length);
+        
+        // Convertir formato de LinkedIn al formato estándar
+        const linkedInPosts = rawLinkedInPosts.map(post => {
+          // Calcular tiempo de lectura directamente aquí
+          const text = post.content.replace(/<[^>]*>/g, '');
+          const wordsPerMinute = 200;
+          const words = text.split(/\s+/).length;
+          const readTimeMinutes = Math.ceil(words / wordsPerMinute);
+          
+          return {
+            title: post.title,
+            description: post.content.substring(0, 120) + '...',
+            link: post.link,
+            pubDate: new Date(post.date),
+            image: post.image || 'assets/img/Linkedin.png',
+            platform: 'linkedin',
+            readTime: `${readTimeMinutes} min lectura`
+          };
+        });
+        
+        allPosts = [...allPosts, ...linkedInPosts];
+        console.log('✅ LinkedIn posts cargados:', linkedInPosts.length);
+      } else {
+        console.warn('⚠️ LINKEDIN_POSTS_MANAGER no está disponible, usando fallback');
+        // Fallback con posts hardcodeados
+        const fallbackPosts = [
+          {
+            title: "Especialista en Tecnología - Transformación Digital",
+            description: "Compartiendo mi experiencia en análisis de datos y transformación digital en empresas...",
+            link: "https://www.linkedin.com/in/castilloperz/",
+            pubDate: new Date(Date.now() - 24 * 60 * 60 * 1000),
+            image: "assets/img/Linkedin.png",
+            platform: "linkedin",
+            readTime: "3 min lectura"
+          },
+          {
+            title: "Power BI y Business Intelligence en Acción",
+            description: "Desarrollando dashboards interactivos que permiten tomar decisiones basadas en datos...",
+            link: "https://www.linkedin.com/in/castilloperz/",
+            pubDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+            image: "assets/img/Linkedin.png",
+            platform: "linkedin",
+            readTime: "4 min lectura"
+          }
+        ];
+        allPosts = [...allPosts, ...fallbackPosts];
+        console.log('✅ LinkedIn fallback posts cargados:', fallbackPosts.length);
+      }
+    } catch (error) {
+      console.error('❌ Error loading LinkedIn posts:', error);
+    }
+  }
+
+  // Función para extraer imagen del contenido
+  function extractImageFromContent(content) {
+    const imgMatch = content.match(/<img[^>]+src="([^">]+)"/);
+    return imgMatch ? imgMatch[1] : null;
+  }
+
+  // Función para calcular tiempo de lectura
+  function calculateReadTime(content) {
+    const text = content.replace(/<[^>]*>/g, '');
+    const wordsPerMinute = 200;
+    const words = text.split(/\s+/).length;
+    const time = Math.ceil(words / wordsPerMinute);
+    return `${time} min lectura`;
+  }
+
+  // Función para formatear fecha
+  function formatDate(date) {
+    return date.toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  // Variables del carrusel
+  let currentSlide = 0;
+  let cardsPerSlide = 3; // Número de cards visibles por slide
+  
+  // Función para renderizar posts en el carrusel
+  function renderPosts(posts = null) {
+    const postsToRender = posts || getFilteredPosts();
+    const carousel = document.getElementById('postsCarousel');
+    
+    console.log('🎨 Renderizando posts:', {
+      postsToRender: postsToRender.length,
+      carouselExists: !!carousel,
+      allPostsCount: allPosts.length
+    });
+    
+    if (!carousel) {
+      console.error('❌ No se encontró el carrusel para renderizar');
+      return;
+    }
+    
+    carousel.innerHTML = '';
+    
+    if (postsToRender.length === 0) {
+      carousel.innerHTML = '<div style="color: #fff; text-align: center; padding: 40px;">No hay publicaciones disponibles</div>';
+      return;
+    }
+    
+    // Renderizar todas las cards
+    postsToRender.forEach((post, index) => {
+      console.log(`🃏 Creando card ${index + 1}:`, post.title);
+      const postCard = createPostCard(post, index);
+      carousel.appendChild(postCard);
+    });
+    
+    console.log(`✅ ${postsToRender.length} cards renderizadas`);
+    
+    // Actualizar carrusel
+    updateCarousel();
+    updateIndicators(postsToRender.length);
+    updateViewMoreButtons();
+    
+    // Aplicar animaciones
+    setTimeout(() => {
+      const cards = carousel.querySelectorAll('.post-card');
+      cards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('show');
+        }, index * 100);
+      });
+    }, 100);
+  }
+
+  // Función para crear una card de post
+  function createPostCard(post, index) {
+    const card = document.createElement('div');
+    card.className = `post-card filtering`;
+    card.setAttribute('data-platform', post.platform);
+    
+    const platformIcon = post.platform === 'linkedin' ? '💼' : '📖';
+    const platformColor = post.platform === 'linkedin' ? 'linkedin' : 'medium';
+    
+    card.innerHTML = `
+      <div class="post-image">
+        <img src="${post.image}" alt="${post.title}" loading="lazy">
+        <div class="platform-badge ${platformColor}">
+          ${platformIcon} ${post.platform.toUpperCase()}
+        </div>
+      </div>
+      <div class="post-content">
+        <div class="post-meta">
+          <span class="post-date">${formatDate(post.pubDate)}</span>
+          <span class="read-time">${post.readTime}</span>
+        </div>
+        <h3 class="post-title">${post.title}</h3>
+        <p class="post-description">${post.description}</p>
+        <a href="${post.link}" target="_blank" rel="noopener noreferrer" class="read-more">
+          Leer más <i class="bx bx-right-arrow-alt"></i>
+        </a>
+      </div>
+    `;
+    
+    return card;
+  }
+
+  // Función para obtener posts filtrados
+  function getFilteredPosts() {
+    console.log('🔍 Filtrando posts:', { 
+      currentFilter, 
+      totalPosts: allPosts.length,
+      platforms: [...new Set(allPosts.map(p => p.platform))]
+    });
+    
+    if (currentFilter === 'all') {
+      return allPosts.sort((a, b) => b.pubDate - a.pubDate);
+    }
+    
+    const filtered = allPosts
+      .filter(post => post.platform === currentFilter)
+      .sort((a, b) => b.pubDate - a.pubDate);
       
-      const gradientStyle = isLinkedIn ? 
-        'background: linear-gradient(135deg, #0077b5 0%, #005885 100%);' :
-        'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);';
+    console.log(`📊 Posts filtrados para ${currentFilter}:`, filtered.length);
+    return filtered;
+  }
+
+  // Función para manejar filtros
+  function setupFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Actualizar estado activo
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+                 // Aplicar filtro
+         currentFilter = button.getAttribute('data-filter');
+         currentSlide = 0; // Reset carrusel al filtrar
+         
+         // Animar cards saliendo
+         const cards = document.querySelectorAll('.post-card');
+         cards.forEach((card, index) => {
+           setTimeout(() => {
+             card.classList.add('filtering');
+           }, index * 50);
+         });
+         
+         // Renderizar nuevos posts después de la animación
+         setTimeout(() => {
+           renderPosts();
+         }, cards.length * 50 + 300);
+      });
+    });
+  }
+
+  // Función para calcular cards por slide según el ancho de pantalla
+  function calculateCardsPerSlide() {
+    const width = window.innerWidth;
+    if (width <= 480) return 1;
+    if (width <= 768) return 1.5;
+    if (width <= 1200) return 2;
+    return 3;
+  }
+  
+  // Función para actualizar el carrusel
+  function updateCarousel() {
+    const carousel = document.getElementById('postsCarousel');
+    if (!carousel) return;
+    
+    cardsPerSlide = calculateCardsPerSlide();
+    const cardWidth = 350 + 25; // width + gap
+    const offset = currentSlide * cardWidth * cardsPerSlide;
+    
+    carousel.style.transform = `translateX(-${offset}px)`;
+    
+    // Actualizar estado de botones
+    updateNavigationButtons();
+  }
+  
+  // Función para actualizar botones de navegación
+  function updateNavigationButtons() {
+    const carousel = document.getElementById('postsCarousel');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (!carousel || !prevBtn || !nextBtn) return;
+    
+    const totalCards = carousel.children.length;
+    const maxSlide = Math.max(0, Math.ceil(totalCards / cardsPerSlide) - 1);
+    
+    prevBtn.disabled = currentSlide <= 0;
+    nextBtn.disabled = currentSlide >= maxSlide;
+  }
+  
+  // Función para actualizar indicadores
+  function updateIndicators(totalCards) {
+    const indicatorsContainer = document.getElementById('carouselIndicators');
+    if (!indicatorsContainer) return;
+    
+    const totalSlides = Math.ceil(totalCards / cardsPerSlide);
+    indicatorsContainer.innerHTML = '';
+    
+    for (let i = 0; i < totalSlides; i++) {
+      const indicator = document.createElement('div');
+      indicator.className = `carousel-indicator ${i === currentSlide ? 'active' : ''}`;
+      indicator.addEventListener('click', () => goToSlide(i));
+      indicatorsContainer.appendChild(indicator);
+    }
+  }
+  
+  // Función para ir a un slide específico
+  function goToSlide(slideIndex) {
+    const carousel = document.getElementById('postsCarousel');
+    if (!carousel) return;
+    
+    const totalCards = carousel.children.length;
+    const maxSlide = Math.max(0, Math.ceil(totalCards / cardsPerSlide) - 1);
+    
+    currentSlide = Math.max(0, Math.min(slideIndex, maxSlide));
+    updateCarousel();
+    updateIndicatorsState();
+  }
+  
+  // Función para actualizar solo el estado de los indicadores
+  function updateIndicatorsState() {
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    indicators.forEach((indicator, index) => {
+      indicator.classList.toggle('active', index === currentSlide);
+    });
+  }
+  
+  // Función para mostrar/ocultar botones "Ver más"
+  function updateViewMoreButtons() {
+    const mediumBtn = document.getElementById('mediumBtn');
+    const linkedinBtn = document.getElementById('linkedinBtn');
+    
+    if (mediumBtn) {
+      mediumBtn.style.display = currentFilter === 'all' || currentFilter === 'medium' ? 'inline-flex' : 'none';
+    }
+    
+    if (linkedinBtn) {
+      linkedinBtn.style.display = currentFilter === 'all' || currentFilter === 'linkedin' ? 'inline-flex' : 'none';
+    }
+  }
+  
+  // Funciones de navegación del carrusel
+  function nextSlide() {
+    const carousel = document.getElementById('postsCarousel');
+    if (!carousel) return;
+    
+    const totalCards = carousel.children.length;
+    const maxSlide = Math.max(0, Math.ceil(totalCards / cardsPerSlide) - 1);
+    
+    if (currentSlide < maxSlide) {
+      currentSlide++;
+      updateCarousel();
+      updateIndicatorsState();
+    }
+  }
+  
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      updateCarousel();
+      updateIndicatorsState();
+    }
+  }
+  
+  // Configurar navegación del carrusel
+  function setupCarouselNavigation() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (prevBtn) {
+      prevBtn.addEventListener('click', prevSlide);
+    }
+    
+    if (nextBtn) {
+      nextBtn.addEventListener('click', nextSlide);
+    }
+    
+    // Navegación con teclado
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+      }
+    });
+    
+    // Actualizar en resize
+    window.addEventListener('resize', () => {
+      setTimeout(() => {
+        currentSlide = 0; // Reset a slide 0 en resize
+        updateCarousel();
+        updateIndicators(document.getElementById('postsCarousel')?.children.length || 0);
+      }, 100);
+    });
+  }
+
+  // Función principal para inicializar el sistema de posts
+  async function initializePosts() {
+    const postsContainer = document.querySelector('#postsCarousel');
+    if (!postsContainer) {
+      console.error('❌ No se encontró el contenedor de posts (#postsCarousel)');
+      return;
+    }
+    
+    // Mostrar estado de carga
+    postsContainer.innerHTML = '<div class="loading-spinner"></div>';
+    
+    try {
+      // Resetear array de posts
+      allPosts = [];
       
-      const icon = isLinkedIn ? '💼' : '📖';
+      // Cargar posts de LinkedIn primero (síncrono)
+      console.log('📱 Cargando posts de LinkedIn...');
+      loadLinkedInPosts();
       
-      postsHTML += `
-        <div class="post-item" data-platform="${isLinkedIn ? 'linkedin' : 'medium'}">
-          <div class="post-img">
-            ${thumbnail ? 
-              `<img src="${thumbnail}" alt="${post.title}" 
-                   onerror="this.style.cssText='${gradientStyle} color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; height: 100%;'; this.innerHTML='${icon} ${category}';">` :
-              `<div style="${gradientStyle} color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; height: 100%;">${icon} ${category}</div>`
-            }
-            <div class="post-overlay">
-              <div class="post-date">
-                <span class="day">${postDate.day}</span>
-                <span class="month">${postDate.month}</span>
-                <span class="year">${postDate.year}</span>
-              </div>
-            </div>
-          </div>
-          <div class="post-content">
-            <h3>${post.title}</h3>
-            <p>${cleanContent}</p>
-            <div class="post-meta">
-              <span class="post-category">${category}</span>
-              <span class="post-read-time">${readingTime} ${window.MEDIUM_CONFIG?.TEXTS.READING_TIME || 'min lectura'}</span>
-            </div>
-            <a href="${post.link}" target="_blank" class="post-btn">
-              <span>${window.MEDIUM_CONFIG?.TEXTS.READ_MORE || 'Leer más'}</span>
-            </a>
-          </div>
+      // Cargar posts de Medium (asíncrono)
+      console.log('📝 Cargando posts de Medium...');
+      await loadMediumPosts();
+      
+      // Configurar funcionalidades
+      setupFilters();
+      setupCarouselNavigation();
+      
+      // Renderizar posts iniciales
+      renderPosts();
+      
+      console.log('✅ Sistema de posts inicializado. Total:', allPosts.length);
+      
+    } catch (error) {
+      console.error('❌ Error initializing posts:', error);
+      postsContainer.innerHTML = `
+        <div class="error-message" style="color: #fff; text-align: center; padding: 40px;">
+          <p>Error al cargar las publicaciones. Por favor, intenta de nuevo más tarde.</p>
         </div>
       `;
-    });
-    
-    postsContainer.innerHTML = postsHTML;
-    
-    // Reinicializar el carrusel después de agregar el contenido
-    initializePostsCarousel();
-    
-    // Ajustar botones de navegación basado en el contenido
-    adjustNavigationButtons();
-  }
-
-  /**
-   * Obtener publicaciones de LinkedIn (simuladas)
-   */
-  function fetchLinkedInPosts() {
-    return new Promise((resolve) => {
-      console.log('💼 Obteniendo publicaciones de LinkedIn...');
-      
-      // Simular delay de red
-      setTimeout(() => {
-        // Usar el manager de LinkedIn si está disponible, si no usar la configuración
-        const linkedinPosts = window.LINKEDIN_POSTS_MANAGER ? 
-          window.LINKEDIN_POSTS_MANAGER.getPosts() : 
-          window.LINKEDIN_CONFIG?.SAMPLE_POSTS || [];
-        
-        console.log(`💼 LinkedIn posts encontrados: ${linkedinPosts.length}`);
-        console.log('💼 Manager disponible:', !!window.LINKEDIN_POSTS_MANAGER);
-        console.log('💼 Config disponible:', !!window.LINKEDIN_CONFIG);
-        
-        resolve(linkedinPosts);
-      }, 500);
-    });
-  }
-
-  /**
-   * Combinar publicaciones de Medium y LinkedIn
-   */
-  async function fetchAllPosts() {
-    console.log('📡 Obteniendo publicaciones de todas las plataformas...');
-    
-    try {
-      console.log('📱 Haciendo llamadas paralelas a Medium y LinkedIn...');
-      const [mediumPosts, linkedinPosts] = await Promise.all([
-        fetchMediumPosts().catch(err => {
-          console.warn('⚠️ Error al obtener posts de Medium:', err);
-          return [];
-        }),
-        fetchLinkedInPosts().catch(err => {
-          console.warn('⚠️ Error al obtener posts de LinkedIn:', err);
-          return [];
-        })
-      ]);
-      
-      console.log(`📊 Medium: ${mediumPosts.length} posts, LinkedIn: ${linkedinPosts.length} posts`);
-      
-      // Combinar y ordenar por fecha (más recientes primero)
-      const allPosts = [...mediumPosts, ...linkedinPosts].sort((a, b) => {
-        const dateA = new Date(a.pubDate || a.date);
-        const dateB = new Date(b.pubDate || b.date);
-        return dateB - dateA;
-      });
-      
-      console.log(`🎯 Total de publicaciones combinadas: ${allPosts.length}`);
-      return allPosts;
-      
-    } catch (error) {
-      console.error('❌ Error crítico al obtener publicaciones:', error);
-      
-      // Como fallback, intentar solo LinkedIn
-      try {
-        console.log('🔄 Intentando fallback solo con LinkedIn...');
-        const linkedinPosts = await fetchLinkedInPosts();
-        console.log(`📱 Fallback exitoso: ${linkedinPosts.length} posts de LinkedIn`);
-        return linkedinPosts;
-              } catch (linkedinError) {
-          console.error('💥 Error completo - no se pudieron obtener publicaciones:', linkedinError);
-          
-          // Fallback final con posts hardcodeados para garantizar contenido
-          console.log('🆘 Usando fallback con posts hardcodeados...');
-          return [
-            {
-              title: "Especialista en Tecnología - Transformación Digital",
-              content: "Compartiendo mi experiencia en análisis de datos y transformación digital en empresas.",
-              link: "https://www.linkedin.com/in/castilloperz/",
-              category: "LinkedIn",
-              date: new Date().toISOString(),
-              image: "assets/img/Linkedin.png"
-            },
-            {
-              title: "Power BI y Business Intelligence",
-              content: "Desarrollando dashboards interactivos para decisiones basadas en datos.",
-              link: "https://www.linkedin.com/in/castilloperz/",
-              category: "LinkedIn",
-              date: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-              image: "assets/img/Linkedin.png"
-            }
-          ];
-        }
     }
   }
 
-  /**
-   * Inicializar integración con todas las plataformas
-   */
-  async function initializeSocialMediaIntegration() {
-    console.log('🚀 Iniciando integración de redes sociales...');
-    try {
-      const posts = await fetchAllPosts();
-      console.log('✅ Posts obtenidos exitosamente:', posts.length);
-      renderSocialMediaPosts(posts);
-    } catch (error) {
-      console.error('❌ Error en la integración de redes sociales:', error);
-      
-      // Mostrar mensaje de error
-      const postsContainer = select('.posts-carousel');
-      if (postsContainer) {
-        postsContainer.innerHTML = `
-          <div class="post-item error-state">
-            <div class="error-content">
-              <h3>${window.MEDIUM_CONFIG?.TEXTS.NETWORK_ERROR_TITLE || 'Error al cargar publicaciones'}</h3>
-              <p>${window.MEDIUM_CONFIG?.TEXTS.NETWORK_ERROR_MESSAGE || 'Hubo un problema al conectar con las plataformas. Por favor, intenta recargar la página.'}</p>
-              <button onclick="location.reload()" class="post-btn">
-                ${window.MEDIUM_CONFIG?.TEXTS.NETWORK_ERROR_BUTTON || 'Recargar página'}
-              </button>
-            </div>
-          </div>
-        `;
-      }
-    }
+  // Función para scroll del carrusel (mantener compatibilidad, pero no se usa)
+  function scrollPostsCarousel(direction) {
+    // Esta función se mantiene para compatibilidad pero ya no se usa
+    console.log('scrollPostsCarousel is deprecated - using grid system now');
   }
-
-  /**
-   * Auto-hide Sidebar Enhancement
-   */
-  function initializeAutoHideSidebar() {
-    const header = select('#header');
-    
-    if (header && window.innerWidth >= 992) {
-      let hoverTimeout;
-      
-      // Mejorar la experiencia de hover
-      header.addEventListener('mouseenter', function() {
-        clearTimeout(hoverTimeout);
-        this.style.transform = 'translateX(0)';
-      });
-      
-      header.addEventListener('mouseleave', function() {
-        // Pequeño delay antes de ocultar para mejor UX
-        hoverTimeout = setTimeout(() => {
-          this.style.transform = 'translateX(-85px)';
-        }, 500);
-      });
-      
-      // Mantener visible si hay un elemento enfocado dentro
-      header.addEventListener('focusin', function() {
-        clearTimeout(hoverTimeout);
-        this.style.transform = 'translateX(0)';
-      });
-      
-      header.addEventListener('focusout', function(e) {
-        // Solo ocultar si el foco sale completamente del header
-        if (!header.contains(e.relatedTarget)) {
-          hoverTimeout = setTimeout(() => {
-            this.style.transform = 'translateX(-85px)';
-          }, 300);
-        }
-      });
-    }
-  }
-
-  // Inicializar Medium integration cuando se carga la página
-  document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar sidebar auto-hide
-    initializeAutoHideSidebar();
-    
-    // Esperar según configuración para que se carguen otros elementos
-    const delay = window.MEDIUM_CONFIG?.LOADING_DELAY || 1000;
-    setTimeout(initializeSocialMediaIntegration, delay);
-  });
-  
-  // Re-inicializar en resize para manejar cambios de pantalla
-  window.addEventListener('resize', function() {
-    if (window.innerWidth >= 992) {
-      initializeAutoHideSidebar();
-    } else {
-      // Resetear en móvil
-      const header = select('#header');
-      if (header) {
-        header.style.transform = '';
-      }
-    }
-  });
-
-})();
-
-/**
- * Función para controlar la navegación del carrusel de posts
- */
-function scrollPostsCarousel(direction) {
-  const carousel = document.querySelector('.posts-carousel');
-  if (!carousel) return;
-  
-  // Calcular el scroll amount basado en el ancho del contenedor
-  const containerWidth = carousel.clientWidth;
-  const scrollAmount = containerWidth * 0.8; // Scroll 80% del ancho visible
-  const currentScroll = carousel.scrollLeft;
-  
-  if (direction === 'left') {
-    carousel.scrollTo({
-      left: Math.max(0, currentScroll - scrollAmount),
-      behavior: 'smooth'
-    });
-  } else if (direction === 'right') {
-    carousel.scrollTo({
-      left: currentScroll + scrollAmount,
-      behavior: 'smooth'
-    });
-  }
-}
 
   /**
    * Ajustar visibilidad de botones de navegación
@@ -1017,3 +886,41 @@ function scrollPostsCarousel(direction) {
       console.log('🔒 Botones de navegación ocultos - las cards ocupan todo el espacio');
     }
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM cargado, iniciando sistemas...');
+    
+    // Verificar si existe la sección de posts
+    const postsSection = document.querySelector('#posts');
+    const postsCarousel = document.querySelector('#postsCarousel');
+    
+    console.log('📊 Elementos encontrados:', {
+      postsSection: !!postsSection,
+      postsCarousel: !!postsCarousel
+    });
+    
+    // Esperar un poco para que se carguen todos los scripts
+    setTimeout(() => {
+      // Inicializar sistema de posts
+      console.log('🚀 Iniciando sistema de posts...');
+      initializePosts();
+    }, 500);
+    
+    // Inicializar sidebar auto-hide
+    initializeAutoHideSidebar();
+  });
+  
+  // Re-inicializar en resize para manejar cambios de pantalla
+  window.addEventListener('resize', function() {
+    if (window.innerWidth >= 992) {
+      initializeAutoHideSidebar();
+    } else {
+      // Resetear en móvil
+      const header = select('#header');
+      if (header) {
+        header.style.transform = '';
+      }
+    }
+  });
+
+})();

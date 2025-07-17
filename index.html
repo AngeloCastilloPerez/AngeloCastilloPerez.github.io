@@ -649,17 +649,47 @@
           <h2>Posts & Artículos</h2>
           <p>Mis últimas publicaciones sobre análisis de datos, inteligencia artificial y tendencias tecnológicas</p>
         </div>
-      </div>
-      <div class="posts-carousel-container">
-        <button class="posts-nav-btn prev" onclick="scrollPostsCarousel('left')">
-          <i class="bx bx-chevron-left"></i>
-        </button>
-        <div class="posts-carousel">
-          <!-- Aquí se insertan dinámicamente las cards de Medium con JS -->
+        
+        <!-- Filtros de plataforma -->
+        <div class="posts-filters">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="medium">Medium</button>
+          <button class="filter-btn" data-filter="linkedin">LinkedIn</button>
         </div>
-        <button class="posts-nav-btn next" onclick="scrollPostsCarousel('right')">
-          <i class="bx bx-chevron-right"></i>
-        </button>
+        
+        <!-- Carrusel de posts -->
+        <div class="posts-carousel-wrapper">
+          <button class="carousel-nav-btn prev" id="prevBtn">
+            <i class="bx bx-chevron-left"></i>
+          </button>
+          
+          <div class="posts-carousel-container">
+            <div class="posts-carousel" id="postsCarousel">
+              <!-- Aquí se insertan dinámicamente las cards de posts con JS -->
+            </div>
+          </div>
+          
+          <button class="carousel-nav-btn next" id="nextBtn">
+            <i class="bx bx-chevron-right"></i>
+          </button>
+        </div>
+        
+        <!-- Indicadores del carrusel -->
+        <div class="carousel-indicators" id="carouselIndicators">
+          <!-- Los indicadores se generan dinámicamente -->
+        </div>
+        
+        <!-- Botón para ver más en las plataformas -->
+        <div class="view-more-container">
+          <a href="https://medium.com/@angelocastilloperz" target="_blank" class="view-more-btn medium-btn" id="mediumBtn" style="display: none;">
+            <i class="bx bx-link-external"></i>
+            Ver más en Medium
+          </a>
+          <a href="https://www.linkedin.com/in/castilloperz/" target="_blank" class="view-more-btn linkedin-btn" id="linkedinBtn" style="display: none;">
+            <i class="bx bx-link-external"></i>
+            Ver más en LinkedIn
+          </a>
+        </div>
       </div>
     </section><!-- End Posts Section -->
 
