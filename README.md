@@ -95,7 +95,7 @@ El sitio está configurado para GitHub Pages. Simplemente:
 
 ## 📞 Contacto
 
-- **Email**: [tu-email@example.com](mailto:tu-email@example.com)
+- **Email**: [angelocastilloperz@outlook.es](mailto:angelocastilloperz@outlook.es)
 - **LinkedIn**: [linkedin.com/in/castilloperz](https://linkedin.com/in/castilloperz)
 - **Medium**: [@angelocastilloperz](https://medium.com/@angelocastilloperz)
 - **GitHub**: [github.com/AngeloCastilloPerez](https://github.com/AngeloCastilloPerez)
