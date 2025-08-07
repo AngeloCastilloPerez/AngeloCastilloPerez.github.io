@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Posts</title>
+    <style>
+        body { background: #0c0c1a; color: #fff; font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin-bottom: 30px; padding: 20px; border: 1px solid #333; border-radius: 10px; }
+        .post-card { background: #1a1a2e; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        #postsCarousel { display: flex; gap: 20px; overflow-x: auto; }
+        .carousel-nav-btn { padding: 10px 20px; background: #9545ff; color: white; border: none; border-radius: 5px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Prueba del Sistema de Posts</h1>
+    
+    <div class="test-section">
+        <h2>1. Verificación de Scripts</h2>
+        <div id="scriptsCheck"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>2. Sistema de Posts</h2>
+        <div class="posts-filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="medium">Medium</button>
+            <button class="filter-btn" data-filter="linkedin">LinkedIn</button>
+        </div>
+        
+        <div class="posts-carousel-wrapper">
+            <button class="carousel-nav-btn prev" id="prevBtn">←</button>
+            <div class="posts-carousel-container">
+                <div class="posts-carousel" id="postsCarousel">
+                    <!-- Posts se cargarán aquí -->
+                </div>
+            </div>
+            <button class="carousel-nav-btn next" id="nextBtn">→</button>
+        </div>
+        
+        <div class="carousel-indicators" id="carouselIndicators"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>3. Logs del Sistema</h2>
+        <div id="systemLogs" style="max-height: 200px; overflow-y: auto; background: #000; padding: 10px; font-family: monospace;"></div>
+    </div>
+
+    <!-- Scripts necesarios -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/linkedin-posts.js"></script>
+    
+    <script>
+        // Override console.log para capturar logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        const logsContainer = document.getElementById('systemLogs');
+        
+        function addLog(type, ...args) {
+            const logEntry = document.createElement('div');
+            logEntry.style.color = type === 'error' ? '#ff6b6b' : type === 'warn' ? '#ffa726' : '#4fc3f7';
+            logEntry.textContent = `[${type.toUpperCase()}] ${args.join(' ')}`;
+            logsContainer.appendChild(logEntry);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+        
+        console.log = (...args) => { originalLog(...args); addLog('log', ...args); };
+        console.error = (...args) => { originalError(...args); addLog('error', ...args); };
+        console.warn = (...args) => { originalWarn(...args); addLog('warn', ...args); };
+        
+        // Verificar scripts
+        document.addEventListener('DOMContentLoaded', function() {
+            const scriptsCheck = document.getElementById('scriptsCheck');
+            scriptsCheck.innerHTML = `
+                <p>MEDIUM_CONFIG: ${!!window.MEDIUM_CONFIG ? '✅' : '❌'}</p>
+                <p>LINKEDIN_POSTS_MANAGER: ${!!window.LINKEDIN_POSTS_MANAGER ? '✅' : '❌'}</p>
+                <p>LinkedIn Posts Count: ${window.LINKEDIN_POSTS_MANAGER?.getPosts?.()?.length || 0}</p>
+            `;
+            
+            console.log('🧪 Test page loaded');
+            
+            // Simular el sistema de posts con código simplificado
+            initTestPosts();
+        });
+        
+        function initTestPosts() {
+            console.log('🚀 Iniciando test de posts...');
+            
+            let allPosts = [];
+            
+            // Cargar LinkedIn posts
+            if (window.LINKEDIN_POSTS_MANAGER && window.LINKEDIN_POSTS_MANAGER.getPosts) {
+                const rawPosts = window.LINKEDIN_POSTS_MANAGER.getPosts();
+                console.log('LinkedIn posts raw:', rawPosts.length);
+                
+                const linkedInPosts = rawPosts.map(post => ({
+                    title: post.title,
+                    description: post.content.substring(0, 120) + '...',
+                    link: post.link,
+                    pubDate: new Date(post.date),
+                    image: 'assets/img/Linkedin.png',
+                    platform: 'linkedin',
+                    readTime: '3 min lectura'
+                }));
+                
+                allPosts = [...allPosts, ...linkedInPosts];
+                console.log('LinkedIn posts procesados:', linkedInPosts.length);
+            }
+            
+            // Renderizar posts
+            const carousel = document.getElementById('postsCarousel');
+            if (carousel && allPosts.length > 0) {
+                carousel.innerHTML = '';
+                
+                allPosts.forEach((post, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'post-card';
+                    card.innerHTML = `
+                        <h3>${post.title}</h3>
+                        <p>${post.description}</p>
+                        <small>Platform: ${post.platform} | ${post.readTime}</small>
+                    `;
+                    carousel.appendChild(card);
+                });
+                
+                console.log(`✅ ${allPosts.length} posts renderizados en test`);
+            } else {
+                console.error('❌ No se pudieron renderizar posts en test');
+                carousel.innerHTML = '<div style="color: red;">Error: No hay posts o no se encontró el carousel</div>';
+            }
+        }
+    </script>
+</body>
+</html> 
