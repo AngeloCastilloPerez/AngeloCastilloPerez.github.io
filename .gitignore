@@ -1,0 +1,9 @@
+# Handoff export de Claude Design (153 MB, no va al repo)
+*-handoff.zip
+
+# Servidor local de preview
+.preview-server.ps1
+
+# Sistema
+Thumbs.db
+.DS_Store

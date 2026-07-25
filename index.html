@@ -1,1437 +1,1066 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Angelo Castillo — CEO &amp; Fundador de HERO</title>
+<meta name="description" content="CEO y Fundador de HERO. Diseño y construyo agentes de IA, automatizaciones y plataformas inteligentes, sobre una base de 5+ años en Data Analytics y Business Intelligence.">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#080810;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden}
+a{color:#FF8C42;text-decoration:none}
+a:hover{color:#FF3D5A}
+h1,h2,h3,p{margin:0}
+button{font:inherit}
+::selection{background:rgba(255,61,90,.35)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
 
-  <!-- SEO -->
-  <title>Angelo Castillo — CEO &amp; Fundador de HERO</title>
-  <meta name="description" content="Portfolio de Angelo Castillo, CEO y Fundador de HERO. Lidero el desarrollo de agentes de IA, automatizaciones y plataformas inteligentes para empresas, con una base de 5+ años en Data Analytics y Business Intelligence.">
-  <meta name="keywords" content="Angelo Castillo, CEO HERO, HERO AGI, Agentes de IA, Inteligencia Artificial, Automatización, Data Analytics, Business Intelligence, Power BI, Python, Lima Peru">
-  <meta name="author" content="Angelo Castillo Pérez">
-  <meta name="robots" content="index, follow">
+@keyframes floatY{from{transform:translateY(-9px)}to{transform:translateY(11px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://angelo-castillo-perez-github-io.vercel.app/">
-  <meta property="og:title" content="Angelo Castillo — CEO &amp; Fundador de HERO">
-  <meta property="og:description" content="CEO y Fundador de HERO. Lidero el desarrollo de agentes de IA, automatizaciones y plataformas inteligentes para empresas.">
-  <meta property="og:image" content="https://angelo-castillo-perez-github-io.vercel.app/assets/img/profile-img.png">
+/* ---------- HERO ---------- */
+.hero-track{position:relative;height:280vh}
+.hero-stick{position:sticky;top:0;height:100vh;min-height:640px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;transform:scale(1.08);will-change:transform}
+.hero-bg video{width:100%;height:100%;object-fit:cover;display:block}
+.hero-scrim{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(8,8,16,.18),transparent 22%,transparent 78%,rgba(8,8,16,.78)),
+             radial-gradient(ellipse 560px 400px at 50% 50%,rgba(8,8,16,.62),rgba(8,8,16,.12) 62%,transparent 82%)}
+.hero-vignette{position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:radial-gradient(ellipse 540px 380px at 50% 50%,rgba(8,8,16,.45),rgba(8,8,16,.10) 58%,transparent 78%)}
+.layer{position:absolute;inset:0;pointer-events:none;will-change:transform}
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@AngeloCastilloJ">
-  <meta name="twitter:title" content="Angelo Castillo — CEO &amp; Fundador de HERO">
-  <meta name="twitter:description" content="CEO y Fundador de HERO. Lidero el desarrollo de agentes de IA, automatizaciones y plataformas inteligentes para empresas.">
-  <meta name="twitter:image" content="https://angelo-castillo-perez-github-io.vercel.app/assets/img/profile-img.png">
+.fcard{position:absolute;pointer-events:auto}
+.fcard-frame{border-radius:24px;padding:0;border:1px solid transparent;box-shadow:0 24px 60px rgba(0,0,0,.5);
+  cursor:pointer;overflow:hidden;
+  transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .45s ease,box-shadow .45s ease,border-color .45s ease,filter .45s ease}
+.fcard-frame:hover{transform:translateY(-5px) scale(1.02) !important;border-color:rgba(255,255,255,.28)}
+.fcard-img{aspect-ratio:1/1;border-radius:23px;background-size:cover;background-position:center;display:block}
+.fcard-frame.is-active{border-color:rgba(255,140,66,.65);box-shadow:0 0 60px rgba(255,61,90,.35),0 24px 60px rgba(0,0,0,.5);transform:scale(1.08)}
+.fcard-frame.is-dim{opacity:.14;filter:grayscale(1);transform:scale(.95)}
 
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Angelo Castillo Pérez",
-    "jobTitle": "CEO & Fundador de HERO",
-    "url": "https://angelo-castillo-perez-github-io.vercel.app/",
-    "email": "acastillo@hero.com.pe",
-    "address": { "@type": "PostalAddress", "addressLocality": "Lima", "addressCountry": "PE" },
-    "worksFor": {
-      "@type": "Organization",
-      "name": "HERO",
-      "url": "https://hero.com.pe"
-    },
-    "sameAs": [
-      "https://www.linkedin.com/in/castilloperz/",
-      "https://github.com/AngeloCastilloPerez",
-      "https://twitter.com/AngeloCastilloJ",
-      "https://medium.com/@angelocastilloperz"
-    ],
-    "knowsAbout": ["Inteligencia Artificial","Agentes de IA","Automatización","Liderazgo","Data Analytics","Business Intelligence","Power BI","Python","SQL","LLMs"]
-  }
-  </script>
+.topbar{position:absolute;top:0;left:0;right:0;z-index:10;display:flex;justify-content:space-between;
+  align-items:center;padding:24px 36px;gap:16px;flex-wrap:wrap}
+.brand{font-size:12px;font-weight:500;letter-spacing:.22em;color:rgba(255,255,255,.72)}
+.topnav{display:flex;align-items:center;gap:20px}
+.toplink{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:500;color:rgba(255,255,255,.72);transition:color .25s ease}
+.toplink:hover{color:#FF8C42}
+.toplink span{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.16);font-size:10px}
+.langbox{display:flex;gap:6px;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:3px;
+  background:rgba(13,13,24,.6);backdrop-filter:blur(8px)}
+.langbtn{font-size:10.5px;letter-spacing:.14em;padding:5px 12px;border-radius:999px;border:none;cursor:pointer;
+  background:transparent;color:rgba(255,255,255,.46);transition:all .25s ease}
+.langbtn.on{background:#fff;color:#080810}
 
-  <!-- Favicon -->
-  <link href="assets/img/angelo.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+.hero-content{position:relative;z-index:5;height:100%;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;transition:opacity .15s linear}
+.hero-inner{max-width:720px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;
+  pointer-events:auto;padding:0 24px}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.46)}
+.hero-inner h1{font-weight:300;font-size:clamp(42px,8.5vw,84px);letter-spacing:-.028em;line-height:1;text-wrap:balance}
+.hero-role{font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;color:#FF8C42}
+.hero-tag{font-size:13.5px;line-height:1.75;color:rgba(255,255,255,.62);max-width:52ch}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;max-width:600px}
+.chip{font-size:10.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:8px 15px;
+  border-radius:999px;cursor:pointer;background:rgba(13,13,24,.6);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.72);transition:all .3s cubic-bezier(.22,1,.36,1)}
+.chip:hover{border-color:rgba(255,255,255,.3)}
+.chip.on{background:rgba(255,140,66,.10);border-color:rgba(255,140,66,.55);color:#FF8C42}
+.cta-light{display:inline-flex;align-items:center;gap:12px;padding:9px 24px 9px 9px;border-radius:999px;
+  font-size:13.5px;font-weight:500;background:#fff;color:#080810;margin-top:8px;
+  transition:all .25s cubic-bezier(.22,1,.36,1)}
+.cta-light:hover{transform:translateY(-1px);box-shadow:0 10px 30px rgba(0,0,0,.5);color:#080810}
+.cta-light i,.cta-flame i{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;
+  border-radius:50%;font-size:15px;font-style:normal}
+.cta-light i{background:linear-gradient(135deg,#FF3D5A,#FF8C42);color:#fff}
+.scroll-hint{font-size:12px;letter-spacing:.1em;color:rgba(255,255,255,.55)}
 
-  <!-- Google Fonts: Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+/* ---------- CLIENTES ---------- */
+.clients-strip{padding:32px 0;background:#0B0B16;border-top:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08);overflow:hidden;position:relative;z-index:6}
+.clients-label{text-align:center;font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.46);margin-bottom:20px}
+.clients-wrap{position:relative;overflow:hidden}
+.clients-wrap::before,.clients-wrap::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.clients-wrap::before{left:0;background:linear-gradient(to right,#0B0B16 0%,transparent 100%)}
+.clients-wrap::after{right:0;background:linear-gradient(to left,#0B0B16 0%,transparent 100%)}
+.clients-track{display:flex;align-items:center;width:max-content;animation:scrollClients 22s linear infinite}
+.clients-track:hover{animation-play-state:paused}
+@keyframes scrollClients{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.client-item{display:flex;align-items:center;gap:10px;padding:0 40px;height:60px;flex-shrink:0;
+  border-right:1px solid rgba(255,255,255,.08)}
+.client-item img{height:36px;width:auto;max-width:44px;object-fit:contain;flex-shrink:0;
+  filter:grayscale(100%) opacity(.55);transition:filter .3s ease,transform .3s ease}
+.client-item:hover img{filter:grayscale(0%) opacity(1);transform:scale(1.08)}
+.client-item b{font-size:13px;font-weight:500;color:rgba(255,255,255,.55);white-space:nowrap;
+  letter-spacing:.02em;transition:color .3s ease}
+.client-item:hover b{color:#fff}
 
-  <!-- Vendor CSS -->
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+/* ---------- SECTIONS ---------- */
+.section{position:relative;padding:110px 38px 70px;overflow:hidden}
+.section-head{max-width:1180px;margin:0 auto 20px;display:flex;align-items:baseline;justify-content:space-between;
+  gap:20px;flex-wrap:wrap}
+.section-head h2{font-weight:300;font-size:clamp(28px,4vw,38px);letter-spacing:-.025em}
+.section-head .eyebrow{margin-bottom:14px}
+.counter{font-size:11px;color:rgba(255,255,255,.30)}
 
-  <!-- Custom CSS -->
-  <link href="assets/css/style.css" rel="stylesheet">
+/* ---------- VINYL SHELF ---------- */
+.shelf-scroll{perspective:2200px;perspective-origin:50% 46%;width:100%;overflow-x:auto;overflow-y:hidden;
+  padding:80px 0 30px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,.18) transparent}
+.shelf-scroll::-webkit-scrollbar{height:6px}
+.shelf-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px}
+.shelf{display:flex;justify-content:center;align-items:center;transform-style:preserve-3d;min-width:min-content;padding:0 90px}
+.vinyl{position:relative;flex:0 0 auto;width:196px;height:262px;margin-left:-104px;
+  transform:rotateY(-42deg);transform-origin:50% 50%;transform-style:preserve-3d;cursor:pointer;
+  transition:transform .55s cubic-bezier(.22,1,.36,1),margin .55s cubic-bezier(.22,1,.36,1),filter .45s ease}
+.vinyl:hover{transform:rotateY(0deg) translateZ(120px) translateY(-16px) scale(1.04);
+  margin-left:-40px;margin-right:64px;filter:none;z-index:99 !important}
+.vinyl-sleeve{position:absolute;inset:0;border-radius:12px;background-size:cover;background-position:center;
+  box-shadow:-22px 26px 46px rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.10);overflow:hidden}
+.vinyl-sleeve::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(105deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.55) 100%)}
+.vinyl-sleeve::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;z-index:1;
+  background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(0,0,0,.25))}
+.vinyl-cap{position:absolute;left:0;right:0;bottom:-30px;text-align:center;font-size:11px;letter-spacing:.06em;
+  color:rgba(255,255,255,.72);white-space:nowrap;opacity:0;transition:opacity .4s ease}
+.vinyl:hover .vinyl-cap{opacity:1}
+.vinyl-cap b{color:#FF8C42;font-weight:500}
+.shelf-hint{text-align:center;margin-top:22px;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.3)}
+.shelf-chips{margin:26px auto 0;max-width:660px}
+
+/* ---------- EXPERIENCIA ---------- */
+#experiencia{position:relative;height:520vh;padding:0}
+.exp-stick{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;
+  padding:80px 38px;border-top:1px solid rgba(255,255,255,.08)}
+.exp-grid{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);
+  gap:60px;align-items:center}
+.exp-figure{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
+.morph-stage{position:relative;width:200px;height:320px}
+.morph-stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.lyr{transition:opacity .18s linear}
+.symb{width:100%;max-width:240px}
+.symb-top{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
+.symb-top b{font-size:15px;font-weight:600;color:#C4A8FF;letter-spacing:.04em}
+.symb-rail{height:3px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden}
+.symb-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#FF8C42,#FF3D5A 55%,#7B2FFF);
+  transition:width .12s linear}
+
+.timeline{position:relative;padding-left:34px;max-height:62vh;overflow:hidden;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent)}
+.timeline::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);z-index:1}
+.timeline-inner{transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.stage{position:relative;padding:0 0 22px;opacity:.35;transform:translateX(-6px);
+  transition:opacity .35s ease,transform .35s ease}
+.stage.on{opacity:1;transform:translateX(0)}
+.stage-dot{position:absolute;left:-34px;top:3px;width:19px;height:19px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);background:#080810;display:flex;align-items:center;justify-content:center;
+  font-size:8.5px;color:rgba(255,255,255,.5);transition:all .35s ease}
+.stage.on .stage-dot{border-color:#FF8C42;color:#FF8C42;box-shadow:0 0 0 4px rgba(255,140,66,.08)}
+.stage.on.hero-stage .stage-dot{border-color:#C4A8FF;color:#C4A8FF;box-shadow:0 0 0 4px rgba(123,47,255,.12)}
+.stage-period{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.30);margin-bottom:5px}
+.stage.hero-stage .stage-period{color:#C4A8FF}
+.stage h3{font-size:17px;font-weight:400;letter-spacing:-.01em;margin-bottom:3px}
+.stage-co{font-size:11px;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:7px}
+.stage p{font-size:12.5px;line-height:1.65;color:rgba(255,255,255,.55);max-width:52ch;margin-bottom:9px}
+.skills{display:flex;flex-wrap:wrap;gap:6px}
+.skill{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);
+  border:1px solid rgba(255,255,255,.12);border-radius:5px;padding:4px 9px}
+.exp-stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
+.exp-stat b{display:block;font-size:26px;font-weight:300;letter-spacing:-.02em;color:#fff}
+.exp-stat span{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+
+/* ---------- CONTACTO ---------- */
+.contact{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:100px 24px 60px;position:relative}
+.contact h2{font-weight:300;font-size:clamp(30px,5vw,44px);letter-spacing:-.025em;text-wrap:balance;margin:0 0 14px}
+.contact p{margin:0 auto 34px;font-size:13px;line-height:1.7;color:rgba(255,255,255,.46);max-width:44ch}
+.cta-flame{display:inline-flex;align-items:center;gap:12px;padding:9px 22px 9px 9px;border-radius:999px;
+  font-size:13px;font-weight:600;background:linear-gradient(135deg,#FF3D5A,#FF8C42);color:#fff;
+  transition:all .25s cubic-bezier(.22,1,.36,1)}
+.cta-flame:hover{transform:translateY(-1px);box-shadow:0 12px 36px rgba(255,61,90,.32);color:#fff}
+.cta-flame i{background:rgba(0,0,0,.28);color:#fff}
+.foot-links{display:flex;justify-content:center;flex-wrap:wrap;gap:22px;margin-top:44px;font-size:11px;letter-spacing:.12em}
+.foot-links a{color:rgba(255,255,255,.5)}
+.foot-links a:hover{color:#FF8C42}
+.copyright{margin-top:44px;font-size:10.5px;letter-spacing:.12em;color:rgba(255,255,255,.30)}
+
+/* ---------- MODAL ---------- */
+.modal{position:fixed;inset:0;z-index:100;background:#0A0A12;overflow-y:auto;overflow-x:hidden;display:none}
+.modal.open{display:block}
+.modal::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 900px 600px at 22% 40%,rgba(255,61,90,.10),transparent 70%),
+             radial-gradient(ellipse 700px 500px at 85% 80%,rgba(123,47,255,.08),transparent 70%)}
+.modal-inner{position:relative;max-width:1240px;margin:0 auto;padding:30px 46px 60px}
+.modal-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;gap:16px;flex-wrap:wrap}
+.back-btn{display:inline-flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;font-size:11px;
+  font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.62);padding:0}
+.back-btn:hover{color:#FF8C42}
+.nav-btn{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:none;
+  color:rgba(255,255,255,.7);cursor:pointer;font-size:14px}
+.nav-btn:hover{border-color:#FF8C42;color:#FF8C42}
+.modal-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:52px;align-items:center;margin-bottom:40px}
+.sleeve-wrap{position:relative;display:flex;align-items:center}
+.sleeve-big{position:relative;z-index:2;width:78%;aspect-ratio:1/1;border-radius:8px;background-size:cover;
+  background-position:center;box-shadow:0 40px 80px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1)}
+.disc{position:absolute;right:2%;top:50%;transform:translateY(-50%);z-index:1;width:52%;aspect-ratio:1/1;
+  border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,#111 0 2px,#050505 2px 4px);
+  box-shadow:0 30px 60px rgba(0,0,0,.55);animation:spin 8s linear infinite;
+  display:flex;align-items:center;justify-content:center}
+.disc-label{width:34%;height:34%;border-radius:50%;background-size:cover;background-position:center;border:3px solid #0A0A12}
+.disc-hole{position:absolute;width:7px;height:7px;border-radius:50%;background:#0A0A12}
+.modal-cat{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#FF8C42;margin-bottom:10px}
+.modal-top h2{font-weight:300;font-size:clamp(32px,5vw,52px);letter-spacing:-.03em;line-height:1;margin-bottom:16px}
+.modal-desc{font-size:13.5px;line-height:1.7;color:rgba(255,255,255,.62);max-width:46ch;margin-bottom:22px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.66);
+  border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:6px 12px}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:20px 30px;margin-bottom:28px}
+.meta-k{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:7px}
+.meta-v{font-size:13px;color:#fff}
+.dot-live{display:inline-block;width:6px;height:6px;border-radius:50%;background:#FF8C42;margin-right:8px;vertical-align:2px}
+.play-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.play-btn{display:inline-flex;align-items:center;gap:14px}
+.play-btn em{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#FF3D5A,#FF8C42);color:#fff;font-size:18px;font-style:normal;
+  box-shadow:0 8px 26px rgba(255,61,90,.4)}
+.play-btn span{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.ext-btn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.16);display:inline-flex;
+  align-items:center;justify-content:center;color:rgba(255,255,255,.7);font-size:15px}
+.ext-btn:hover{border-color:#FF8C42;color:#FF8C42}
+.modal-mid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:52px;
+  border-top:1px solid rgba(255,255,255,.08);padding-top:30px;margin-bottom:36px}
+.block-t{font-size:10.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#FF8C42;margin-bottom:16px}
+.track{display:flex;align-items:center;gap:16px;padding:13px 16px;border-radius:10px;transition:background .2s ease}
+.track:hover{background:rgba(255,255,255,.05)}
+.track:first-child{background:rgba(255,61,90,.10)}
+.track b{font-size:12px;font-weight:400;color:rgba(255,255,255,.4);width:20px}
+.track span{font-size:13.5px;color:rgba(255,255,255,.85);flex:1}
+.notes{font-size:13px;line-height:1.8;color:rgba(255,255,255,.62);margin-bottom:22px}
+.impact{border-left:2px solid #FF8C42;padding:2px 0 2px 14px;margin-bottom:30px}
+.impact span{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:5px}
+.impact p{font-size:12.5px;line-height:1.6;color:#fff}
+.credits{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.who{display:flex;align-items:center;gap:12px}
+.who em{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FF3D5A,#FF8C42);display:flex;
+  align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;font-style:normal}
+.who .n{font-size:13px;color:#fff}
+.who .r{font-size:10.5px;color:rgba(255,255,255,.45)}
+.art-chip{width:44px;height:44px;border-radius:8px;background-size:cover;background-position:center;
+  border:1px solid rgba(255,255,255,.12);flex:0 0 auto}
+.modal-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px;
+  border-top:1px solid rgba(255,255,255,.08);padding-top:24px}
+.social-sm{width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.14);display:flex;
+  align-items:center;justify-content:center;font-size:10px;color:rgba(255,255,255,.7)}
+.social-sm:hover{border-color:#FF8C42;color:#FF8C42}
+.barcode{display:flex;gap:2px;align-items:flex-end;height:30px}
+.barcode i{height:30px;background:rgba(255,255,255,.55);display:block}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1024px){
+  .modal-top,.modal-mid{grid-template-columns:1fr;gap:34px}
+  .exp-grid{grid-template-columns:1fr;gap:34px;justify-items:center}
+  .timeline{max-height:none;width:100%;-webkit-mask-image:none;mask-image:none}
+  #experiencia{height:auto}
+  .exp-stick{position:static;min-height:0;padding:80px 30px}
+  .exp-figure{position:sticky;top:20px}
+}
+@media (max-width:760px){
+  .section{padding:80px 22px 50px}
+  .topbar{padding:18px 20px}
+  .topnav{gap:12px}
+  .toplink b{display:none}
+  .hero-track{height:220vh}
+  .layer .fcard{display:none}
+  .layer .fcard.keep{display:block}
+  .shelf{padding:0 40px}
+  .modal-inner{padding:24px 20px 50px}
+  .meta,.credits{grid-template-columns:1fr}
+  .exp-figure{position:static}
+  .clients-wrap::before,.clients-wrap::after{width:60px}
+  .client-item{padding:0 28px}
+  .clients-track{animation-duration:16s}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .fcard-inner,.disc{animation:none !important}
+}
+</style>
 </head>
-
 <body>
 
-  <!-- Preloader -->
-  <div id="preloader"><div class="preloader-ring"></div></div>
-
-  <!-- ======= Header ======= -->
-  <header id="header">
-    <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        <a class="navbar-brand" href="#hero">AC<span>.</span></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
-          aria-controls="navMenu" aria-expanded="false" aria-label="Abrir menú">
-          <i class="bi bi-list"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navMenu">
-          <ul class="navbar-nav ms-auto align-items-center">
-            <li class="nav-item"><a class="nav-link" href="#hero">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link" href="#experience">Experiencia</a></li>
-            <li class="nav-item"><a class="nav-link" href="#projects">Proyectos</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
-            <li class="nav-item ms-2">
-              <button id="darkModeToggle" class="dark-toggle" aria-label="Cambiar modo oscuro/claro">
-                <i class="bi bi-moon-stars" id="darkIcon"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header><!-- End Header -->
-
-  <!-- ======= Hero Section ======= -->
-  <section id="hero">
-    <div class="hero-bg"></div>
-    <div class="container">
-      <div class="row align-items-center">
-
-        <!-- Text -->
-        <div class="col-lg-7 col-md-12" data-aos="fade-right" data-aos-delay="100">
-          <div class="hero-content">
-            <div class="hero-badge" data-aos="fade-down" data-aos-delay="50">
-              <span class="badge-dot"></span>
-              <span>Disponible para proyectos</span>
-            </div>
-            <h1 class="hero-title">
-              Angelo<br>
-              <span class="gradient-text">Castillo</span>
-            </h1>
-            <p class="hero-subtitle">Project Consultant &nbsp;|&nbsp; Data &amp; Analytics &nbsp;|&nbsp; AI &amp; Machine Learning</p>
-            <p class="hero-description">
-              Diseño y lidero el desarrollo de soluciones tecnológicas basadas en <strong>Inteligencia Artificial</strong>
-              que transforman cómo las empresas toman decisiones y ejecutan sus proyectos.
-            </p>
-            <div class="hero-cta d-flex gap-3 flex-wrap">
-              <a href="#projects" class="btn-primary-custom" aria-label="Ver proyectos">
-                <i class="bi bi-grid-3x3-gap me-2"></i>Ver proyectos
-              </a>
-              <a href="https://www.linkedin.com/in/castilloperz/" target="_blank" rel="noopener" class="btn-secondary-custom" aria-label="Ver LinkedIn">
-                <i class="bx bxl-linkedin me-2"></i>LinkedIn
-              </a>
-            </div>
-            <div class="hero-stats d-flex gap-3 flex-wrap mt-5">
-              <div class="stat-chip">
-                <span class="stat-num">5+</span>
-                <span class="stat-label">Años exp.</span>
-              </div>
-              <div class="stat-chip">
-                <span class="stat-num">16+</span>
-                <span class="stat-label">Proyectos</span>
-              </div>
-              <div class="stat-chip">
-                <span class="stat-num">4</span>
-                <span class="stat-label">Empresas top</span>
-              </div>
-              <div class="stat-chip">
-                <span class="stat-num">10+</span>
-                <span class="stat-label">Herramientas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Image -->
-        <div class="col-lg-5 col-md-12 text-center" data-aos="fade-left" data-aos-delay="200">
-          <div class="hero-image-wrapper">
-            <div class="hero-image-glow"></div>
-            <picture>
-              <source srcset="assets/img/profile-img.png" type="image/png">
-              <source srcset="assets/img/profile-img.jpg" type="image/jpeg">
-              <img src="assets/img/profile-img.jpg"
-                alt="Angelo Castillo — Data Analyst &amp; BI Specialist"
-                class="hero-profile-img" loading="eager">
-            </picture>
-            <div class="hero-tech-badge badge-powerbi">
-              <i class="bx bx-bar-chart-alt-2"></i> Power BI
-            </div>
-            <div class="hero-tech-badge badge-agents">
-              <i class="bx bx-bot"></i> AI Agents
-            </div>
-            <div class="hero-tech-badge badge-ai">
-              <i class="bx bx-chip"></i> AI/ML
-            </div>
-            <div class="hero-tech-badge badge-python">
-              <i class="bx bxl-python"></i> Python
-            </div>
-            <div class="hero-tech-badge badge-fabric">
-              <i class="bx bx-data"></i> MS Fabric
-            </div>
-          </div>
-        </div>
-
-      </div>
+<!-- ============ HERO ============ -->
+<div class="hero-track" id="heroTrack">
+  <div class="hero-stick">
+    <div class="hero-bg" id="heroBg">
+      <video id="heroVideo" src="assets/v2/hero-bg.mp4" poster="assets/v2/hero-bg.jpg" muted playsinline preload="auto"></video>
     </div>
-    <a href="#experience" class="hero-scroll-hint" aria-label="Ir a Experiencia">
-      <i class="bi bi-chevron-double-down"></i>
-    </a>
-  </section><!-- End Hero -->
+    <div class="hero-scrim"></div>
 
-  <!-- ======= Clients Strip ======= -->
-  <section id="clients" class="clients-strip" aria-label="Empresas con las que he trabajado">
-    <div class="container">
-      <p class="clients-label">Soluciones entregadas para</p>
-      <div class="clients-track-wrapper">
-        <div class="clients-track" id="clientsTrack">
+    <div class="layer" id="l1"></div>
+    <div class="layer" id="l2"></div>
+    <div class="layer" id="l3"></div>
 
-          <div class="client-logo-item">
-            <img src="assets/img/clients/aunor.png" alt="Aunor" loading="lazy">
-            <span class="client-name">Aunor</span>
-          </div>
-          <div class="client-logo-item">
-            <img src="assets/img/clients/digito.png" alt="Dígito" loading="lazy">
-            <span class="client-name">Dígito</span>
-          </div>
-          <div class="client-logo-item">
-            <img src="assets/img/clients/enapu.png" alt="Enapu" loading="lazy">
-            <span class="client-name">Enapu</span>
-          </div>
-          <div class="client-logo-item">
-            <img src="assets/img/clients/Yamaha.jpg" alt="Yamaha" loading="lazy">
-            <span class="client-name">Yamaha</span>
-          </div>
-          <div class="client-logo-item">
-            <img src="assets/img/clients/mitsui.png" alt="Mitsui" loading="lazy">
-            <span class="client-name">Mitsui</span>
-          </div>
-          <div class="client-logo-item">
-            <img src="assets/img/clients/gruporocio.png" alt="Gruporocio" loading="lazy">
-            <span class="client-name">Gruporocio</span>
-          </div>
-          <div class="client-logo-item">
-            <img src="assets/img/clients/dblearner.jpg" alt="Dblearner" loading="lazy">
-            <span class="client-name">Dblearner</span>
-          </div>
-          <div class="client-logo-item">
-            <img src="assets/img/clients/adium.png" alt="Adium" loading="lazy">
-            <span class="client-name">Adium</span>
-          </div>
+    <div class="hero-vignette"></div>
 
-          <!-- Duplicados para loop infinito suave -->
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/aunor.png" alt="" loading="lazy">
-            <span class="client-name">Aunor</span>
-          </div>
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/digito.png" alt="" loading="lazy">
-            <span class="client-name">Dígito</span>
-          </div>
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/enapu.png" alt="" loading="lazy">
-            <span class="client-name">Enapu</span>
-          </div>
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/Yamaha.jpg" alt="" loading="lazy">
-            <span class="client-name">Yamaha</span>
-          </div>
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/mitsui.png" alt="" loading="lazy">
-            <span class="client-name">Mitsui</span>
-          </div>
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/gruporocio.png" alt="" loading="lazy">
-            <span class="client-name">Gruporocio</span>
-          </div>
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/dblearner.jpg" alt="" loading="lazy">
-            <span class="client-name">Dblearner</span>
-          </div>
-          <div class="client-logo-item" aria-hidden="true">
-            <img src="assets/img/clients/adium.png" alt="" loading="lazy">
-            <span class="client-name">Adium</span>
-          </div>
-
+    <div class="topbar">
+      <div class="brand mono">[ AC ]</div>
+      <nav class="topnav">
+        <a class="toplink mono" href="https://www.linkedin.com/in/castilloperz/" target="_blank" rel="noopener"><span>in</span><b>LinkedIn</b></a>
+        <a class="toplink mono" href="https://github.com/AngeloCastilloPerez" target="_blank" rel="noopener"><span>gh</span><b>GitHub</b></a>
+        <div class="langbox">
+          <button class="langbtn mono on" data-lang="es">ES</button>
+          <button class="langbtn mono" data-lang="en">EN</button>
         </div>
-      </div>
+      </nav>
     </div>
-  </section><!-- End Clients Strip -->
 
-  <main id="main">
-
-    <!-- ======= Experience Section ======= -->
-    <section id="experience" class="section-pad">
-      <div class="container">
-
-        <div class="section-header text-center" data-aos="fade-up">
-          <span class="section-tag">Trayectoria</span>
-          <h2 class="section-title">Experiencia Profesional</h2>
-          <p class="section-subtitle">Mi trayectoria profesional — crecimiento continuo en datos, tecnología e IA</p>
-        </div>
-
-        <div class="row justify-content-center mt-5">
-          <div class="col-lg-10">
-
-            <!-- HERO -->
-            <div class="exp-company-card" data-aos="fade-up" data-aos-delay="80">
-
-              <div class="exp-company-header company-clickable"
-                   data-company="hero"
-                   role="button" tabindex="0"
-                   aria-label="Ver información de HERO">
-                <div class="company-logo-wrapper">
-                  <img src="assets/img/hero-logo.png" alt="HERO" class="company-logo-img">
-                </div>
-                <div class="company-info">
-                  <h3>HERO <span class="company-popup-hint"><i class="bi bi-box-arrow-up-right"></i></span></h3>
-                  <p><i class="bi bi-geo-alt-fill me-1"></i>Lima, Perú &bull; 2026 — Presente</p>
-                  <span class="company-badge">Empresa de IA &middot; Agentes y plataformas inteligentes</span>
-                </div>
-              </div>
-
-              <div class="timeline-container">
-
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="120">
-                  <div class="timeline-dot pulse-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-header">
-                      <h4>Fundador &amp; CEO <span class="current-badge">Actual</span></h4>
-                      <span class="timeline-date">Ene 2026 — Presente</span>
-                    </div>
-                    <p>Fundé HERO para llevar la IA a operaciones reales: diseñamos, desarrollamos e implementamos agentes de IA, automatizaciones y plataformas inteligentes para empresas. Lidero la estrategia, el equipo y el desarrollo de producto — incluyendo <strong>MATTIU</strong>, nuestra plataforma de gestión de proyectos con IA, y <strong>ALMACODE</strong>, la memoria compartida para agentes de IA.</p>
-                    <div class="timeline-tags">
-                      <span class="tag">Liderazgo</span><span class="tag">Estrategia de IA</span><span class="tag">Agentes de IA</span><span class="tag">Producto</span><span class="tag">MATTIU</span><span class="tag">Automatización</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div><!-- End HERO -->
-
-            <!-- Dígito -->
-            <div class="exp-company-card" data-aos="fade-up" data-aos-delay="100">
-
-              <!-- Company Header -->
-              <div class="exp-company-header company-clickable"
-                   data-company="digito"
-                   role="button" tabindex="0"
-                   aria-label="Ver información de Dígito">
-                <div class="company-logo-wrapper">
-                  <img src="assets/img/clients/digito.png" alt="Dígito" class="company-logo-img">
-                </div>
-                <div class="company-info">
-                  <h3>Dígito <span class="company-popup-hint"><i class="bi bi-box-arrow-up-right"></i></span></h3>
-                  <p><i class="bi bi-geo-alt-fill me-1"></i>Lima, Perú &bull; 2023 — Presente</p>
-                  <span class="company-badge">Empresa de tecnología</span>
-                </div>
-              </div>
-
-              <!-- Timeline -->
-              <div class="timeline-container">
-
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="150">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-header">
-                      <h4>Analista de BI</h4>
-                      <span class="timeline-date">2023</span>
-                    </div>
-                    <p>Diseño e implementación de dashboards ejecutivos con Power BI. Construcción de modelos de datos y automatización de reportes para clientes corporativos como AUNOR y ASTARA.</p>
-                    <div class="timeline-tags">
-                      <span class="tag">Power BI</span><span class="tag">DAX</span><span class="tag">SQL</span><span class="tag">ETL</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-header">
-                      <h4>Analista de Datos</h4>
-                      <span class="timeline-date">2023 — 2024</span>
-                    </div>
-                    <p>Análisis avanzado con Python y Tableau. ETL y modelado de datos para múltiples clientes. Implementación de KPIs estratégicos a nivel gerencial y visualizaciones de alto impacto.</p>
-                    <div class="timeline-tags">
-                      <span class="tag">Python</span><span class="tag">Tableau</span><span class="tag">Pandas</span><span class="tag">Excel</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="250">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-header">
-                      <h4>Analista de Proyectos de TI</h4>
-                      <span class="timeline-date">2024 — 2025</span>
-                    </div>
-                    <p>Liderazgo de proyectos de transformación digital. Integración de arquitecturas de datos en Azure Data Factory. Desarrollo de intranets corporativas (ENAPU) y portales web para clientes enterprise.</p>
-                    <div class="timeline-tags">
-                      <span class="tag">Azure</span><span class="tag">SharePoint</span><span class="tag">Gestión de proyectos</span><span class="tag">n8n</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="300">
-                  <div class="timeline-dot pulse-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-header">
-                      <h4>Líder de Proyectos <span class="current-badge">Actual</span></h4>
-                      <span class="timeline-date">2025 — Presente</span>
-                    </div>
-                    <p>Consultoría estratégica en Data &amp; Analytics, IA y automatización de procesos. Liderazgo de equipos multidisciplinarios y entrega de soluciones end-to-end para clientes como Yamaha Motors Perú.</p>
-                    <div class="timeline-tags">
-                      <span class="tag">Consultoría</span><span class="tag">IA Generativa</span><span class="tag">Make</span><span class="tag">LLMs</span><span class="tag">Liderazgo</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div><!-- End Timeline -->
-
-            </div><!-- End Dígito -->
-
-            <!-- Grupo Rocío -->
-            <div class="exp-company-card" data-aos="fade-up" data-aos-delay="120">
-
-              <div class="exp-company-header company-clickable"
-                   data-company="gruporocio"
-                   role="button" tabindex="0"
-                   aria-label="Ver información de Grupo Rocío">
-                <div class="company-logo-wrapper">
-                  <img src="assets/img/clients/gruporocio.png" alt="Grupo Rocío" class="company-logo-img">
-                </div>
-                <div class="company-info">
-                  <h3>Grupo Rocío <span class="company-popup-hint"><i class="bi bi-box-arrow-up-right"></i></span></h3>
-                  <p><i class="bi bi-geo-alt-fill me-1"></i>La Libertad, Perú &bull; 2021 — 2022</p>
-                  <span class="company-badge">Grupo empresarial agro-industrial</span>
-                </div>
-              </div>
-
-              <div class="timeline-container">
-
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="150">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-header">
-                      <h4>Auxiliar de Procesos</h4>
-                      <span class="timeline-date">Abr 2021 — Sep 2021</span>
-                    </div>
-                    <p>Apoyo en la gestión de procesos operativos y administrativos. Primeros pasos en análisis de datos y eficiencia de procesos dentro del área de producción.</p>
-                    <div class="timeline-tags">
-                      <span class="tag">Eficiencia de procesos</span><span class="tag">Análisis de información</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
-                  <div class="timeline-dot"></div>
-                  <div class="timeline-content">
-                    <div class="timeline-header">
-                      <h4>Asistente de Producción</h4>
-                      <span class="timeline-date">Sep 2021 — Abr 2022</span>
-                    </div>
-                    <p>Gestión de proyectos de mejora continua junto al equipo administrativo. Fortalecimiento de habilidades en Macros VBA, Business Intelligence y análisis de datos operativos.</p>
-                    <div class="timeline-tags">
-                      <span class="tag">Macros VBA</span><span class="tag">Business Intelligence</span><span class="tag">Excel</span><span class="tag">Mejora continua</span>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-              <!-- Resumen de trayectoria -->
-              <div class="exp-footer" data-aos="fade-up" data-aos-delay="350">
-                <div class="exp-impacts">
-                  <div class="impact-item">
-                    <i class="bi bi-buildings-fill"></i>
-                    <span>6 empresas top atendidas</span>
-                  </div>
-                  <div class="impact-item">
-                    <i class="bi bi-graph-up-arrow"></i>
-                    <span>+18 proyectos entregados</span>
-                  </div>
-                  <div class="impact-item">
-                    <i class="bi bi-people-fill"></i>
-                    <span>Equipos multidisciplinarios liderados</span>
-                  </div>
-                </div>
-                <a href="#projects" class="btn btn-outline-primary mt-3">
-                  Ver todos los proyectos <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-              </div>
-
-            </div><!-- End Grupo Rocío -->
-          </div>
-        </div>
-
+    <div class="hero-content" id="heroContent">
+      <div class="hero-inner">
+        <div class="eyebrow mono">[ PORTFOLIO / 2026 ]<span style="color:#FF8C42;margin-left:8px">&#10022;</span></div>
+        <h1>Angelo Castillo</h1>
+        <div class="hero-role mono" data-t="role"></div>
+        <p class="hero-tag mono" data-t="tag"></p>
+        <div class="chips mono" id="heroChips"></div>
+        <a class="cta-light mono" href="mailto:acastillo@hero.com.pe"><i>+</i><span data-t="talk"></span></a>
+        <a class="scroll-hint mono" href="#proyectos"><span data-t="view"></span> &rarr;</a>
       </div>
-    </section><!-- End Experience -->
-
-    <!-- ======= Projects Section ======= -->
-    <section id="projects" class="section-pad section-bg">
-      <div class="container">
-
-        <div class="section-header text-center" data-aos="fade-up">
-          <span class="section-tag">Case Studies</span>
-          <h2 class="section-title">Proyectos Destacados</h2>
-          <p class="section-subtitle">Soluciones reales con impacto medible en organizaciones líderes</p>
-        </div>
-
-        <!-- Filter Buttons -->
-        <div class="filter-buttons d-flex justify-content-center flex-wrap mt-4 mb-5" data-aos="fade-up" data-aos-delay="100">
-          <button class="filter-btn active" data-filter="*">Todos</button>
-          <button class="filter-btn" data-filter=".filter-powerbi">Power BI</button>
-          <button class="filter-btn" data-filter=".filter-tableau">Tableau</button>
-          <button class="filter-btn" data-filter=".filter-architecture">Architecture</button>
-          <button class="filter-btn" data-filter=".filter-web">Web</button>
-          <button class="filter-btn" data-filter=".filter-app">App</button>
-        </div>
-
-        <!-- Projects Grid -->
-        <div class="row g-4" id="projectsGrid">
-
-          <!-- 01 AUNOR (Power BI) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="100">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-16.gif" alt="Dashboard Corporativo AUNOR" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-16.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Dashboard Corporativo AUNOR"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Project---Aunor/tree/main" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Dashboard Corporativo AUNOR</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>KPIs de 8 departamentos dispersos en múltiples sistemas, sin visibilidad unificada</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Dashboard ejecutivo centralizado con Power BI + ETL automatizado</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> 60% reducción en tiempo de generación de reportes</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">DAX</span><span class="tech-tag">SQL</span><span class="tech-tag">ETL</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 02 ASTARA (Power BI) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="150">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-17.gif" alt="Dashboard Corporativo ASTARA" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-17.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Dashboard Corporativo ASTARA"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Proyecto-Astara/tree/main" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Dashboard Corporativo ASTARA</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Sin visibilidad de ventas en tiempo real para la red de concesionarios</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Power BI integrado a CRM con métricas de ventas en tiempo real</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> +35% en velocidad de toma de decisiones comerciales</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">CRM</span><span class="tech-tag">DAX</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 03 Yamaha Data Factory (Architecture) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-architecture" data-aos="fade-up" data-aos-delay="200">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-14.gif" alt="Data Factory Azure - Yamaha Motors" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-14.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Yamaha Data Factory"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Proyecto---YAMAHA/tree/main" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge architecture-badge">Architecture</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Data Factory Azure — Yamaha Motors</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Datos de ventas y producción en silos, sin integración entre sistemas</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Pipeline ETL con Azure Data Factory + arquitectura medallión (bronze/silver/gold)</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> 5 fuentes integradas en tiempo real, latencia &lt;2 min</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Azure</span><span class="tech-tag">Data Factory</span><span class="tech-tag">SQL</span><span class="tech-tag">Medallion</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 04 ENAPU Intranet (Web) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web" data-aos="fade-up" data-aos-delay="100">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-15.gif" alt="Intranet Corporativa ENAPU" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-15.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Intranet ENAPU"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Front-end/tree/main" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge web-badge">Web</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Intranet Corporativa ENAPU</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Comunicación interna fragmentada en empresa portuaria nacional</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Intranet corporativa con SharePoint + frontend personalizado</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> +80% adopción colaborativa en los primeros 30 días</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">SharePoint</span><span class="tech-tag">HTML/CSS</span><span class="tech-tag">JavaScript</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 05 Sales Dashboard (Tableau) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-tableau" data-aos="fade-up" data-aos-delay="150">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-1.gif" alt="Sales Dashboard Interactivo" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-1.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Sales Dashboard"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Sales-Project-in-Tableau" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge tableau-badge">Tableau</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Sales Dashboard Interactivo</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Equipo de ventas sin visibilidad de métricas clave en tiempo real</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Dashboard interactivo en Tableau con drill-down por región y producto</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> Adoptado por equipo de 20 vendedores como herramienta diaria</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Tableau</span><span class="tech-tag">SQL</span><span class="tech-tag">Python</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 06 London Bikes (Tableau) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-tableau" data-aos="fade-up" data-aos-delay="200">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-2.gif" alt="London Bikes Analysis" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-2.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="London Bikes"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/LondonBikeRides" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge tableau-badge">Tableau</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Análisis de Bicicletas de Londres</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Datos de movilidad urbana sin insights sobre patrones de uso</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Análisis de +10M viajes con Tableau + Python (pandas)</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> 5 patrones clave de movilidad identificados</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Tableau</span><span class="tech-tag">Python</span><span class="tech-tag">Pandas</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 07 Netflix (Tableau) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-tableau" data-aos="fade-up" data-aos-delay="100">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-3.gif" alt="Netflix Content Analysis" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-3.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Netflix Analysis"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Netflix-Project" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge tableau-badge">Tableau</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Análisis de Contenido Netflix</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Catálogo global sin análisis de distribución por género y región</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Dashboard exploratorio con filtros geográficos y temporales</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> 4,000+ títulos analizados con segmentación por 15+ categorías</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Tableau</span><span class="tech-tag">Python</span><span class="tech-tag">Data Viz</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 08 Startups (Tableau) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-tableau" data-aos="fade-up" data-aos-delay="150">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-4.gif" alt="Startups Ecosystem" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-4.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Startups Analysis"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Tableau-Startups" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge tableau-badge">Tableau</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Análisis del Ecosistema Startups</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Sin mapa visual del ecosistema global de startups por sector</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Mapa interactivo con análisis de valuación y sectores emergentes</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> 1,000+ unicornios mapeados con análisis de tendencias sectoriales</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Tableau</span><span class="tech-tag">Python</span><span class="tech-tag">EDA</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 09 Yu-Gi-Oh (Power BI) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="200">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-6.gif" alt="Yu-Gi-Oh Trading Cards" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-6.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Yu-Gi-Oh Analysis"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Project-YuGiHo" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Análisis Trading Cards Yu-Gi-Oh</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Mercado de cartas sin análisis de precios ni demanda por rareza</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Dashboard de análisis de mercado con 10,000+ cartas catalogadas</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> 85% de precisión en predicción de tendencias de precio</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">Python</span><span class="tech-tag">Web Scraping</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 10 CO2 Power BI -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="100">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-7.gif" alt="CO2 Emissions Analysis" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-7.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="CO2 Emissions"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Project_Co2" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Análisis Global de Emisiones CO2</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Datos de emisiones globales sin visualización comparativa accesible</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Mapa interactivo global con análisis histórico desde 1750</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> Dashboard público usado como recurso educativo</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">DAX</span><span class="tech-tag">Open Data</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 11 Household Waste (Power BI) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="150">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-8.gif" alt="Household Waste Analysis" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-8.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Household Waste"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Project-Desechos" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Análisis de Desechos Domésticos</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Datos de residuos sin segmentación por zona ni patrones de generación</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Análisis de patrones con segmentación geográfica y temporal</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> Identificó zonas críticas para optimizar rutas de recolección</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">Python</span><span class="tech-tag">Geodatos</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 12 Consumer Protection (Power BI) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="200">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-11.gif" alt="Consumer Protection Argentina" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-11.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Consumer Protection"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://app.powerbi.com/view?r=eyJrIjoiNTk5OTkxOWItNWE2MS00OGRkLThkZmEtM2M5ZjE0OWUzYWEzIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver demo"><i class="bi bi-box-arrow-up-right"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Defensa del Consumidor Argentina</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>50,000+ reclamos sin análisis ni clasificación sistemática pública</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Dashboard público con clasificación por rubro, región y año</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> Dashboard live accesible para ciudadanos y entidades públicas</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">Open Data</span><span class="tech-tag">DAX</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 13 Opportunities (Power BI) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="100">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-12.gif" alt="Opportunity Analysis" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-12.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Opportunity Analysis"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://app.powerbi.com/view?r=eyJrIjoiOWM4MjViZDAtMjVjZS00MmViLTlkYjctYTczMzFmYzY5YmMwIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver demo"><i class="bi bi-box-arrow-up-right"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Análisis de Oportunidades y Márgenes</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Pipeline de ventas sin visibilidad de márgenes ni proyección de cierre</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Modelo de análisis con scoring de oportunidades y proyección de ingresos</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> +25% mejora en márgenes al priorizar oportunidades de alto valor</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">DAX</span><span class="tech-tag">CRM</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 14 Tractchun Tickets (Power BI) -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-powerbi" data-aos="fade-up" data-aos-delay="150">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-13.gif" alt="Tractchun Ticket System" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-13.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Tractchun Tickets"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://app.powerbi.com/view?r=eyJrIjoiOWM4MjViZDAtMjVjZS00MmViLTlkYjctYTczMzFmYzY5YmMwIiwidCI6ImRiMDRlYjM0LTczMmEtNDE4YS05MDI1LTVhZDk5ZTk1MTY0OCJ9" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver demo"><i class="bi bi-box-arrow-up-right"></i></a>
-                </div>
-                <span class="project-tag-badge powerbi-badge">Power BI</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Sistema de Tickets Tractchun</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Gestión de tickets IT manual sin métricas de resolución ni SLA</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Dashboard de SLA, tiempos de respuesta y carga por agente</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> 40% reducción en tiempo promedio de resolución</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">Power BI</span><span class="tech-tag">ITSM</span><span class="tech-tag">KPIs</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 15 Pet Care App -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app" data-aos="fade-up" data-aos-delay="200">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-18.gif" alt="Pet Care App" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-18.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="Pet Care App"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://github.com/AngeloCastilloPerez/Pet-Care-App" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>
-                </div>
-                <span class="project-tag-badge app-badge">App</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Aplicación de Cuidado de Mascotas</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Usuarios sin herramienta unificada para gestión de salud de mascotas</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>App móvil con seguimiento de vacunas, citas y recordatorios</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> UI/UX completo con flujo de usuario optimizado end-to-end</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">UI/UX</span><span class="tech-tag">React</span><span class="tech-tag">Mobile</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 16 CO2 Web Portal -->
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web" data-aos="fade-up" data-aos-delay="100">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="assets/img/portfolio/portfolio-10.gif" alt="CO2 Web Portal" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="assets/img/portfolio/portfolio-10.gif" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="CO2 Portal"><i class="bi bi-zoom-in"></i></a>
-                  <a href="https://sites.google.com/view/emissions-co2/home?pli=1" target="_blank" rel="noopener" class="overlay-btn" aria-label="Visitar sitio"><i class="bi bi-box-arrow-up-right"></i></a>
-                </div>
-                <span class="project-tag-badge web-badge">Web</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">Portal Web Emisiones CO2</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>Datos ambientales complejos sin acceso público intuitivo</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>Portal web educativo con visualizaciones integradas y datos abiertos</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> Recurso público con múltiples visualizaciones interactivas</p></div>
-                </div>
-                <div class="project-tech">
-                  <span class="tech-tag">HTML/CSS</span><span class="tech-tag">Google Sites</span><span class="tech-tag">Data Viz</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div><!-- End Projects Grid -->
-      </div>
-    </section><!-- End Projects -->
-
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="section-pad">
-      <div class="container">
-
-        <div class="section-header text-center" data-aos="fade-up">
-          <span class="section-tag">¿Trabajamos juntos?</span>
-          <h2 class="section-title">Contacto</h2>
-          <p class="section-subtitle">Disponible para proyectos freelance y oportunidades full-time</p>
-        </div>
-
-        <div class="row justify-content-center mt-5 g-4">
-
-          <div class="col-lg-5 col-md-6" data-aos="fade-right" data-aos-delay="100">
-            <div class="contact-info-card">
-              <h3>Hablemos</h3>
-              <p>¿Necesitas un dashboard, análisis de datos o automatización con IA? Cuéntame tu proyecto.</p>
-              <div class="contact-links">
-                <a href="mailto:acastillo@hero.com.pe" class="contact-link">
-                  <div class="contact-icon"><i class="bi bi-envelope-fill"></i></div>
-                  <div>
-                    <span class="contact-label">Email</span>
-                    <span class="contact-value">acastillo@hero.com.pe</span>
-                  </div>
-                </a>
-                <a href="https://www.linkedin.com/in/castilloperz/" target="_blank" rel="noopener" class="contact-link">
-                  <div class="contact-icon linkedin-icon"><i class="bx bxl-linkedin"></i></div>
-                  <div>
-                    <span class="contact-label">LinkedIn</span>
-                    <span class="contact-value">linkedin.com/in/castilloperz</span>
-                  </div>
-                </a>
-                <a href="https://github.com/AngeloCastilloPerez" target="_blank" rel="noopener" class="contact-link">
-                  <div class="contact-icon github-icon"><i class="bx bxl-github"></i></div>
-                  <div>
-                    <span class="contact-label">GitHub</span>
-                    <span class="contact-value">AngeloCastilloPerez</span>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6 col-md-6" data-aos="fade-left" data-aos-delay="200">
-            <form class="contact-form" id="contactForm" novalidate>
-              <div class="mb-3">
-                <input type="text" class="form-control contact-input" id="cName" placeholder="Tu nombre" required aria-label="Nombre">
-              </div>
-              <div class="mb-3">
-                <input type="email" class="form-control contact-input" id="cEmail" placeholder="Tu email" required aria-label="Email">
-              </div>
-              <div class="mb-3">
-                <select class="form-control contact-input" id="cSubject" aria-label="Tipo de proyecto">
-                  <option value="">¿En qué puedo ayudarte?</option>
-                  <option value="dashboard">Dashboard / BI</option>
-                  <option value="data">Análisis de datos</option>
-                  <option value="automation">Automatización con IA</option>
-                  <option value="architecture">Arquitectura de datos</option>
-                  <option value="other">Otro</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <textarea class="form-control contact-input" id="cMessage" rows="4" placeholder="Cuéntame tu proyecto..." required aria-label="Mensaje"></textarea>
-              </div>
-              <button type="submit" class="btn-primary-custom w-100 justify-content-center">
-                <i class="bi bi-send me-2"></i>Enviar mensaje
-              </button>
-            </form>
-          </div>
-
-        </div>
-      </div>
-    </section><!-- End Contact -->
-
-  </main><!-- End #main -->
-
-  <!-- ======= Footer ======= -->
-  <footer id="footer">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-brand">
-          <a href="#hero" class="footer-logo">AC<span>.</span></a>
-          <p>Transformando datos en decisiones estratégicas.</p>
-        </div>
-        <div class="footer-social">
-          <a href="https://www.linkedin.com/in/castilloperz/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="bx bxl-linkedin"></i></a>
-          <a href="https://github.com/AngeloCastilloPerez" target="_blank" rel="noopener" aria-label="GitHub"><i class="bx bxl-github"></i></a>
-          <a href="https://twitter.com/AngeloCastilloJ" target="_blank" rel="noopener" aria-label="Twitter"><i class="bx bxl-twitter"></i></a>
-          <a href="https://medium.com/@angelocastilloperz" target="_blank" rel="noopener" aria-label="Medium"><i class="bx bxl-medium"></i></a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 Angelo Castillo Pérez &mdash; Lima, Perú</p>
-      </div>
-    </div>
-  </footer><!-- End Footer -->
-
-  <a href="#hero" class="back-to-top" aria-label="Volver arriba"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- ======= Portfolio Data Loader (SaaS template) ======= -->
-  <script src="assets/js/data-loader.js"></script>
-
-  <!-- ======= Vendor JS ======= -->
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-
-  <!-- ======= App JS ======= -->
-  <script>
-    'use strict';
-
-    /* --- Preloader --- */
-    window.addEventListener('load', () => {
-      const pre = document.getElementById('preloader');
-      if (pre) { pre.classList.add('hidden'); setTimeout(() => pre.remove(), 500); }
-    });
-
-    /* --- Dark Mode --- */
-    const html       = document.documentElement;
-    const darkToggle = document.getElementById('darkModeToggle');
-    const darkIcon   = document.getElementById('darkIcon');
-
-    function applyTheme(theme) {
-      html.setAttribute('data-theme', theme);
-      localStorage.setItem('ac-theme', theme);
-      darkIcon.className = theme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
-    }
-    applyTheme(localStorage.getItem('ac-theme') || 'light');
-    darkToggle.addEventListener('click', () => {
-      applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-    });
-
-    /* --- Header scroll effect --- */
-    const header = document.getElementById('header');
-    const onScroll = () => {
-      header.classList.toggle('scrolled', window.scrollY > 60);
-      /* Back to top */
-      const btt = document.querySelector('.back-to-top');
-      if (btt) btt.classList.toggle('active', window.scrollY > 400);
-      /* Active nav */
-      let current = '';
-      document.querySelectorAll('section[id]').forEach(s => {
-        if (window.scrollY >= s.offsetTop - 130) current = s.id;
-      });
-      document.querySelectorAll('.navbar-nav .nav-link').forEach(l => {
-        l.classList.toggle('active', l.getAttribute('href') === '#' + current);
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    /* --- AOS --- */
-    AOS.init({ duration: 600, easing: 'ease-out-cubic', once: true, offset: 60 });
-
-    /* --- GLightbox --- */
-    GLightbox({ selector: '.portfolio-lightbox' });
-
-    /* --- Tilt 3D en foto de perfil --- */
-    (function() {
-      const wrapper = document.querySelector('.hero-image-wrapper');
-      const img     = wrapper && wrapper.querySelector('.hero-profile-img, picture');
-      if (!wrapper || !img) return;
-
-      const MAX_TILT = 12; // grados máximos de inclinación
-
-      wrapper.addEventListener('mousemove', (e) => {
-        const rect   = wrapper.getBoundingClientRect();
-        const cx     = rect.left + rect.width  / 2;
-        const cy     = rect.top  + rect.height / 2;
-        const dx     = (e.clientX - cx) / (rect.width  / 2);
-        const dy     = (e.clientY - cy) / (rect.height / 2);
-        const rotateX = (-dy * MAX_TILT).toFixed(2);
-        const rotateY = ( dx * MAX_TILT).toFixed(2);
-
-        wrapper.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.04,1.04,1.04)`;
-        wrapper.style.transition = 'transform 0.08s ease';
-      });
-
-      wrapper.addEventListener('mouseleave', () => {
-        wrapper.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
-        wrapper.style.transition = 'transform 0.5s ease';
-      });
-    })();
-
-    /* --- Isotope --- */
-    window.addEventListener('load', () => {
-      const grid = document.getElementById('projectsGrid');
-      if (!grid || typeof Isotope === 'undefined') return;
-
-      const iso = new Isotope(grid, {
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows',
-        animationOptions: { duration: 350, easing: 'linear', queue: false }
-      });
-
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          iso.arrange({ filter: this.dataset.filter });
-        });
-      });
-    });
-
-    /* --- Smooth scroll + close mobile nav --- */
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', function (e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (!target) return;
-        e.preventDefault();
-        window.scrollTo({ top: target.offsetTop - 75, behavior: 'smooth' });
-        const menu = document.getElementById('navMenu');
-        if (menu && menu.classList.contains('show')) {
-          bootstrap.Collapse.getInstance(menu)?.hide();
-        }
-      });
-    });
-
-    /* --- Contact Form --- */
-    const form = document.getElementById('contactForm');
-    if (form) {
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const btn = this.querySelector('button[type="submit"]');
-        const orig = btn.innerHTML;
-        btn.innerHTML = '<i class="bi bi-check-circle me-2"></i>¡Enviado!';
-        btn.disabled = true;
-        btn.style.background = 'var(--success)';
-        setTimeout(() => {
-          btn.innerHTML = orig;
-          btn.disabled = false;
-          btn.style.background = '';
-          this.reset();
-        }, 3000);
-      });
-    }
-
-    /* =====================================================
-       PORTFOLIO DATA RENDERER
-       Runs only when window.PORTFOLIO_DATA is available.
-       Falls back silently to hardcoded HTML if absent.
-    ===================================================== */
-
-    function renderHero(profile) {
-      if (!profile) return;
-      // Badge
-      const badgeEl = document.querySelector('.hero-badge span:last-child');
-      if (badgeEl && profile.availableText) badgeEl.textContent = profile.availableText;
-      // Title
-      const titleEl = document.querySelector('.hero-title');
-      if (titleEl && profile.name) {
-        const parts = profile.name.split(' ');
-        titleEl.innerHTML = parts[0] + '<br><span class="gradient-text">' + (parts.slice(1).join(' ') || '') + '</span>';
-      }
-      // Subtitle
-      const subtitleEl = document.querySelector('.hero-subtitle');
-      if (subtitleEl && profile.title) subtitleEl.textContent = profile.title;
-      // Description
-      const descEl = document.querySelector('.hero-description');
-      if (descEl && profile.description) descEl.innerHTML = profile.description;
-      // Stats
-      if (profile.stats) {
-        const chips = document.querySelectorAll('.stat-chip .stat-num');
-        const labels = document.querySelectorAll('.stat-chip .stat-label');
-        const statsArr = [
-          { num: profile.stats.years + '+', label: 'Años exp.' },
-          { num: profile.stats.projects + '+', label: 'Proyectos' },
-          { num: String(profile.stats.companies), label: 'Empresas top' },
-          { num: profile.stats.tools + '+', label: 'Herramientas' },
-        ];
-        chips.forEach((el, i) => { if (statsArr[i]) el.textContent = statsArr[i].num; });
-        labels.forEach((el, i) => { if (statsArr[i]) el.textContent = statsArr[i].label; });
-      }
-      // Photo
-      const photoEl = document.querySelector('.hero-profile-img');
-      if (photoEl && profile.photo) { photoEl.src = profile.photo; photoEl.alt = profile.name; }
-      // Tech badges
-      if (profile.badges && profile.badges.length) {
-        const badgeEls = document.querySelectorAll('.hero-tech-badge');
-        badgeEls.forEach((el, i) => {
-          if (profile.badges[i]) {
-            const icon = el.querySelector('i');
-            el.innerHTML = (icon ? icon.outerHTML + ' ' : '') + profile.badges[i];
-          }
-        });
-      }
-      // Meta
-      if (window.PORTFOLIO_DATA.meta) {
-        if (window.PORTFOLIO_DATA.meta.siteTitle) document.title = window.PORTFOLIO_DATA.meta.siteTitle;
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc && window.PORTFOLIO_DATA.meta.description) metaDesc.setAttribute('content', window.PORTFOLIO_DATA.meta.description);
-      }
-    }
-
-    function renderClients(clients) {
-      if (!clients || !clients.length) return;
-      const track = document.getElementById('clientsTrack');
-      if (!track) return;
-      // Build original + duplicate for infinite scroll
-      const makeItem = (c, hidden) =>
-        `<div class="client-logo-item"${hidden ? ' aria-hidden="true"' : ''}>
-          <img src="${c.logo}" alt="${hidden ? '' : c.name}" loading="lazy">
-          <span class="client-name">${c.name}</span>
-        </div>`;
-      track.innerHTML = clients.map(c => makeItem(c, false)).join('') +
-                        clients.map(c => makeItem(c, true)).join('');
-    }
-
-    function renderContact(contact) {
-      if (!contact) return;
-      // Email
-      if (contact.email) {
-        const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
-        emailLinks.forEach(a => {
-          a.href = 'mailto:' + contact.email;
-          const val = a.querySelector('.contact-value');
-          if (val) val.textContent = contact.email;
-        });
-      }
-      // LinkedIn
-      if (contact.linkedin) {
-        const liLinks = document.querySelectorAll('a[href*="linkedin.com"]');
-        liLinks.forEach(a => {
-          a.href = contact.linkedin;
-          const val = a.querySelector('.contact-value');
-          if (val) val.textContent = contact.linkedin.replace('https://', '');
-        });
-      }
-      // GitHub
-      if (contact.github) {
-        const ghLinks = document.querySelectorAll('a[href*="github.com"]');
-        ghLinks.forEach(a => {
-          if (!a.href.includes('AngeloCastilloPerez') && !contact.github) return;
-          a.href = contact.github;
-          const val = a.querySelector('.contact-value');
-          if (val) val.textContent = contact.github.replace('https://github.com/', '');
-        });
-      }
-      // Footer social links
-      const footerLinkedIn = document.querySelector('footer a[href*="linkedin"]');
-      if (footerLinkedIn && contact.linkedin) footerLinkedIn.href = contact.linkedin;
-      const footerGitHub = document.querySelector('footer a[href*="github"]');
-      if (footerGitHub && contact.github) footerGitHub.href = contact.github;
-      const footerTwitter = document.querySelector('footer a[href*="twitter"]');
-      if (footerTwitter && contact.twitter) footerTwitter.href = contact.twitter;
-      const footerMedium = document.querySelector('footer a[href*="medium"]');
-      if (footerMedium && contact.medium) footerMedium.href = 'https://medium.com/@' + contact.medium;
-    }
-
-    function renderProjects(projects) {
-      if (!projects || !projects.length) return;
-      const grid = document.getElementById('projectsGrid');
-      if (!grid) return;
-
-      const badgeClass = { powerbi: 'powerbi-badge', tableau: 'tableau-badge', architecture: 'arch-badge', web: 'web-badge', app: 'app-badge' };
-
-      grid.innerHTML = projects.map((p, i) => {
-        const filterClass = 'filter-' + (p.category || 'other');
-        const badge = badgeClass[p.category] || 'powerbi-badge';
-        const ghBtn = p.githubUrl
-          ? `<a href="${p.githubUrl}" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver código"><i class="bi bi-github"></i></a>`
-          : '';
-        const demoBtn = p.demoUrl
-          ? `<a href="${p.demoUrl}" target="_blank" rel="noopener" class="overlay-btn" aria-label="Ver demo"><i class="bi bi-box-arrow-up-right"></i></a>`
-          : '';
-        const techTags = (p.tags || []).map(t => `<span class="tech-tag">${t}</span>`).join('');
-        return `
-          <div class="col-lg-4 col-md-6 portfolio-item ${filterClass}" data-aos="fade-up" data-aos-delay="${100 + i * 50}">
-            <div class="project-card">
-              <div class="project-img-wrapper">
-                <img src="${p.image}" alt="${p.title}" class="project-img" loading="lazy">
-                <div class="project-overlay">
-                  <a href="${p.image}" class="portfolio-lightbox overlay-btn" data-gallery="pg" title="${p.title}"><i class="bi bi-zoom-in"></i></a>
-                  ${ghBtn}${demoBtn}
-                </div>
-                <span class="project-tag-badge ${badge}">${p.badge || p.category}</span>
-              </div>
-              <div class="project-body">
-                <h4 class="project-title">${p.title}</h4>
-                <div class="case-study">
-                  <div class="cs-row"><span class="cs-label problem">Problema</span><p>${p.problem || ''}</p></div>
-                  <div class="cs-row"><span class="cs-label solution">Solución</span><p>${p.solution || ''}</p></div>
-                  <div class="cs-row"><span class="cs-label result">Resultado</span><p class="result-text"><i class="bi bi-graph-up-arrow"></i> ${p.result || ''}</p></div>
-                </div>
-                <div class="project-tech">${techTags}</div>
-              </div>
-            </div>
-          </div>`;
-      }).join('');
-
-      // Re-init GLightbox for new elements
-      if (typeof GLightbox !== 'undefined') {
-        GLightbox({ selector: '.portfolio-lightbox' });
-      }
-      // Simple CSS filter (no Isotope — avoids layout collapse)
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        const newBtn = btn.cloneNode(true);
-        btn.parentNode.replaceChild(newBtn, btn);
-      });
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-          this.classList.add('active');
-          const filter = this.dataset.filter;
-          document.querySelectorAll('.portfolio-item').forEach(item => {
-            if (filter === '*' || item.classList.contains(filter.slice(1))) {
-              item.style.display = '';
-            } else {
-              item.style.display = 'none';
-            }
-          });
-        });
-      });
-    }
-
-    function applyPortfolioData(data) {
-      if (!data) return;
-      renderHero(data.profile);
-      renderClients(data.clients);
-      renderContact(data.contact);
-      renderProjects(data.projects);
-    }
-
-    // Apply if already loaded (sync case)
-    if (window.PORTFOLIO_DATA) {
-      applyPortfolioData(window.PORTFOLIO_DATA);
-    } else {
-      // Apply when async load completes
-      document.addEventListener('portfolioDataLoaded', () => {
-        applyPortfolioData(window.PORTFOLIO_DATA);
-      });
-    }
-  </script>
-
-  <!-- ======= Company Info Modal ======= -->
-  <div id="companyModal" class="company-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="company-modal-card">
-      <button class="company-modal-close" id="companyModalClose" aria-label="Cerrar">
-        <i class="bi bi-x-lg"></i>
-      </button>
-      <div class="company-modal-header">
-        <div class="company-modal-logo-wrap">
-          <img id="companyModalLogo" src="" alt="" class="company-modal-logo">
-        </div>
-        <div>
-          <h3 id="companyModalName" class="company-modal-name"></h3>
-          <span id="companyModalBadge" class="company-modal-badge"></span>
-        </div>
-      </div>
-      <p id="companyModalDesc" class="company-modal-desc"></p>
-      <div id="companyModalLinks" class="company-modal-links"></div>
     </div>
   </div>
+</div>
 
-  <script>
-  /* --- Company Modal Data --- */
-  const companyData = {
-    hero: {
-      name:   'HERO',
-      logo:   'assets/img/hero-logo.png',
-      badge:  'Empresa de IA · Lima, Perú',
-      desc:   'HERO (HERO AGI) es una empresa peruana de inteligencia artificial que diseña, desarrolla e implementa agentes de IA, automatizaciones y plataformas inteligentes para empresas. Sus productos incluyen MATTIU —plataforma de gestión de proyectos con IA— y ALMACODE —memoria compartida para agentes—. Todos sus agentes están desplegados y funcionando en producción.',
-      links: [
-        { icon: 'bi-globe',    label: 'Sitio web', url: 'https://hero.com.pe' },
-        { icon: 'bi-envelope', label: 'Contacto',  url: 'mailto:contacto@hero.com.pe' }
-      ]
-    },
-    gruporocio: {
-      name:   'Grupo Rocío',
-      logo:   'assets/img/clients/gruporocio.png',
-      badge:  'Grupo empresarial agro-industrial',
-      desc:   'Grupo empresarial peruano con trayectoria desde 1967, especializado en los sectores avícola, agrícola y ganadero en la región La Libertad. Sus principales empresas incluyen El Rocío, Talsa, Avo Perú y Aviagen Perú, con presencia internacional en exportación de paltas y espárragos.',
-      links: [
-        { icon: 'bi-globe',    label: 'Sitio web',  url: 'https://gruporocio.com' },
-        { icon: 'bi-linkedin', label: 'LinkedIn',   url: 'https://pe.linkedin.com/company/gruporocio' }
-      ]
-    },
-    digito: {
-      name:   'Dígito',
-      logo:   'assets/img/clients/digito.png',
-      badge:  'Consultoría tecnológica',
-      desc:   'Empresa peruana de consultoría tecnológica especializada en Business Intelligence, transformación digital y automatización con IA para grandes organizaciones. Certificada en ISO 9001 e ISO/IEC 27001, ofrece soluciones en Power BI, RPA, desarrollo de aplicaciones y su plataforma SaaS DB Suite.',
-      links: [
-        { icon: 'bi-globe',    label: 'Sitio web',  url: 'https://digito.pe' },
-        { icon: 'bi-linkedin', label: 'LinkedIn',   url: 'https://pe.linkedin.com/company/digitoperu' },
-        { icon: 'bi-youtube',  label: 'YouTube',    url: 'https://youtube.com/@digitoperu' },
-        { icon: 'bi-instagram',label: 'Instagram',  url: 'https://instagram.com/digitoperu' }
-      ]
-    }
+<!-- ============ CLIENTES ============ -->
+<section class="clients-strip" aria-label="Empresas con las que he trabajado">
+  <p class="clients-label mono" data-t="clientsLabel"></p>
+  <div class="clients-wrap"><div class="clients-track" id="clientsTrack"></div></div>
+</section>
+
+<!-- ============ PROYECTOS ============ -->
+<section class="section" id="proyectos">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow mono" id="gridEyebrow"></div>
+      <h2 data-t="projects"></h2>
+    </div>
+    <div class="counter mono" id="gridCount"></div>
+  </div>
+
+  <div class="shelf-scroll">
+    <div class="shelf" id="shelf"></div>
+  </div>
+
+  <div class="chips shelf-chips mono" id="shelfChips"></div>
+  <div class="shelf-hint mono" data-t="shelfHint"></div>
+</section>
+
+<!-- ============ EXPERIENCIA ============ -->
+<section id="experiencia">
+  <div class="exp-stick">
+    <div class="exp-grid">
+
+      <div class="exp-figure">
+        <div class="eyebrow mono" data-t="expEyebrow"></div>
+        <div class="morph-stage">
+          <!-- HUMANO: trazos orgánicos, tono cálido -->
+          <svg viewBox="0 0 200 320" fill="none" aria-hidden="true">
+            <g stroke="#FFD9C2" stroke-width="2.2" stroke-linecap="round" fill="none">
+              <g class="lyr" data-h="0"><circle cx="100" cy="46" r="25"/><path d="M88 40c3-4 9-4 12 0M100 40c3-4 9-4 12 0"/></g>
+              <g class="lyr" data-h="1"><path d="M100 71v18M82 96c6-6 30-6 36 0 5 22 4 44-2 66-10 5-22 5-32 0-6-22-7-44-2-66Z"/></g>
+              <g class="lyr" data-h="2"><path d="M82 99c-12 8-19 25-20 44M118 99c12 8 19 25 20 44M62 143c-2 8-1 15 2 21M138 143c2 8 1 15-2 21"/></g>
+              <g class="lyr" data-h="3"><path d="M84 162c-3 26-4 52-2 78 1 12 2 24 1 36M116 162c3 26 4 52 2 78-1 12-2 24-1 36M75 279c8 3 14 3 20 0M105 279c8 3 14 3 20 0"/></g>
+            </g>
+          </svg>
+          <!-- ROBOT: segmentos geométricos, LED morado -->
+          <svg viewBox="0 0 200 320" fill="none" aria-hidden="true">
+            <g stroke="#7B2FFF" stroke-width="2" fill="rgba(123,47,255,0.07)">
+              <g class="lyr" data-r="0"><rect x="76" y="22" width="48" height="46" rx="9"/><rect x="86" y="38" width="10" height="6" rx="2" fill="#C4A8FF" stroke="none"/><rect x="104" y="38" width="10" height="6" rx="2" fill="#C4A8FF" stroke="none"/><path d="M100 22V10" stroke-linecap="round"/><circle cx="100" cy="7" r="3.4" fill="#C4A8FF" stroke="none"/></g>
+              <g class="lyr" data-r="1"><rect x="92" y="68" width="16" height="12" rx="3"/><rect x="76" y="82" width="48" height="34" rx="7"/><rect x="80" y="120" width="40" height="24" rx="5"/><rect x="84" y="150" width="32" height="14" rx="4"/><circle cx="100" cy="99" r="6" fill="#C4A8FF" stroke="none"/></g>
+              <g class="lyr" data-r="2"><rect x="54" y="86" width="18" height="40" rx="5"/><rect x="128" y="86" width="18" height="40" rx="5"/><rect x="56" y="132" width="14" height="34" rx="4"/><rect x="130" y="132" width="14" height="34" rx="4"/><circle cx="63" cy="129" r="3.4" fill="#C4A8FF" stroke="none"/><circle cx="137" cy="129" r="3.4" fill="#C4A8FF" stroke="none"/></g>
+              <g class="lyr" data-r="3"><rect x="80" y="170" width="17" height="52" rx="5"/><rect x="103" y="170" width="17" height="52" rx="5"/><rect x="80" y="228" width="17" height="52" rx="5"/><rect x="103" y="228" width="17" height="52" rx="5"/><rect x="74" y="286" width="24" height="10" rx="3"/><rect x="102" y="286" width="24" height="10" rx="3"/><circle cx="88" cy="225" r="3.2" fill="#C4A8FF" stroke="none"/><circle cx="112" cy="225" r="3.2" fill="#C4A8FF" stroke="none"/></g>
+            </g>
+          </svg>
+        </div>
+        <div class="symb">
+          <div class="symb-top mono"><span data-t="symbiosis"></span><b><span id="symbPct">0</span>%</b></div>
+          <div class="symb-rail"><div class="symb-fill" id="symbFill"></div></div>
+        </div>
+      </div>
+
+      <div>
+        <h2 style="font-weight:300;font-size:clamp(28px,4vw,38px);letter-spacing:-.025em;margin-bottom:10px" data-t="expTitle"></h2>
+        <p class="mono" style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.5);max-width:56ch;margin-bottom:30px" data-t="expSub"></p>
+        <div class="timeline"><div class="timeline-inner" id="timeline"></div></div>
+        <div class="exp-stats mono">
+          <div class="exp-stat"><b>5+</b><span data-t="stYears"></span></div>
+          <div class="exp-stat"><b>18</b><span data-t="stProjects"></span></div>
+          <div class="exp-stat"><b>6</b><span data-t="stCompanies"></span></div>
+          <div class="exp-stat"><b>10</b><span data-t="stTools"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACTO ============ -->
+<footer class="contact">
+  <div class="eyebrow mono" style="margin-bottom:18px" data-t="contactEyebrow"></div>
+  <h2 data-t="contactH"></h2>
+  <p class="mono" data-t="contactSub"></p>
+  <a class="cta-flame mono" href="mailto:acastillo@hero.com.pe"><i>+</i><span data-t="start"></span></a>
+  <div class="foot-links mono">
+    <a href="https://www.hero.com.pe" target="_blank" rel="noopener">hero.com.pe</a>
+    <a href="https://www.linkedin.com/in/castilloperz/" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/AngeloCastilloPerez" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://medium.com/@angelocastilloperz" target="_blank" rel="noopener">Medium</a>
+    <a href="mailto:acastillo@hero.com.pe">acastillo@hero.com.pe</a>
+  </div>
+  <div class="copyright mono">&copy; 2026 ANGELO CASTILLO &middot; HERO</div>
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal-inner">
+    <div class="modal-bar">
+      <button class="back-btn mono" id="mClose"><span style="font-size:14px">&larr;</span><span data-t="back"></span></button>
+      <div style="display:flex;align-items:center;gap:18px">
+        <span class="mono" style="font-size:12px;letter-spacing:.12em;color:rgba(255,255,255,.5)" id="mCounter"></span>
+        <button class="nav-btn" id="mPrev" aria-label="Anterior">&larr;</button>
+        <button class="nav-btn" id="mNext" aria-label="Siguiente">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="modal-top">
+      <div class="sleeve-wrap">
+        <div class="sleeve-big" id="mSleeve"></div>
+        <div class="disc"><div class="disc-label" id="mDiscLabel"></div><div class="disc-hole"></div></div>
+      </div>
+      <div>
+        <div class="modal-cat mono" id="mCat"></div>
+        <h2 id="mTitle"></h2>
+        <p class="modal-desc mono" id="mDesc"></p>
+        <div class="tags mono" id="mTags"></div>
+        <div class="meta mono">
+          <div><div class="meta-k">&#9673; <span data-t="status"></span></div><div class="meta-v" id="mStatus"></div></div>
+          <div><div class="meta-k">&#9881; <span data-t="stackL"></span></div><div class="meta-v" id="mStack"></div></div>
+          <div><div class="meta-k">&#9638; <span data-t="yearL"></span></div><div class="meta-v" id="mYear"></div></div>
+          <div><div class="meta-k">&#9615; <span data-t="cat"></span></div><div class="meta-v" id="mCat2"></div></div>
+        </div>
+        <div class="play-row">
+          <a class="play-btn mono" id="mDemo" target="_blank" rel="noopener"><em>&#9654;</em><span data-t="demo"></span></a>
+          <a class="ext-btn" id="mExt" target="_blank" rel="noopener">&#8599;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-mid">
+      <div>
+        <div class="block-t mono" data-t="tracklist"></div>
+        <div class="mono" id="mTracks"></div>
+      </div>
+      <div>
+        <div class="block-t mono" data-t="liner"></div>
+        <p class="notes mono" id="mNotes"></p>
+        <div class="impact mono" id="mImpact"><span data-t="impactL"></span><p id="mImpactTxt"></p></div>
+        <div class="credits">
+          <div>
+            <div class="block-t mono" style="font-size:10px;margin-bottom:12px" data-t="credits"></div>
+            <div class="who"><em class="mono">AC</em><div><div class="n">Angelo Castillo</div><div class="r mono" data-t="devRole"></div></div></div>
+          </div>
+          <div>
+            <div class="block-t mono" style="font-size:10px;margin-bottom:12px" data-t="coverArt"></div>
+            <div class="who"><span class="art-chip" id="mArtChip"></span><div class="mono" style="font-size:11px;color:rgba(255,255,255,.6);line-height:1.5">Vinyl Edition<br>2026</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-foot mono">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div class="meta-k" style="margin:0" data-t="availOn"></div>
+        <div style="display:flex;gap:10px">
+          <a class="social-sm mono" href="https://github.com/AngeloCastilloPerez" target="_blank" rel="noopener">gh</a>
+          <a class="social-sm mono" href="https://www.linkedin.com/in/castilloperz/" target="_blank" rel="noopener">in</a>
+        </div>
+      </div>
+      <div><div class="meta-k" style="margin-bottom:5px" data-t="repo"></div><a id="mRepo" style="font-size:12px" target="_blank" rel="noopener"></a></div>
+      <div><div class="meta-k" style="margin-bottom:5px" data-t="lastUpd"></div><div style="font-size:12px;color:rgba(255,255,255,.72)" id="mUpd"></div></div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+        <div class="barcode" id="mBarcode"></div>
+        <span style="font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.4)" id="mSku"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATOS REALES — Angelo Castillo / HERO
+   Fuente: portfolio-data/data.json + experience-data.json
+   ============================================================ */
+var HERO_URL = 'https://www.hero.com.pe';
+var GH = 'https://github.com/AngeloCastilloPerez/';
+
+var CATS = [
+  {k:'ia',       es:'IA / ML',  en:'AI / ML'},
+  {k:'producto', es:'Productos',en:'Products'},
+  {k:'data',     es:'Data',     en:'Data'},
+  {k:'auto',     es:'Agentes',  en:'Agents'}
+];
+
+var PROJECTS = [
+  {id:'01', name:'WhatsApp AI', cat:'ia', img:'whatsapp-ai', year:'2026', url:HERO_URL,
+   es:'Asistente de negocio inteligente sobre WhatsApp: respuestas automáticas y soporte 24/7 con IA.',
+   en:'Smart business assistant on WhatsApp: automated responses and 24/7 AI support.',
+   stack:'LLMs · WhatsApp API · n8n',
+   tags:['IA / ML','WhatsApp API','LLMs','Automatización'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'12 de Marzo, 2026',en:'March 12, 2026'},
+   tracks:[{es:'Integración de WhatsApp',en:'WhatsApp Integration'},{es:'Motor de respuestas IA',en:'AI Response Engine'},{es:'Calificación de leads',en:'Lead Qualification'},{es:'Soporte 24/7',en:'24/7 Support'},{es:'Analítica de conversaciones',en:'Conversation Analytics'}],
+   notes:{es:'Asistente conversacional que atiende, califica y da soporte a clientes por WhatsApp de forma autónoma, integrando LLMs con la lógica del negocio.',en:'Conversational assistant that serves, qualifies and supports customers on WhatsApp autonomously, integrating LLMs with business logic.'}},
+
+  {id:'02', name:'Data Pipelines', cat:'data', img:'data-pipelines', year:'2025', url:GH+'Project-Minsur',
+   es:'Migración del ETL financiero de Minsur desde Jenkins on-premise hacia Azure — arquitectura Medallion para 4 dominios.',
+   en:'Migration of Minsur’s financial ETL from on-prem Jenkins to Azure — Medallion architecture across 4 domains.',
+   stack:'Azure Data Factory · Databricks · PySpark',
+   tags:['DATA','Azure Data Factory','Databricks','PySpark'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'8 de Octubre, 2025',en:'October 8, 2025'},
+   tracks:[{es:'Auditoría de pipelines legacy',en:'Legacy Pipeline Audit'},{es:'Migración a Azure (ADF)',en:'Azure Migration (ADF)'},{es:'Capas Landing / Staging / Curated',en:'Landing / Staging / Curated Layers'},{es:'Validación de calidad',en:'Quality Validation'},{es:'Consumo directo en Power BI',en:'Direct Power BI Consumption'}],
+   notes:{es:'Pipeline ETL financiero on-premise en Jenkins, sin escalabilidad ni gobernanza en la nube, migrado a Azure con ADF, Databricks PySpark y ADLS Gen2 en arquitectura Medallion para 4 dominios financieros.',en:'On-prem Jenkins financial ETL pipeline, lacking cloud scalability and governance, migrated to Azure with ADF, Databricks PySpark and ADLS Gen2 in a Medallion architecture across 4 financial domains.'},
+   impact:{es:'ETL automatizado SAP + SharePoint → Landing → Staging → Curated, con consumo directo en Power BI.',en:'Automated ETL SAP + SharePoint → Landing → Staging → Curated, consumed directly in Power BI.'}},
+
+  {id:'03', name:'Agrovet BI', cat:'data', img:'agrovet-bi', year:'2025', url:HERO_URL,
+   es:'Analítica financiera y de negocio: arquitectura Medallion en Microsoft Fabric conectada a SAP.',
+   en:'Financial & business analytics: Medallion architecture on Microsoft Fabric connected to SAP.',
+   stack:'Microsoft Fabric · SAP · Power BI',
+   tags:['DATA','Microsoft Fabric','SAP','Power BI'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'20 de Julio, 2025',en:'July 20, 2025'},
+   tracks:[{es:'Integración SAP vía SOAP',en:'SAP Integration via SOAP'},{es:'Modelado dimensional',en:'Dimensional Modeling'},{es:'Capa semántica',en:'Semantic Layer'},{es:'Dashboards financieros',en:'Financial Dashboards'},{es:'Automatización de reportes',en:'Report Automation'}],
+   notes:{es:'Operaciones gestionadas en Excel, sin integración con SAP ni visibilidad de KPIs de costos y producción. Se implementó una arquitectura Medallion en Microsoft Fabric con integración SAP, PySpark y modelo semántico en Power BI.',en:'Operations managed in Excel, with no SAP integration and no visibility into cost and production KPIs. A Medallion architecture was implemented on Microsoft Fabric with SAP integration, PySpark and a Power BI semantic model.'},
+   impact:{es:'Pipeline automatizado SAP + SharePoint → Landing → Work → Work Live con DirectQuery.',en:'Automated pipeline SAP + SharePoint → Landing → Work → Work Live with DirectQuery.'}},
+
+  {id:'04', name:'MATTIU', cat:'producto', img:'mattiu', year:'2026', url:HERO_URL,
+   es:'Plataforma SaaS multi-agente: copiloto de proyectos con orquestación inteligente, contexto total y control operativo.',
+   en:'Multi-agent SaaS platform: an AI project copilot with intelligent orchestration, full context and operational control.',
+   stack:'FastAPI · React · Claude AI · PostgreSQL',
+   tags:['PRODUCTOS','FastAPI','Claude AI','Multi-agente'],
+   status:{es:'En desarrollo',en:'In development'},
+   updated:{es:'2 de Febrero, 2026',en:'February 2, 2026'},
+   tracks:[{es:'Ingesta de contexto',en:'Context Ingestion'},{es:'Planificación',en:'Planning'},{es:'Orquestación de agentes',en:'Agent Orchestration'},{es:'Módulos BI / PDF / Kanban',en:'BI / PDF / Kanban Modules'},{es:'Control y refinamiento',en:'Control & Refinement'}],
+   notes:{es:'Plataforma SaaS multi-agente con módulos de productividad, BI, extracción de PDF, Kanban y Portfolio, desplegada en Railway + Vercel.',en:'Multi-agent SaaS platform with productivity, BI, PDF extraction, Kanban and Portfolio modules, deployed on Railway + Vercel.'},
+   impact:{es:'Sistema end-to-end operativo con auth JWT, PostgreSQL y agentes IA conectados a Claude y OpenAI.',en:'Operational end-to-end system with JWT auth, PostgreSQL and AI agents connected to Claude and OpenAI.'}},
+
+  {id:'05', name:'Intranet ENAPU', cat:'producto', img:'enapu', year:'2023', url:GH+'Front-end',
+   es:'Desarrollo front-end de la intranet corporativa de ENAPU: portal interno, directorios y gestión documental.',
+   en:'Front-end development of the ENAPU corporate intranet: internal portal, directories and document management.',
+   stack:'HTML · CSS · JavaScript · SharePoint',
+   tags:['PRODUCTOS','HTML','JavaScript','SharePoint'],
+   status:{es:'Entregado',en:'Delivered'},
+   updated:{es:'15 de Junio, 2023',en:'June 15, 2023'},
+   tracks:[{es:'Arquitectura front-end',en:'Front-end Architecture'},{es:'Sistema de componentes',en:'Component System'},{es:'Portal de noticias',en:'News Portal'},{es:'Directorio interno',en:'Internal Directory'},{es:'Workflows documentales',en:'Document Workflows'}],
+   notes:{es:'Comunicación interna fragmentada y procesos documentales sin digitalizar. Se construyó un portal intranet con workflows automatizados y gestión documental, con foco en usabilidad y consistencia visual.',en:'Fragmented internal communication and undigitized document processes. An intranet portal was built with automated workflows and document management, focused on usability and visual consistency.'},
+   impact:{es:'Digitalización del 100% de los procesos documentales críticos.',en:'100% of critical document processes digitized.'}},
+
+  {id:'06', name:'Facial Recognition', cat:'ia', img:'facial', year:'2023', url:GH+'Facial_Recognition',
+   es:'Sistema de reconocimiento facial en Python: detecta, identifica y verifica personas en imagen o video en tiempo real.',
+   en:'Facial recognition system in Python: detects, identifies and verifies people in image or video in real time.',
+   stack:'Python · OpenCV · NumPy',
+   tags:['IA / ML','Computer Vision','Python','OpenCV'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'14 de Abril, 2024',en:'April 14, 2024'},
+   tracks:[{es:'Detección de rostros',en:'Face Detection'},{es:'Extracción de características',en:'Feature Extraction'},{es:'Entrenamiento del modelo',en:'Model Training'},{es:'Reconocimiento en tiempo real',en:'Real-Time Recognition'},{es:'Métricas y evaluación',en:'Metrics & Evaluation'}],
+   notes:{es:'Sistema completo de reconocimiento facial que detecta, identifica y verifica personas en imágenes o video en tiempo real, con alta precisión y rendimiento.',en:'Complete facial recognition system that detects, identifies and verifies people in images or video in real time, with high accuracy and performance.'}},
+
+  {id:'07', name:'Voice AI', cat:'auto', img:'voice-ai', year:'2026', url:HERO_URL,
+   es:'Conversaciones en tiempo real: habla natural, interacción en vivo e inteligencia con IA.',
+   en:'Real-time conversations: natural speech, live interaction and AI-powered intelligence.',
+   stack:'STT · LLMs · TTS',
+   tags:['AGENTES','STT','LLMs','TTS'],
+   status:{es:'En desarrollo',en:'In development'},
+   updated:{es:'25 de Enero, 2026',en:'January 25, 2026'},
+   tracks:[{es:'Captura de voz',en:'Voice Capture'},{es:'Transcripción (STT)',en:'Transcription (STT)'},{es:'Razonamiento con LLM',en:'LLM Reasoning'},{es:'Síntesis de voz (TTS)',en:'Speech Synthesis (TTS)'},{es:'Conversación en vivo',en:'Live Conversation'}],
+   notes:{es:'Agente de voz que sostiene conversaciones naturales en tiempo real: escucha, entiende, responde y suena humano, combinando STT, LLMs y TTS.',en:'Voice agent that holds natural real-time conversations: it listens, understands, responds and sounds human, combining STT, LLMs and TTS.'}},
+
+  {id:'08', name:'Power BI', cat:'data', img:'power-bi', year:'2024', url:GH+'Proyecto-Astara',
+   es:'Dashboards ejecutivos para AUNOR y ASTARA: modelo semántico unificado y actualización automática.',
+   en:'Executive dashboards for AUNOR and ASTARA: unified semantic model with automatic refresh.',
+   stack:'Power BI · DAX · SQL',
+   tags:['DATA','Power BI','DAX','SQL'],
+   status:{es:'Entregado',en:'Delivered'},
+   updated:{es:'30 de Noviembre, 2024',en:'November 30, 2024'},
+   tracks:[{es:'Modelo de datos',en:'Data Model'},{es:'Medidas DAX',en:'DAX Measures'},{es:'KPIs ejecutivos',en:'Executive KPIs'},{es:'Visualizaciones',en:'Visualizations'},{es:'Publicación y gobierno',en:'Publishing & Governance'}],
+   notes:{es:'Datos de ventas y logística fragmentados, sin capacidad de análisis en tiempo real. Se entregó un dashboard integrado en Power BI con modelo semántico unificado y actualización automática.',en:'Fragmented sales and logistics data with no real-time analysis capability. An integrated Power BI dashboard was delivered with a unified semantic model and automatic refresh.'},
+   impact:{es:'De 3 días a 2 horas en el ciclo de reporte mensual · 60% menos tiempo de generación de reportes.',en:'Monthly reporting cycle cut from 3 days to 2 hours · 60% less report generation time.'}},
+
+  {id:'09', name:'YuGiHo', cat:'producto', img:'yugiho', year:'2022', url:GH+'Project-YuGiHo',
+   es:'Proyecto en honor a Kazuki Takahashi: pipeline en Python + modelo en Power BI para explorar el catálogo de cartas.',
+   en:'Tribute project to Kazuki Takahashi: a Python pipeline + Power BI model to explore the card catalog.',
+   stack:'Python · Power BI · Web Scraping',
+   tags:['PRODUCTOS','Python','Power BI','Web Scraping'],
+   status:{es:'Archivado',en:'Archived'},
+   updated:{es:'10 de Agosto, 2022',en:'August 10, 2022'},
+   tracks:[{es:'Concepto y homenaje',en:'Concept & Tribute'},{es:'Recolección de datos',en:'Data Collection'},{es:'Estandarización',en:'Standardization'},{es:'Modelo exploratorio',en:'Exploratory Model'}],
+   notes:{es:'La información del catálogo estaba dispersa y costaba explorar cartas por características. Un pipeline ligero en Python recolecta y estandariza los datos, y un modelo en Power BI habilita el análisis exploratorio.',en:'Catalog information was scattered and hard to explore by card attributes. A lightweight Python pipeline collects and standardizes the data, and a Power BI model enables exploratory analysis.'},
+   impact:{es:'Vista interactiva para segmentar y buscar cartas por múltiples dimensiones.',en:'Interactive view to segment and search cards across multiple dimensions.'}},
+
+  {id:'10', name:'HERO AI Agents', cat:'ia', img:'hero-ai-agents', year:'2026', url:HERO_URL,
+   es:'Sistemas de IA a medida para empresas: agentes inteligentes y automatización con confianza por diseño.',
+   en:'Custom AI systems for companies: intelligent agents and automation, trusted by design.',
+   stack:'LLMs · Multi-agente · Claude',
+   tags:['IA / ML','LLMs','Multi-agente','FastAPI'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'2 de Febrero, 2026',en:'February 2, 2026'},
+   tracks:[{es:'Diseño de agentes',en:'Agent Design'},{es:'Herramientas y memoria',en:'Tools & Memory'},{es:'Orquestación',en:'Orchestration'},{es:'Seguridad y guardrails',en:'Safety & Guardrails'},{es:'Despliegue',en:'Deployment'}],
+   notes:{es:'Sistemas de IA a medida para empresas: agentes autónomos, seguros y escalables que automatizan procesos con confianza por diseño.',en:'Custom AI systems for companies: autonomous, secure and scalable agents that automate processes, trusted by design.'}},
+
+  {id:'11', name:'Viva Analytics', cat:'data', img:'viva-analytics', year:'2023', url:HERO_URL,
+   es:'Inteligencia de real estate: insights de mercado, reportes de performance y decisiones estratégicas.',
+   en:'Real estate intelligence: market insights, performance reports and strategic decisions.',
+   stack:'Python · Tableau · Pandas',
+   tags:['DATA','Python','Tableau','Real Estate'],
+   status:{es:'Entregado',en:'Delivered'},
+   updated:{es:'18 de Septiembre, 2023',en:'September 18, 2023'},
+   tracks:[{es:'Recolección de datos',en:'Data Collection'},{es:'Análisis de mercado',en:'Market Analysis'},{es:'Modelos de valoración',en:'Valuation Models'},{es:'Reportes de performance',en:'Performance Reports'},{es:'Dashboards estratégicos',en:'Strategic Dashboards'}],
+   notes:{es:'Inteligencia de real estate: insights de mercado, valoraciones y reportes de performance para decisiones de inversión estratégicas.',en:'Real estate intelligence: market insights, valuations and performance reports for strategic investment decisions.'}},
+
+  {id:'12', name:'hero.com.pe', cat:'producto', img:'hero-web2', year:'2026', url:HERO_URL,
+   es:'Web corporativa de HERO — construyendo el futuro con IA.',
+   en:'HERO corporate website — building the future with AI.',
+   stack:'Web · SEO · CMS',
+   tags:['PRODUCTOS','Web','SEO','Branding'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'2 de Febrero, 2026',en:'February 2, 2026'},
+   tracks:[{es:'Identidad de marca',en:'Brand Identity'},{es:'Diseño de la web',en:'Website Design'},{es:'Desarrollo',en:'Development'},{es:'SEO técnico',en:'Technical SEO'},{es:'Lanzamiento',en:'Launch'}],
+   notes:{es:'Web corporativa de HERO: la cara pública de la marca, construida para comunicar el futuro con IA, con foco en performance y SEO.',en:'HERO corporate website: the public face of the brand, built to communicate the future with AI, focused on performance and SEO.'}}
+];
+
+/* Posiciones de las tarjetas flotantes del hero (top/left en %, ancho en px) */
+var POS = [
+  {top:6,  left:6,  w:165, depth:1, dur:7.5, delay:0,   keep:1},
+  {top:31, left:-2, w:150, depth:2, dur:6.2, delay:0.8},
+  {top:55, left:8,  w:190, depth:3, dur:8.4, delay:1.6},
+  {top:84, left:3,  w:155, depth:1, dur:6.8, delay:0.4},
+  {top:10, left:21, w:140, depth:2, dur:7.1, delay:2.1},
+  {top:72, left:19, w:165, depth:3, dur:6.5, delay:1.1},
+  {top:-5, left:41, w:150, depth:2, dur:7.8, delay:0.6},
+  {top:8,  left:77, w:170, depth:3, dur:7.4, delay:2.4, keep:1},
+  {top:34, left:88, w:160, depth:1, dur:6.4, delay:1.9},
+  {top:58, left:82, w:180, depth:3, dur:8.1, delay:0.2},
+  {top:84, left:74, w:155, depth:2, dur:6.9, delay:1.4},
+  {top:80, left:56, w:165, depth:1, dur:6.6, delay:0.9}
+];
+
+/* Clientes / empresas atendidas */
+var CLIENTS = [
+  {name:'Aunor',      logo:'assets/img/clients/aunor.png'},
+  {name:'Dígito',     logo:'assets/img/clients/digito.png'},
+  {name:'Enapu',      logo:'assets/img/clients/enapu.png'},
+  {name:'Yamaha',     logo:'assets/img/clients/Yamaha.jpg'},
+  {name:'Mitsui',     logo:'assets/img/clients/mitsui.png'},
+  {name:'Grupo Rocío',logo:'assets/img/clients/gruporocio.png'},
+  {name:'Dblearner',  logo:'assets/img/clients/dblearner.jpg'},
+  {name:'Adium',      logo:'assets/img/clients/adium.png'}
+];
+
+/* Trayectoria profesional real — de humano a máquina */
+var STAGES = [
+  {n:'01', period:'Abr 2021 — Sep 2021', morph:0.00, company:'Grupo Rocío',
+   title:{es:'Auxiliar de Procesos',en:'Process Assistant'},
+   desc:{es:'Apoyo en la gestión de procesos operativos y administrativos. Primeros pasos en análisis de datos y eficiencia de procesos.',en:'Support in operational and administrative process management. First steps into data analysis and process efficiency.'},
+   skills:['Eficiencia de procesos','Análisis de información']},
+  {n:'02', period:'Sep 2021 — Abr 2022', morph:0.15, company:'Grupo Rocío',
+   title:{es:'Asistente de Producción',en:'Production Assistant'},
+   desc:{es:'Proyectos de mejora continua junto al equipo administrativo. Macros VBA, Business Intelligence y análisis de datos operativos.',en:'Continuous improvement projects with the administrative team. VBA Macros, Business Intelligence and operational data analysis.'},
+   skills:['Macros VBA','Business Intelligence','Excel']},
+  {n:'03', period:'2023', morph:0.33, company:'Dígito',
+   title:{es:'Analista de BI',en:'BI Analyst'},
+   desc:{es:'Dashboards ejecutivos en Power BI, modelos de datos y automatización de reportes para AUNOR y ASTARA.',en:'Executive Power BI dashboards, data models and report automation for AUNOR and ASTARA.'},
+   skills:['Power BI','DAX','SQL','ETL']},
+  {n:'04', period:'2023 — 2024', morph:0.50, company:'Dígito',
+   title:{es:'Analista de Datos',en:'Data Analyst'},
+   desc:{es:'Análisis avanzado con Python y Tableau. ETL y modelado de datos, KPIs estratégicos a nivel gerencial.',en:'Advanced analysis with Python and Tableau. ETL and data modeling, strategic KPIs at management level.'},
+   skills:['Python','Tableau','Pandas']},
+  {n:'05', period:'2024 — 2025', morph:0.66, company:'Dígito',
+   title:{es:'Analista de Proyectos de TI',en:'IT Project Analyst'},
+   desc:{es:'Liderazgo de proyectos de transformación digital. Arquitecturas de datos en Azure Data Factory e intranet ENAPU.',en:'Leading digital transformation projects. Data architectures on Azure Data Factory and the ENAPU intranet.'},
+   skills:['Azure','SharePoint','n8n']},
+  {n:'06', period:'2025 — Presente', morph:0.83, company:'Dígito',
+   title:{es:'Líder de Proyectos',en:'Project Lead'},
+   desc:{es:'Consultoría en Data & Analytics, IA y automatización. Equipos multidisciplinarios y entregas end-to-end para Yamaha Motors Perú.',en:'Consulting in Data & Analytics, AI and automation. Multidisciplinary teams and end-to-end delivery for Yamaha Motors Perú.'},
+   skills:['IA Generativa','LLMs','Make','Liderazgo']},
+  {n:'07', period:'2026 — Presente', morph:1.00, company:'HERO',
+   title:{es:'Founder & CEO',en:'Founder & CEO'},
+   desc:{es:'Agentes de IA, sistemas multi-agente y plataformas inteligentes para empresas (MATTIU).',en:'AI agents, multi-agent systems and intelligent platforms for companies (MATTIU).'},
+   skills:['AI Agents','Multi-agente','FastAPI','Claude AI']}
+];
+
+var T = {
+  es:{role:'Fundador & CEO de HERO', all:'Todos', talk:'Hablemos', view:'Ver proyectos', projects:'Proyectos',
+      tag:'Diseño y construyo sistemas con IA que convierten datos en inteligencia, e inteligencia en impacto real.',
+      shelfHint:'PASA EL CURSOR SOBRE UNA PORTADA · CLIC PARA ABRIR',
+      clientsLabel:'Soluciones entregadas para',
+      expEyebrow:'[ EXPERIENCIA / SIMBIOSIS ]', expTitle:'De humano a máquina', symbiosis:'Simbiosis',
+      expSub:'Cinco años transformando datos en decisiones. Scrollea: la trayectoria evoluciona de lo orgánico a lo autónomo.',
+      stYears:'Años', stProjects:'Proyectos', stCompanies:'Empresas', stTools:'Herramientas',
+      back:'Volver al catálogo', stackL:'Stack principal', demo:'Ver proyecto', tracklist:'Tracklist',
+      liner:'Liner notes', impactL:'Resultado', credits:'Créditos', coverArt:'Cover art',
+      devRole:'Desarrollador & Arquitecto', availOn:'Disponible en', repo:'Enlace', lastUpd:'Última actualización',
+      contactEyebrow:'[ CONTACTO ]', contactH:'¿Construimos algo juntos?',
+      contactSub:'Disponible para proyectos, producto y consultoría técnica.',
+      start:'Empezar ahora', cat:'Categoría', status:'Estado', yearL:'Año'},
+  en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
+      tag:'I design and build AI-powered systems that turn data into intelligence, and intelligence into real-world impact.',
+      shelfHint:'HOVER A COVER · CLICK TO OPEN',
+      clientsLabel:'Solutions delivered for',
+      expEyebrow:'[ EXPERIENCE / SYMBIOSIS ]', expTitle:'From human to machine', symbiosis:'Symbiosis',
+      expSub:'Five years turning data into decisions. Scroll: the journey evolves from organic to autonomous.',
+      stYears:'Years', stProjects:'Projects', stCompanies:'Companies', stTools:'Tools',
+      back:'Back to catalog', stackL:'Main stack', demo:'View project', tracklist:'Tracklist',
+      liner:'Liner notes', impactL:'Outcome', credits:'Credits', coverArt:'Cover art',
+      devRole:'Developer & Architect', availOn:'Available on', repo:'Link', lastUpd:'Last update',
+      contactEyebrow:'[ CONTACT ]', contactH:'Shall we build something together?',
+      contactSub:'Available for projects, product work and technical consulting.',
+      start:'Start now', cat:'Category', status:'Status', yearL:'Year'}
+};
+
+/* ============================================================
+   ESTADO + RENDER
+   ============================================================ */
+var state = {lang:'es', cat:null, openId:null};
+var $ = function(id){ return document.getElementById(id); };
+var catOf = function(k){ for(var i=0;i<CATS.length;i++){ if(CATS[i].k===k) return CATS[i]; } return CATS[0]; };
+var byId = function(id){ for(var i=0;i<PROJECTS.length;i++){ if(PROJECTS[i].id===id) return PROJECTS[i]; } return null; };
+var filtered = function(){ return PROJECTS.filter(function(p){ return !state.cat || p.cat===state.cat; }); };
+var cardImg = function(p){ return 'assets/v2/cards/'+p.img+'.jpg'; };
+var heroImg = function(p){ return 'assets/v2/hero/'+p.img+'.jpg'; };
+
+function applyStrings(){
+  var t = T[state.lang];
+  document.documentElement.lang = state.lang;
+  var nodes = document.querySelectorAll('[data-t]');
+  for(var i=0;i<nodes.length;i++){
+    var k = nodes[i].getAttribute('data-t');
+    if(t[k] !== undefined) nodes[i].textContent = t[k];
+  }
+  var btns = document.querySelectorAll('.langbtn');
+  for(var j=0;j<btns.length;j++){
+    btns[j].classList.toggle('on', btns[j].getAttribute('data-lang')===state.lang);
+  }
+}
+
+function renderChips(container){
+  var t = T[state.lang];
+  var list = [{k:null,label:t.all}].concat(CATS.map(function(c){ return {k:c.k,label:c[state.lang]}; }));
+  container.innerHTML = '';
+  list.forEach(function(c){
+    var b = document.createElement('button');
+    b.className = 'chip mono' + (state.cat===c.k ? ' on' : '');
+    b.textContent = c.label;
+    b.onclick = function(){ state.cat = (state.cat===c.k || c.k===null) ? null : c.k; render(); };
+    container.appendChild(b);
+  });
+}
+
+function renderFloating(){
+  var layers = {1:$('l1'), 2:$('l2'), 3:$('l3')};
+  layers[1].innerHTML = ''; layers[2].innerHTML = ''; layers[3].innerHTML = '';
+  PROJECTS.forEach(function(p,i){
+    var pos = POS[i];
+    var active = state.cat && p.cat===state.cat;
+    var dim = state.cat && p.cat!==state.cat;
+
+    var holder = document.createElement('div');
+    holder.className = 'fcard' + (pos.keep ? ' keep' : '');
+    holder.style.top = pos.top+'%';
+    holder.style.left = pos.left+'%';
+    holder.style.width = pos.w+'px';
+    holder.style.zIndex = String(pos.depth);
+
+    var anim = document.createElement('div');
+    anim.className = 'fcard-inner';
+    anim.style.animation = 'floatY '+pos.dur+'s ease-in-out '+pos.delay+'s infinite alternate';
+
+    var frame = document.createElement('div');
+    frame.className = 'fcard-frame' + (active ? ' is-active' : '') + (dim ? ' is-dim' : '');
+    frame.setAttribute('role','button');
+    frame.setAttribute('tabindex','0');
+    frame.setAttribute('aria-label', p.name);
+
+    var im = document.createElement('div');
+    im.className = 'fcard-img';
+    im.style.backgroundImage = "url('"+heroImg(p)+"')";
+
+    frame.onclick = function(){ openModal(p.id); };
+    frame.onkeydown = function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openModal(p.id); } };
+
+    frame.appendChild(im); anim.appendChild(frame); holder.appendChild(anim);
+    layers[pos.depth].appendChild(holder);
+  });
+}
+
+function renderShelf(){
+  var list = filtered(), shelf = $('shelf');
+  shelf.innerHTML = '';
+  list.forEach(function(p,i){
+    var c = document.createElement('div');
+    c.className = 'vinyl';
+    c.style.zIndex = String(list.length - i);
+    c.setAttribute('role','button');
+    c.setAttribute('tabindex','0');
+    c.setAttribute('aria-label', p.name);
+    c.innerHTML = '<div class="vinyl-sleeve" style="background-image:url(\''+cardImg(p)+'\')"></div>'
+                + '<div class="vinyl-cap mono"><b>'+p.id+'</b> · '+p.name+'</div>';
+    c.onclick = function(){ openModal(p.id); };
+    c.onkeydown = function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openModal(p.id); } };
+    shelf.appendChild(c);
+  });
+  var n = list.length;
+  $('gridEyebrow').textContent = '[ '+(state.lang==='es'?'PROYECTOS':'PROJECTS')+' / '+String(n).padStart(2,'0')+' ]';
+  $('gridCount').textContent = n+' / '+PROJECTS.length;
+}
+
+function renderClients(){
+  var track = $('clientsTrack');
+  var item = function(c, clone){
+    return '<div class="client-item">'
+         + '<img src="'+c.logo+'" alt="'+(clone ? '' : c.name)+'" loading="lazy">'
+         + '<b>'+c.name+'</b></div>';
   };
+  /* se duplica la lista para que el desplazamiento sea continuo */
+  track.innerHTML = CLIENTS.map(function(c){ return item(c,false); }).join('')
+                  + CLIENTS.map(function(c){ return item(c,true); }).join('');
+}
 
-  const modal        = document.getElementById('companyModal');
-  const modalClose   = document.getElementById('companyModalClose');
-  const modalLogo    = document.getElementById('companyModalLogo');
-  const modalName    = document.getElementById('companyModalName');
-  const modalBadge   = document.getElementById('companyModalBadge');
-  const modalDesc    = document.getElementById('companyModalDesc');
-  const modalLinks   = document.getElementById('companyModalLinks');
+function renderTimeline(){
+  var tl = $('timeline');
+  tl.innerHTML = '';
+  STAGES.forEach(function(s,i){
+    var d = document.createElement('div');
+    d.className = 'stage' + (s.company==='HERO' ? ' hero-stage' : '');
+    d.setAttribute('data-i', String(i));
+    var skills = s.skills.map(function(k){ return '<span class="skill mono">'+k+'</span>'; }).join('');
+    d.innerHTML = '<div class="stage-dot mono">'+s.n+'</div>'
+      + '<div class="stage-period mono">'+s.period+'</div>'
+      + '<h3>'+s.title[state.lang]+'</h3>'
+      + '<div class="stage-co mono">'+s.company+'</div>'
+      + '<p class="mono">'+s.desc[state.lang]+'</p>'
+      + '<div class="skills">'+skills+'</div>';
+    tl.appendChild(d);
+  });
+}
 
-  function openCompanyModal(key) {
-    const d = companyData[key];
-    if (!d) return;
-    modalLogo.src       = d.logo;
-    modalLogo.alt       = d.name;
-    modalName.textContent  = d.name;
-    modalBadge.textContent = d.badge;
-    modalDesc.textContent  = d.desc;
-    modalLinks.innerHTML   = d.links.map(l =>
-      `<a href="${l.url}" target="_blank" rel="noopener" class="company-modal-link">
-        <i class="bi ${l.icon}"></i> ${l.label}
-      </a>`
-    ).join('');
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+function render(){
+  applyStrings();
+  renderChips($('heroChips'));
+  renderChips($('shelfChips'));
+  renderFloating();
+  renderClients();
+  renderShelf();
+  renderTimeline();
+  if(state.openId) fillModal();
+  onScroll();
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+function fillModal(){
+  var p = byId(state.openId); if(!p) return;
+  var t = T[state.lang], L = state.lang;
+  var idx = PROJECTS.indexOf(p);
+
+  $('mCounter').innerHTML = '<span style="color:#FF8C42">'+p.id+'</span> / '+String(PROJECTS.length).padStart(2,'0');
+  $('mSleeve').style.backgroundImage = "url('"+cardImg(p)+"')";
+  $('mDiscLabel').style.backgroundImage = "url('"+cardImg(p)+"')";
+  $('mArtChip').style.backgroundImage = "url('"+cardImg(p)+"')";
+  $('mCat').textContent = catOf(p.cat)[L];
+  $('mCat2').textContent = catOf(p.cat)[L];
+  $('mTitle').textContent = p.name;
+  $('mDesc').textContent = p[L];
+  $('mStack').textContent = p.stack;
+  $('mYear').textContent = p.year;
+  $('mStatus').innerHTML = '<span class="dot-live"></span>'+p.status[L];
+  $('mUpd').textContent = p.updated[L];
+  $('mNotes').textContent = p.notes[L];
+  $('mDemo').href = p.url;
+  $('mExt').href = p.url;
+  $('mRepo').href = p.url;
+  $('mRepo').textContent = p.url.replace(/^https?:\/\//,'').replace(/\/$/,'');
+  $('mSku').textContent = 'AC-'+p.id+'26';
+
+  $('mTags').innerHTML = p.tags.map(function(g){ return '<span class="tag">'+g+'</span>'; }).join('');
+  $('mTracks').innerHTML = p.tracks.map(function(tr,i){
+    return '<div class="track"><b>'+String(i+1).padStart(2,'0')+'</b><span>'+tr[L]+'</span></div>';
+  }).join('');
+
+  var imp = $('mImpact');
+  if(p.impact){ imp.style.display='block'; $('mImpactTxt').textContent = p.impact[L]; }
+  else { imp.style.display='none'; }
+
+  var bc = '';
+  for(var i=0;i<26;i++){ bc += '<i style="width:'+(((idx*7+i*3)%5<2)?2:1)+'px"></i>'; }
+  $('mBarcode').innerHTML = bc;
+
+  applyStrings();
+}
+
+function openModal(id){
+  state.openId = id;
+  fillModal();
+  $('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('modal').scrollTop = 0;
+}
+function closeModal(){
+  state.openId = null;
+  $('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function stepModal(d){
+  var i = PROJECTS.indexOf(byId(state.openId));
+  var n = (i + d + PROJECTS.length) % PROJECTS.length;
+  openModal(PROJECTS[n].id);
+}
+
+/* ============================================================
+   SCROLL: video scrub + parallax + morfismo de experiencia
+   ============================================================ */
+var targetTime = 0;
+
+function onScroll(){
+  /* --- HERO --- */
+  var track = $('heroTrack'), v = $('heroVideo');
+  if(track && v){
+    var r = track.getBoundingClientRect(), vh = window.innerHeight;
+    var total = r.height - vh;
+    var p = total > 0 ? (-r.top)/total : 0;
+    p = Math.max(0, Math.min(1, p));
+
+    if(isFinite(v.duration) && v.duration > 0) targetTime = p * (v.duration - 0.05);
+
+    var content = $('heroContent');
+    if(content){
+      content.style.opacity = Math.max(0, 1 - p*1.6).toFixed(2);
+      content.style.transform = 'translateY('+(p*-40).toFixed(0)+'px)';
+    }
+    var cf = Math.max(0, 1 - p*1.9).toFixed(2);
+    [$('l1'),$('l2'),$('l3')].forEach(function(el,i){
+      if(el){ el.style.opacity = cf; el.style.transform = 'translateY('+(p*-(60+i*30)).toFixed(0)+'px)'; }
+    });
   }
 
-  function closeCompanyModal() {
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+  /* --- EXPERIENCIA --- */
+  var sec = $('experiencia');
+  if(!sec) return;
+  var sr = sec.getBoundingClientRect(), wh = window.innerHeight;
+  var stotal = sr.height - wh;
+  var sp = stotal > 0 ? (-sr.top)/stotal : (sr.top < wh*0.5 ? 1 : 0);
+  sp = Math.max(0, Math.min(1, sp));
+
+  $('symbFill').style.width = (sp*100).toFixed(0)+'%';
+  $('symbPct').textContent = Math.round(sp*100);
+
+  /* morfismo por capas, de la cabeza a las piernas */
+  for(var i=0;i<4;i++){
+    var local = Math.max(0, Math.min(1, (sp - i*0.17) / 0.30));
+    var h = document.querySelector('.lyr[data-h="'+i+'"]');
+    var rb = document.querySelector('.lyr[data-r="'+i+'"]');
+    if(h) h.style.opacity = (1 - local).toFixed(3);
+    if(rb) rb.style.opacity = local.toFixed(3);
   }
 
-  document.querySelectorAll('.company-clickable').forEach(el => {
-    el.addEventListener('click', () => openCompanyModal(el.dataset.company));
-    el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openCompanyModal(el.dataset.company); });
+  var stages = document.querySelectorAll('.stage');
+  var active = 0;
+  for(var s=0;s<stages.length;s++){
+    var on = sp >= STAGES[s].morph - 0.09;
+    stages[s].classList.toggle('on', on);
+    if(on) active = s;
+  }
+
+  /* la timeline se desplaza para mantener visible la etapa activa */
+  var inner = $('timeline');
+  if(inner && stages.length && !window.matchMedia('(max-width:1024px)').matches){
+    var track = inner.parentNode;
+    var over = inner.scrollHeight - track.clientHeight;
+    if(over > 0){
+      var shift = Math.max(0, Math.min(over, stages[active].offsetTop - track.clientHeight*0.22));
+      inner.style.transform = 'translateY(-'+shift.toFixed(0)+'px)';
+    } else {
+      inner.style.transform = 'none';
+    }
+  } else if(inner){
+    inner.style.transform = 'none';
+  }
+}
+
+function seekLoop(){
+  var v = $('heroVideo');
+  if(v && isFinite(v.duration) && !v.seeking){
+    var delta = targetTime - v.currentTime;
+    if(Math.abs(delta) > 0.033){
+      v.currentTime = v.currentTime + Math.max(-0.5, Math.min(0.5, delta));
+    }
+  }
+  requestAnimationFrame(seekLoop);
+}
+
+function onMouseMove(e){
+  if(window.matchMedia('(max-width:760px)').matches) return;
+  var nx = (e.clientX/window.innerWidth - 0.5)*2;
+  var ny = (e.clientY/window.innerHeight - 0.5)*2;
+  [[$('l1'),10],[$('l2'),20],[$('l3'),34]].forEach(function(pair){
+    if(pair[0]) pair[0].style.transform = 'translate3d('+(-nx*pair[1])+'px,'+(-ny*pair[1])+'px,0)';
+  });
+  var bg = $('heroBg');
+  if(bg) bg.style.transform = 'scale(1.08) translate3d('+(nx*7)+'px,'+(ny*7)+'px,0)';
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(function init(){
+  render();
+
+  document.querySelectorAll('.langbtn').forEach(function(b){
+    b.onclick = function(){ state.lang = b.getAttribute('data-lang'); render(); };
   });
 
-  modalClose.addEventListener('click', closeCompanyModal);
-  modal.addEventListener('click', e => { if (e.target === modal) closeCompanyModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCompanyModal(); });
-  </script>
+  $('mClose').onclick = closeModal;
+  $('mPrev').onclick = function(){ stepModal(-1); };
+  $('mNext').onclick = function(){ stepModal(1); };
 
+  document.addEventListener('keydown', function(e){
+    if(!state.openId) return;
+    if(e.key === 'Escape') closeModal();
+    if(e.key === 'ArrowLeft') stepModal(-1);
+    if(e.key === 'ArrowRight') stepModal(1);
+  });
+
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  window.addEventListener('mousemove', onMouseMove);
+
+  var v = $('heroVideo');
+  if(v){
+    v.muted = true; v.loop = false; v.playsInline = true;
+    var prime = function(){
+      v.play().then(function(){ v.pause(); v.currentTime = 0; onScroll(); })
+              .catch(function(){ onScroll(); });
+    };
+    if(v.readyState >= 2) prime(); else v.addEventListener('loadeddata', prime, {once:true});
+  }
+  requestAnimationFrame(seekLoop);
+  onScroll();
+})();
+</script>
 </body>
 </html>
