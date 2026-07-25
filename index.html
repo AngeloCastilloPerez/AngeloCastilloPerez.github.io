@@ -144,9 +144,9 @@ button{font:inherit}
   gap:60px;align-items:center}
 .exp-figure{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
 .morph-stage{position:relative;width:200px;height:320px}
-.morph-stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-/* idem: el morfismo lo controla el scroll, la transicion lo hacia arrastrar */
-.lyr{will-change:opacity}
+/* el video es 720x1280 (0.5625) y la caja 200x320 (0.625): con contain entra
+   completo y las bandas laterales quedan invisibles sobre el fondo oscuro */
+.morph-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .symb{width:100%;max-width:240px}
 .symb-top{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;letter-spacing:.18em;
   text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
@@ -379,25 +379,10 @@ button{font:inherit}
 
       <div class="exp-figure">
         <div class="eyebrow mono" data-t="expEyebrow"></div>
+        <!-- el morfismo humano->androide ya viene animado en el video; el scroll
+             solo lo scrubea (ver morphTime en la seccion de SCROLL) -->
         <div class="morph-stage">
-          <!-- HUMANO: trazos orgánicos, tono cálido -->
-          <svg viewBox="0 0 200 320" fill="none" aria-hidden="true">
-            <g stroke="#FFD9C2" stroke-width="2.2" stroke-linecap="round" fill="none">
-              <g class="lyr" data-h="0"><circle cx="100" cy="46" r="25"/><path d="M88 40c3-4 9-4 12 0M100 40c3-4 9-4 12 0"/></g>
-              <g class="lyr" data-h="1"><path d="M100 71v18M82 96c6-6 30-6 36 0 5 22 4 44-2 66-10 5-22 5-32 0-6-22-7-44-2-66Z"/></g>
-              <g class="lyr" data-h="2"><path d="M82 99c-12 8-19 25-20 44M118 99c12 8 19 25 20 44M62 143c-2 8-1 15 2 21M138 143c2 8 1 15-2 21"/></g>
-              <g class="lyr" data-h="3"><path d="M84 162c-3 26-4 52-2 78 1 12 2 24 1 36M116 162c3 26 4 52 2 78-1 12-2 24-1 36M75 279c8 3 14 3 20 0M105 279c8 3 14 3 20 0"/></g>
-            </g>
-          </svg>
-          <!-- ROBOT: segmentos geométricos, LED morado -->
-          <svg viewBox="0 0 200 320" fill="none" aria-hidden="true">
-            <g stroke="#7B2FFF" stroke-width="2" fill="rgba(123,47,255,0.07)">
-              <g class="lyr" data-r="0"><rect x="76" y="22" width="48" height="46" rx="9"/><rect x="86" y="38" width="10" height="6" rx="2" fill="#C4A8FF" stroke="none"/><rect x="104" y="38" width="10" height="6" rx="2" fill="#C4A8FF" stroke="none"/><path d="M100 22V10" stroke-linecap="round"/><circle cx="100" cy="7" r="3.4" fill="#C4A8FF" stroke="none"/></g>
-              <g class="lyr" data-r="1"><rect x="92" y="68" width="16" height="12" rx="3"/><rect x="76" y="82" width="48" height="34" rx="7"/><rect x="80" y="120" width="40" height="24" rx="5"/><rect x="84" y="150" width="32" height="14" rx="4"/><circle cx="100" cy="99" r="6" fill="#C4A8FF" stroke="none"/></g>
-              <g class="lyr" data-r="2"><rect x="54" y="86" width="18" height="40" rx="5"/><rect x="128" y="86" width="18" height="40" rx="5"/><rect x="56" y="132" width="14" height="34" rx="4"/><rect x="130" y="132" width="14" height="34" rx="4"/><circle cx="63" cy="129" r="3.4" fill="#C4A8FF" stroke="none"/><circle cx="137" cy="129" r="3.4" fill="#C4A8FF" stroke="none"/></g>
-              <g class="lyr" data-r="3"><rect x="80" y="170" width="17" height="52" rx="5"/><rect x="103" y="170" width="17" height="52" rx="5"/><rect x="80" y="228" width="17" height="52" rx="5"/><rect x="103" y="228" width="17" height="52" rx="5"/><rect x="74" y="286" width="24" height="10" rx="3"/><rect x="102" y="286" width="24" height="10" rx="3"/><circle cx="88" cy="225" r="3.2" fill="#C4A8FF" stroke="none"/><circle cx="112" cy="225" r="3.2" fill="#C4A8FF" stroke="none"/></g>
-            </g>
-          </svg>
+          <video id="morphVideo" src="assets/v2/morph.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
         </div>
         <div class="symb">
           <div class="symb-top mono"><span data-t="symbiosis"></span><b><span id="symbPct">0</span>%</b></div>
@@ -944,15 +929,16 @@ function stepModal(d){
 /* ============================================================
    SCROLL: video scrub + parallax + morfismo de experiencia
    ============================================================ */
-var targetTime = 0;
+var targetTime = 0;       /* posicion buscada en el video del hero */
+var morphTime = 0;        /* posicion buscada en el video del morfismo */
 var heroP = 0;            /* progreso del hero, 0..1 */
 var mx = 0, my = 0;       /* desvio del cursor, -1..1 */
-var heroInView = true;
+var heroInView = true, expInView = false;
 var ticking = false, mouseTick = false;
 
 /* --- nodos cacheados -------------------------------------------------
-   antes se resolvia un querySelectorAll('.stage') y ocho querySelector('.lyr')
-   en CADA evento de scroll. Ahora se resuelven una vez por render.       */
+   antes se resolvia un querySelectorAll('.stage') en CADA evento de scroll.
+   Ahora se resuelve una vez por render.                                   */
 var N = {stages:[], layers:[], human:[], robot:[]};
 
 function cacheNodes(){
@@ -960,13 +946,9 @@ function cacheNodes(){
   N.bg = $('heroBg');
   N.layers = [$('l1'), $('l2'), $('l3')];
   N.sec = $('experiencia'); N.fill = $('symbFill'); N.pct = $('symbPct');
+  N.morph = $('morphVideo');
   N.timeline = $('timeline');
   N.stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
-  N.human = []; N.robot = [];
-  for(var i=0;i<4;i++){
-    N.human.push(document.querySelector('.lyr[data-h="'+i+'"]'));
-    N.robot.push(document.querySelector('.lyr[data-r="'+i+'"]'));
-  }
 }
 
 /* --- medidas de layout -----------------------------------------------
@@ -1011,16 +993,16 @@ function updateScroll(){
   var stotal = sr.height - wh;
   var sp = stotal > 0 ? (-sr.top)/stotal : (sr.top < wh*0.5 ? 1 : 0);
   sp = Math.max(0, Math.min(1, sp));
+  expInView = sr.bottom > 0 && sr.top < wh;
 
   if(N.fill) N.fill.style.width = (sp*100).toFixed(0)+'%';
   var pct = Math.round(sp*100);
   if(N.pct && pct !== last.pct){ N.pct.textContent = pct; last.pct = pct; }
 
-  /* morfismo por capas, de la cabeza a las piernas */
-  for(var i=0;i<4;i++){
-    var local = Math.max(0, Math.min(1, (sp - i*0.17) / 0.30));
-    if(N.human[i]) N.human[i].style.opacity = (1 - local).toFixed(3);
-    if(N.robot[i]) N.robot[i].style.opacity = local.toFixed(3);
+  /* el morfismo humano->androide es el video: el progreso de la seccion
+     mapea directo a su linea de tiempo */
+  if(N.morph && isFinite(N.morph.duration) && N.morph.duration > 0){
+    morphTime = sp*(N.morph.duration - 0.05);
   }
 
   var active = 0;
@@ -1057,17 +1039,20 @@ function paintLayers(){
   }
 }
 
-/* --- scrub del video --------------------------------------------------
-   currentTime solo se toca si hay diferencia real y con el hero a la vista.
+/* --- scrub de video ---------------------------------------------------
+   currentTime solo se toca si hay diferencia real y con el video a la vista.
    Devuelve true si aun no llego al objetivo, para pedir otro frame.      */
-function stepVideo(){
-  var v = N.v;
-  if(!v || !heroInView || !isFinite(v.duration) || v.duration <= 0) return false;
-  var delta = targetTime - v.currentTime;
+function seekTo(v, objetivo, visible){
+  if(!v || !visible || !isFinite(v.duration) || v.duration <= 0) return false;
+  var delta = objetivo - v.currentTime;
   if(Math.abs(delta) < 0.04) return false;
   if(v.seeking) return true;   /* seek en vuelo: esperar sin encolar otro */
   v.currentTime = v.currentTime + Math.max(-0.5, Math.min(0.5, delta));
   return true;
+}
+function stepVideos(){
+  /* los dos se evaluan siempre: | en vez de || para no cortocircuitar */
+  return seekTo(N.v, targetTime, heroInView) | seekTo(N.morph, morphTime, expInView) ? true : false;
 }
 
 /* --- un solo rAF para todo -------------------------------------------
@@ -1079,7 +1064,7 @@ function requestTick(){
 function frame(){
   ticking = false;
   updateScroll();
-  if(stepVideo()) requestTick();
+  if(stepVideos()) requestTick();
 }
 
 function refresh(){
@@ -1125,15 +1110,17 @@ function paintMouse(){
   window.addEventListener('resize', function(){ measure(); requestTick(); });
   window.addEventListener('mousemove', onMouseMove, {passive:true});
 
-  var v = $('heroVideo');
-  if(v){
+  /* un play()+pause() inicial deja al decodificador listo para buscar; sin eso
+     el primer seek de cada video llega tarde. Aplica a los dos por igual. */
+  [$('heroVideo'), $('morphVideo')].forEach(function(v){
+    if(!v) return;
     v.muted = true; v.loop = false; v.playsInline = true;
     var prime = function(){
       v.play().then(function(){ v.pause(); v.currentTime = 0; requestTick(); })
               .catch(function(){ requestTick(); });
     };
     if(v.readyState >= 2) prime(); else v.addEventListener('loadeddata', prime, {once:true});
-  }
+  });
   refresh();
 })();
 </script>
