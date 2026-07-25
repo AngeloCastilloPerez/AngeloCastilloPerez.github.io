@@ -155,10 +155,14 @@ button{font:inherit}
 .symb-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#FF8C42,#FF3D5A 55%,#7B2FFF);
   transition:width .12s linear}
 
-.timeline{position:relative;padding-left:34px;max-height:62vh;overflow:hidden;
+/* el padding-left tiene que cubrir el dot (-34px), el translateX(-6px) de las
+   etapas inactivas y los 4px de anillo de la activa: 34+6+4 = 44 minimo.
+   Con 34px el overflow:hidden recortaba 6px del circulo y el anillo entero. */
+.timeline{position:relative;padding-left:46px;max-height:62vh;overflow:hidden;
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent);
   mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent)}
-.timeline::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);z-index:1}
+/* el rail va por el centro del dot activo: 46-34 + 19/2 = 21.5 */
+.timeline::before{content:"";position:absolute;left:21px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);z-index:1}
 .timeline-inner{transition:transform .5s cubic-bezier(.22,1,.36,1)}
 .stage{position:relative;padding:0 0 22px;opacity:.35;transform:translateX(-6px);
   transition:opacity .35s ease,transform .35s ease}
