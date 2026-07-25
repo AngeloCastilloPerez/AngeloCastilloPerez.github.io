@@ -166,7 +166,8 @@ button{font:inherit}
 #experiencia{position:relative;height:520vh;padding:0}
 .exp-stick{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;
   padding:80px 38px;border-top:1px solid rgba(255,255,255,.08)}
-.exp-grid{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);
+/* la columna sube de 340 a 400 para dejar crecer la figura del morfismo */
+.exp-grid{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);
   gap:60px;align-items:center}
 .exp-figure{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
 /* el background es el mismo del body a proposito: .exp-stick es position:sticky
@@ -174,7 +175,11 @@ button{font:inherit}
    alcanza el fondo de la pagina. Sin este color el screen compone contra un
    backdrop transparente y sale un rectangulo NEGRO. Al ser identico al fondo,
    la caja en si no se ve. */
-.morph-stage{position:relative;width:300px;height:480px;background:#080810}
+/* La altura manda y el ancho sale de la proporcion 5/8, para que la figura sea
+   lo mas grande posible sin desbordar en pantallas bajas: el min() con vh la
+   encoge sola en portatiles de 700px de alto en vez de recortarse.
+   A 70vh de 855px son ~598x374, contra los 480x300 de antes. */
+.morph-stage{position:relative;aspect-ratio:5/8;height:min(600px,70vh);width:auto;background:#080810}
 /* el video trae su propio fondo (6,6,20) contra el de la pagina (8,8,16): son
    casi iguales pero ese +4 de azul sobre un tono tan oscuro se lee como un
    recuadro. contrast() aplasta ese fondo a negro puro y screen sobre negro
@@ -327,7 +332,9 @@ button{font:inherit}
   .topnav{gap:12px}
   .toplink b{display:none}
   .hero-track{height:220vh}
-  .morph-stage{width:220px;height:352px}   /* misma proporcion 0.625; 300px desbordaria */
+  /* en movil el ancho disponible es ~260px (320 de viewport menos el padding
+     de .exp-stick), asi que aqui manda el ancho y no la altura */
+  .morph-stage{width:250px;height:400px;aspect-ratio:auto}
   .layer .fcard{display:none}
   .layer .fcard.keep{display:block}
   .shelf{padding:0 40px}
