@@ -169,10 +169,20 @@ button{font:inherit}
 .exp-grid{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);
   gap:60px;align-items:center}
 .exp-figure{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
-.morph-stage{position:relative;width:200px;height:320px}
-/* el video es 720x1280 (0.5625) y la caja 200x320 (0.625): con contain entra
-   completo y las bandas laterales quedan invisibles sobre el fondo oscuro */
-.morph-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+/* el background es el mismo del body a proposito: .exp-stick es position:sticky
+   y eso crea un contexto de apilamiento, asi que el mix-blend-mode del video no
+   alcanza el fondo de la pagina. Sin este color el screen compone contra un
+   backdrop transparente y sale un rectangulo NEGRO. Al ser identico al fondo,
+   la caja en si no se ve. */
+.morph-stage{position:relative;width:300px;height:480px;background:#080810}
+/* el video trae su propio fondo (6,6,20) contra el de la pagina (8,8,16): son
+   casi iguales pero ese +4 de azul sobre un tono tan oscuro se lee como un
+   recuadro. contrast() aplasta ese fondo a negro puro y screen sobre negro
+   devuelve exactamente el color de abajo -> el recuadro desaparece.
+   El video es 720x1280 (0.5625) y la caja 300x480 (0.625): contain lo deja
+   entero, con barras laterales de 15px que ya no se distinguen. */
+.morph-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+  mix-blend-mode:screen;filter:contrast(1.25) brightness(1.06)}
 .symb{width:100%;max-width:240px}
 .symb-top{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;letter-spacing:.18em;
   text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
@@ -317,6 +327,7 @@ button{font:inherit}
   .topnav{gap:12px}
   .toplink b{display:none}
   .hero-track{height:220vh}
+  .morph-stage{width:220px;height:352px}   /* misma proporcion 0.625; 300px desbordaria */
   .layer .fcard{display:none}
   .layer .fcard.keep{display:block}
   .shelf{padding:0 40px}
