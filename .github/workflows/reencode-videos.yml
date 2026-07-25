@@ -1,0 +1,174 @@
+name: Re-encodear videos para scrub
+
+# Los dos videos del sitio (hero y morfismo) se scrubean con el scroll. Para que
+# eso sea fluido cada frame tiene que ser un punto de entrada del decodificador
+# (all-intra, -g 1). Hoy tienen UN solo keyframe, asi que cada salto decodifica
+# desde el frame 0 y el costo crece con la posicion.
+#
+# Este workflow hace el re-encode en el runner (que ya trae ffmpeg) y abre un PR
+# con el resultado. No hace falta instalar nada en local ni ningun backend.
+#
+# Se dispara a mano desde la pestana Actions -> "Run workflow".
+
+on:
+  workflow_dispatch:
+    inputs:
+      crf:
+        description: 'Calidad CRF (18 = casi sin perdida y pesado, 32 = ligero y con artefactos). 26 es un buen punto de partida.'
+        required: true
+        default: '26'
+      escala:
+        description: 'Reescalado opcional, formato ancho:alto con -2 para automatico (ej "960:-2"). Vacio = mantener resolucion.'
+        required: false
+        default: ''
+      fps:
+        description: 'fps de salida. Vacio = mantener los 24 originales. 12 baja el peso a la mitad y en scrub casi no se nota.'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  reencode:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar ffmpeg
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffmpeg -version | head -1
+
+      - name: Medir el estado actual
+        run: |
+          for f in assets/v2/hero-bg.mp4 assets/v2/morph.mp4; do
+            echo "=== $f"
+            ffprobe -v error -select_streams v:0 \
+              -show_entries stream=width,height,r_frame_rate,nb_frames \
+              -of default=noprint_wrappers=1 "$f"
+            echo "keyframes: $(ffprobe -v error -select_streams v:0 \
+              -show_entries frame=key_frame -of csv=p=0 "$f" | grep -c '^1$')"
+            echo "bytes: $(stat -c%s "$f")"
+          done
+
+      - name: Re-encodear all-intra
+        env:
+          CRF: ${{ inputs.crf }}
+          ESCALA: ${{ inputs.escala }}
+          FPS: ${{ inputs.fps }}
+        run: |
+          set -euo pipefail
+          # el filtro se arma solo con lo que el usuario haya pedido.
+          # OJO: aqui no vale `[ -n "$X" ] && VF=...`, porque con set -e un test
+          # que da falso devuelve 1 y aborta el job.
+          VF=""
+          if [ -n "$ESCALA" ]; then VF="scale=$ESCALA"; fi
+          if [ -n "$FPS" ]; then VF="${VF:+$VF,}fps=$FPS"; fi
+
+          for f in assets/v2/hero-bg.mp4 assets/v2/morph.mp4; do
+            echo "--- $f"
+            # -g 1 -keyint_min 1 -sc_threshold 0 = cada frame es un keyframe,
+            # que es lo que hace que un seek no tenga que decodificar nada previo.
+            # -movflags +faststart deja el moov al principio para que el navegador
+            # sepa la duracion sin bajarse el archivo entero.
+            if [ -n "$VF" ]; then
+              ffmpeg -y -loglevel error -i "$f" -an -vf "$VF" \
+                -c:v libx264 -profile:v high -crf "$CRF" \
+                -g 1 -keyint_min 1 -sc_threshold 0 -pix_fmt yuv420p \
+                -movflags +faststart "${f%.mp4}.tmp.mp4"
+            else
+              ffmpeg -y -loglevel error -i "$f" -an \
+                -c:v libx264 -profile:v high -crf "$CRF" \
+                -g 1 -keyint_min 1 -sc_threshold 0 -pix_fmt yuv420p \
+                -movflags +faststart "${f%.mp4}.tmp.mp4"
+            fi
+            mv "${f%.mp4}.tmp.mp4" "$f"
+          done
+
+      - name: Extraer posters del primer frame
+        run: |
+          set -euo pipefail
+          ffmpeg -y -loglevel error -i assets/v2/hero-bg.mp4 -frames:v 1 -q:v 3 assets/v2/hero-bg.jpg
+          ffmpeg -y -loglevel error -i assets/v2/morph.mp4  -frames:v 1 -q:v 3 assets/v2/morph.jpg
+
+      - name: Verificar que quedaron all-intra
+        id: verificar
+        run: |
+          set -euo pipefail
+          resumen=""
+          for f in assets/v2/hero-bg.mp4 assets/v2/morph.mp4; do
+            # -count_frames cuenta de verdad; nb_frames a secas puede venir vacio
+            # segun como quedo el contenedor, y comparar contra vacio da un falso fallo.
+            frames=$(ffprobe -v error -select_streams v:0 -count_frames \
+                     -show_entries stream=nb_read_frames -of csv=p=0 "$f")
+            # grep -c devuelve 1 si no encuentra nada; sin el || true, set -e aborta
+            keys=$(ffprobe -v error -select_streams v:0 -show_entries frame=key_frame \
+                   -of csv=p=0 "$f" | grep -c '^1$' || true)
+            bytes=$(stat -c%s "$f")
+            echo "$f -> $keys keyframes de $frames frames, $bytes bytes"
+            # si no todos los frames son keyframe, el re-encode no sirvio
+            if [ "$keys" != "$frames" ]; then
+              echo "ERROR: $f quedo con $keys keyframes de $frames. Se esperaba que fueran todos."
+              exit 1
+            fi
+            resumen="${resumen}- \`$f\`: **$keys/$frames** frames son keyframe, $(( bytes / 1024 )) KB"$'\n'
+          done
+          {
+            echo 'resumen<<FIN'
+            echo "$resumen"
+            echo 'FIN'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Abrir PR con el resultado
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESUMEN: ${{ steps.verificar.outputs.resumen }}
+          CRF: ${{ inputs.crf }}
+          ESCALA: ${{ inputs.escala }}
+          FPS: ${{ inputs.fps }}
+        run: |
+          set -euo pipefail
+          rama="ci/videos-allintra-${{ github.run_id }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$rama"
+          git add assets/v2/hero-bg.mp4 assets/v2/morph.mp4 assets/v2/hero-bg.jpg assets/v2/morph.jpg
+          if git diff --cached --quiet; then
+            echo "No hubo cambios que subir."
+            exit 0
+          fi
+          git commit -m "perf: videos re-encodeados all-intra para que el scrub sea fluido
+
+Cada frame pasa a ser keyframe (-g 1), asi que un seek ya no tiene que
+decodificar desde el inicio del archivo. Generado por el workflow
+reencode-videos.yml (CRF=$CRF, escala='${ESCALA:-sin cambio}', fps='${FPS:-24}')."
+          git push -u origin "$rama"
+          printf '%s\n' \
+            "Videos re-encodeados **all-intra** por el workflow \`reencode-videos.yml\`." \
+            "" \
+            "Parametros: CRF \`$CRF\`, escala \`${ESCALA:-sin cambio}\`, fps \`${FPS:-24 originales}\`." \
+            "" \
+            "## Resultado" \
+            "" \
+            "$RESUMEN" \
+            "" \
+            "El paso de verificacion falla el job si algun archivo no queda con todos" \
+            "sus frames como keyframe, asi que si este PR existe es porque paso." \
+            "" \
+            "Tambien se regeneraron los posters del primer frame:" \
+            "\`assets/v2/hero-bg.jpg\` y \`assets/v2/morph.jpg\` (este ultimo es nuevo)." \
+            "" \
+            "## Que revisar" \
+            "" \
+            "- El peso: all-intra siempre pesa mas. Si quedo alto, volver a ejecutar el" \
+            "  workflow con un CRF mayor, o con \`escala\` y \`fps\` para bajarlo." \
+            "- La calidad en pantalla, sobre todo en el video del hero, que va detras" \
+            "  del scrim y tolera bastante compresion." \
+            > /tmp/cuerpo.md
+          gh pr create --base main --head "$rama" \
+            --title "perf: videos re-encodeados all-intra (CRF $CRF)" \
+            --body-file /tmp/cuerpo.md
