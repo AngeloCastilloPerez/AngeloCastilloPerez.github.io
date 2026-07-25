@@ -26,9 +26,9 @@ on:
         required: false
         default: ''
 
+# Solo hace falta escribir contenido: el workflow sube una rama, no crea el PR.
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
   reencode:
@@ -123,9 +123,12 @@ jobs:
             echo 'FIN'
           } >> "$GITHUB_OUTPUT"
 
-      - name: Abrir PR con el resultado
+      # Se sube la rama y se deja el enlace para abrir el PR de un clic.
+      # No se usa `gh pr create` a proposito: este repo tiene desactivado
+      # "Allow GitHub Actions to create and approve pull requests", asi que
+      # el token del workflow no puede crear PRs y el paso fallaria.
+      - name: Subir la rama con el resultado
         env:
-          GH_TOKEN: ${{ github.token }}
           RESUMEN: ${{ steps.verificar.outputs.resumen }}
           CRF: ${{ inputs.crf }}
           ESCALA: ${{ inputs.escala }}
@@ -138,7 +141,7 @@ jobs:
           git checkout -b "$rama"
           git add assets/v2/hero-bg.mp4 assets/v2/morph.mp4 assets/v2/hero-bg.jpg assets/v2/morph.jpg
           if git diff --cached --quiet; then
-            echo "No hubo cambios que subir."
+            echo "No hubo cambios que subir." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
           git commit -m "perf: videos re-encodeados all-intra para que el scrub sea fluido
@@ -147,28 +150,30 @@ Cada frame pasa a ser keyframe (-g 1), asi que un seek ya no tiene que
 decodificar desde el inicio del archivo. Generado por el workflow
 reencode-videos.yml (CRF=$CRF, escala='${ESCALA:-sin cambio}', fps='${FPS:-24}')."
           git push -u origin "$rama"
-          printf '%s\n' \
-            "Videos re-encodeados **all-intra** por el workflow \`reencode-videos.yml\`." \
-            "" \
-            "Parametros: CRF \`$CRF\`, escala \`${ESCALA:-sin cambio}\`, fps \`${FPS:-24 originales}\`." \
-            "" \
-            "## Resultado" \
-            "" \
-            "$RESUMEN" \
-            "" \
-            "El paso de verificacion falla el job si algun archivo no queda con todos" \
-            "sus frames como keyframe, asi que si este PR existe es porque paso." \
-            "" \
-            "Tambien se regeneraron los posters del primer frame:" \
-            "\`assets/v2/hero-bg.jpg\` y \`assets/v2/morph.jpg\` (este ultimo es nuevo)." \
-            "" \
-            "## Que revisar" \
-            "" \
-            "- El peso: all-intra siempre pesa mas. Si quedo alto, volver a ejecutar el" \
-            "  workflow con un CRF mayor, o con \`escala\` y \`fps\` para bajarlo." \
-            "- La calidad en pantalla, sobre todo en el video del hero, que va detras" \
-            "  del scrim y tolera bastante compresion." \
-            > /tmp/cuerpo.md
-          gh pr create --base main --head "$rama" \
-            --title "perf: videos re-encodeados all-intra (CRF $CRF)" \
-            --body-file /tmp/cuerpo.md
+
+          repo_url="${{ github.server_url }}/${{ github.repository }}"
+          {
+            echo "# Videos re-encodeados all-intra"
+            echo
+            echo "Parametros: CRF \`$CRF\`, escala \`${ESCALA:-sin cambio}\`, fps \`${FPS:-24 originales}\`."
+            echo
+            echo "## Resultado"
+            echo
+            echo "$RESUMEN"
+            echo "El paso de verificacion falla el job si algun archivo no queda con todos"
+            echo "sus frames como keyframe, asi que si llegaste hasta aqui es porque paso."
+            echo
+            echo "Tambien se regeneraron los posters del primer frame:"
+            echo "\`assets/v2/hero-bg.jpg\` y \`assets/v2/morph.jpg\` (este ultimo es nuevo)."
+            echo
+            echo "## Siguiente paso"
+            echo
+            echo "**[Abrir el PR desde la rama \`$rama\`]($repo_url/compare/main...$rama?expand=1)**"
+            echo
+            echo "## Que revisar"
+            echo
+            echo "- El peso: all-intra siempre pesa mas. Si quedo alto, volver a ejecutar"
+            echo "  el workflow con un CRF mayor, o usando \`escala\` y \`fps\`."
+            echo "- La calidad en pantalla, sobre todo el video del hero, que va detras"
+            echo "  del scrim y tolera bastante compresion."
+          } >> "$GITHUB_STEP_SUMMARY"
