@@ -247,8 +247,12 @@ button{font:inherit}
   color:rgba(255,255,255,.52)}
 /* se reusa el floatY del hero; el alternate y los tiempos distintos evitan que
    los dos globos suban y bajen a la vez */
+/* el -78 no es arbitrario: con -26 el globo se solapaba 38px sobre la pierna
+   derecha de la figura. Medido en pantalla, la persona llega hasta x=723 y el
+   globo arrancaba en 685. Corrido queda en el hueco de 150px entre columnas,
+   sin tocar ni a la figura ni a la timeline. */
 .globo-1{top:4%;  left:-30px; animation:floatY 6.4s ease-in-out 0s   infinite alternate}
-.globo-2{bottom:9%;right:-26px;animation:floatY 7.6s ease-in-out 1.1s infinite alternate}
+.globo-2{bottom:9%;right:-78px;animation:floatY 7.6s ease-in-out 1.1s infinite alternate}
 
 /* ---------- CONTACTO ---------- */
 .contact{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:100px 24px 60px;position:relative}
