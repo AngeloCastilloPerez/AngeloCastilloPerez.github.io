@@ -582,16 +582,16 @@ var PROJECTS = [
    notes:{es:'Operaciones gestionadas en Excel, sin integración con SAP ni visibilidad de KPIs de costos y producción. Se implementó una arquitectura Medallion en Microsoft Fabric con integración SAP, PySpark y modelo semántico en Power BI.',en:'Operations managed in Excel, with no SAP integration and no visibility into cost and production KPIs. A Medallion architecture was implemented on Microsoft Fabric with SAP integration, PySpark and a Power BI semantic model.'},
    impact:{es:'Pipeline automatizado SAP + SharePoint → Landing → Work → Work Live con DirectQuery.',en:'Automated pipeline SAP + SharePoint → Landing → Work → Work Live with DirectQuery.'}},
 
-  {id:'04', name:'MATTIU', cat:'producto', img:'mattiu', year:'2026', url:HERO_URL,
-   es:'Plataforma SaaS multi-agente: copiloto de proyectos con orquestación inteligente, contexto total y control operativo.',
-   en:'Multi-agent SaaS platform: an AI project copilot with intelligent orchestration, full context and operational control.',
+  {id:'04', name:'MATTIU', cat:'producto', img:'mattiu', year:'2026', url:HERO_URL+'/mattiu',
+   es:'Copiloto que opera el negocio, no que conversa sobre él: lee el estado real del portafolio, actúa sobre el sistema y traduce el avance técnico a lenguaje de negocio.',
+   en:'A copilot that runs the business rather than talking about it: it reads the real state of the portfolio, acts on the system and turns technical progress into business language.',
    stack:'FastAPI · React · Claude AI · PostgreSQL',
    tags:['PRODUCTOS','FastAPI','Claude AI','Multi-agente'],
-   status:{es:'En desarrollo',en:'In development'},
-   updated:{es:'2 de Febrero, 2026',en:'February 2, 2026'},
-   tracks:[{es:'Ingesta de contexto',en:'Context Ingestion'},{es:'Planificación',en:'Planning'},{es:'Orquestación de agentes',en:'Agent Orchestration'},{es:'Módulos BI / PDF / Kanban',en:'BI / PDF / Kanban Modules'},{es:'Control y refinamiento',en:'Control & Refinement'}],
-   notes:{es:'Plataforma SaaS multi-agente con módulos de productividad, BI, extracción de PDF, Kanban y Portfolio, desplegada en Railway + Vercel.',en:'Multi-agent SaaS platform with productivity, BI, PDF extraction, Kanban and Portfolio modules, deployed on Railway + Vercel.'},
-   impact:{es:'Sistema end-to-end operativo con auth JWT, PostgreSQL y agentes IA conectados a Claude y OpenAI.',en:'Operational end-to-end system with JWT auth, PostgreSQL and AI agents connected to Claude and OpenAI.'}},
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'25 de Julio, 2026',en:'July 25, 2026'},
+   tracks:[{es:'CRM y viaje comercial',en:'CRM & Sales Journey'},{es:'Áreas: finanzas, RRHH, legal, marketing',en:'Areas: Finance, HR, Legal, Marketing'},{es:'Orquestación multi-agente',en:'Multi-agent Orchestration'},{es:'MATTIU por WhatsApp',en:'MATTIU over WhatsApp'},{es:'Briefing diario de inteligencia',en:'Daily Intelligence Briefing'}],
+   notes:{es:'Más de cien herramientas conectadas al mismo backend: crea tareas, mueve estados, genera propuestas y reportes, y contesta por WhatsApp. Toda acción irreversible o hacia afuera pasa por confirmación humana.',en:'Over a hundred tools wired to a single backend: it creates tasks, moves states, generates proposals and reports, and answers over WhatsApp. Every irreversible or outward-facing action goes through a human confirmation gate.'},
+   impact:{es:'El ciclo completo del cliente en un solo sistema — de la captación del lead al proyecto entregado — con trazabilidad y control operativo real.',en:'The full client lifecycle in one system — from lead capture to delivered project — with real traceability and operational control.'}},
 
   {id:'05', name:'Intranet ENAPU', cat:'producto', img:'enapu', year:'2023', url:GH+'Front-end',
    es:'Desarrollo front-end de la intranet corporativa de ENAPU: portal interno, directorios y gestión documental.',
@@ -674,7 +674,29 @@ var PROJECTS = [
    status:{es:'En producción',en:'In production'},
    updated:{es:'2 de Febrero, 2026',en:'February 2, 2026'},
    tracks:[{es:'Identidad de marca',en:'Brand Identity'},{es:'Diseño de la web',en:'Website Design'},{es:'Desarrollo',en:'Development'},{es:'SEO técnico',en:'Technical SEO'},{es:'Lanzamiento',en:'Launch'}],
-   notes:{es:'Web corporativa de HERO: la cara pública de la marca, construida para comunicar el futuro con IA, con foco en performance y SEO.',en:'HERO corporate website: the public face of the brand, built to communicate the future with AI, focused on performance and SEO.'}}
+   notes:{es:'Web corporativa de HERO: la cara pública de la marca, construida para comunicar el futuro con IA, con foco en performance y SEO.',en:'HERO corporate website: the public face of the brand, built to communicate the future with AI, focused on performance and SEO.'}},
+
+  {id:'13', name:'AlmaCode', cat:'ia', img:'almacode', year:'2026', url:HERO_URL+'/almacode',
+   es:'Memoria compartida entre todas mis IAs: separa el cerebro —lo que sé— del alma —cómo respondo—, para que ninguna conversación empiece de cero.',
+   en:'Shared memory across all my AIs: it separates the brain —what is known— from the soul —how it responds— so no conversation ever starts from zero.',
+   stack:'FastMCP · pgvector · FastAPI · React',
+   tags:['IA / ML','MCP','RAG','Memoria'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'25 de Julio, 2026',en:'July 25, 2026'},
+   tracks:[{es:'Servidor MCP y sus herramientas',en:'MCP Server & Tools'},{es:'Cerebro: cinco áreas de memoria',en:'Brain: Five Memory Areas'},{es:'Alma: personalidad que evoluciona',en:'Soul: Evolving Personality'},{es:'Búsqueda híbrida y reranking',en:'Hybrid Search & Reranking'},{es:'Consolidación en segundo plano',en:'Background Consolidation'}],
+   notes:{es:'Cualquier IA se conecta por MCP y comparte la misma memoria. La búsqueda combina vectores con BM25 y reordena por relevancia, recencia e importancia; de noche consolida lo aprendido y descarta lo redundante.',en:'Any AI connects over MCP and shares the same memory. Search combines vectors with BM25 and reranks by relevance, recency and importance; at night it consolidates what it learned and drops the redundant.'},
+   impact:{es:'El contexto dejó de vivir en una sola herramienta: lo que se decide en una conversación queda disponible en todas las demás.',en:'Context stopped living inside a single tool: whatever gets decided in one conversation is available in every other one.'}},
+
+  {id:'14', name:'Briefing de IA', cat:'auto', img:'briefing', year:'2026', url:'https://briefing.hero.com.pe',
+   es:'Cada mañana a las 6:30, noticias de IA y eventos sintetizados con sus fuentes. Lo que no se puede verificar, no se publica.',
+   en:'Every morning at 6:30, AI news and events synthesized with their sources. Whatever cannot be verified does not get published.',
+   stack:'Tavily · Claude Sonnet · FastAPI · JS vanilla',
+   tags:['AGENTES','Búsqueda web','LLMs','Cron'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'25 de Julio, 2026',en:'July 25, 2026'},
+   tracks:[{es:'Búsqueda en cinco frentes',en:'Five-front Search'},{es:'Síntesis con citas',en:'Synthesis with Citations'},{es:'Validación anti-alucinación',en:'Anti-hallucination Validation'},{es:'Reparto por correo y web',en:'Email & Web Delivery'},{es:'Curación desde el cockpit',en:'Curation from the Cockpit'}],
+   notes:{es:'Cinco búsquedas alimentan una síntesis, y el filtro anti-alucinación vive en el código, no en el prompt: un evento sin fecha o sin URL verificable se descarta antes de llegar a nadie. La web pública es HTML, CSS y JS sin build.',en:'Five searches feed one synthesis, and the anti-hallucination filter lives in code, not in the prompt: an event without a date or a verifiable URL is dropped before it reaches anyone. The public site is HTML, CSS and JS with no build step.'},
+   impact:{es:'Una hora diaria de lectura dispersa convertida en cinco minutos de inteligencia con fuentes citadas.',en:'An hour of scattered daily reading turned into five minutes of intelligence with cited sources.'}}
 ];
 
 /* Posiciones de las tarjetas flotantes del hero (top/left en %, ancho en px) */
@@ -690,7 +712,13 @@ var POS = [
   {top:34, left:88, w:160, depth:1, dur:6.4, delay:1.9},
   {top:58, left:82, w:180, depth:3, dur:8.1, delay:0.2},
   {top:84, left:74, w:155, depth:2, dur:6.9, delay:1.4},
-  {top:80, left:56, w:165, depth:1, dur:6.6, delay:0.9}
+  {top:80, left:56, w:165, depth:1, dur:6.6, delay:0.9},
+  /* POS se indexa por posicion del proyecto (POS[i]), asi que tiene que tener
+     al menos tantas entradas como PROJECTS o el render del hero revienta.
+     Estas dos van en los huecos de arriba-derecha y abajo-centro, fuera de la
+     franja central donde vive el texto del hero. */
+  {top:-7, left:60, w:145, depth:2, dur:7.2, delay:1.3},
+  {top:88, left:38, w:150, depth:3, dur:6.7, delay:2.0}
 ];
 
 /* Clientes / empresas atendidas */
