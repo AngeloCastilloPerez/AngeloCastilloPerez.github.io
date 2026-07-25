@@ -166,9 +166,13 @@ button{font:inherit}
 #experiencia{position:relative;height:520vh;padding:0}
 .exp-stick{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;
   padding:80px 38px;border-top:1px solid rgba(255,255,255,.08)}
-/* la columna sube de 340 a 400 para dejar crecer la figura del morfismo */
+/* la columna es de 400 para dejar crecer la figura del morfismo.
+   El gap sube de 60 a 150: ensanchar la reja no habria servido de nada porque
+   esta centrada con margin auto —crecer la corre a la izquierda lo mismo que
+   la corre a la derecha—, asi que lo unico que empuja la timeline hacia la
+   derecha sin mover la figura es la separacion entre columnas. */
 .exp-grid{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);
-  gap:60px;align-items:center}
+  gap:150px;align-items:center}
 .exp-figure{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
 /* el background es el mismo del body a proposito: .exp-stick es position:sticky
    y eso crea un contexto de apilamiento, asi que el mix-blend-mode del video no
@@ -227,9 +231,24 @@ button{font:inherit}
 .skills{display:flex;flex-wrap:wrap;gap:6px}
 .skill{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);
   border:1px solid rgba(255,255,255,.12);border-radius:5px;padding:4px 9px}
-.exp-stats{display:flex;flex-wrap:wrap;gap:26px;margin-top:26px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08)}
-.exp-stat b{display:block;font-size:26px;font-weight:300;letter-spacing:-.02em;color:#fff}
-.exp-stat span{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+/* Globos: los dos numeros que quedan ya no son una fila de stats debajo de la
+   timeline, sino burbujas que flotan junto a la figura. Complementan sin
+   competir, que era justo el punto: no son el foco de la seccion.
+   pointer-events:none para que no estorben al hover de la timeline. */
+.globo{position:absolute;z-index:3;pointer-events:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  width:104px;height:104px;border-radius:50%;
+  background:radial-gradient(circle at 34% 28%,rgba(255,140,66,.16),rgba(8,8,16,.72) 68%);
+  border:1px solid rgba(255,140,66,.24);
+  box-shadow:0 0 34px rgba(255,61,90,.14), inset 0 0 22px rgba(255,140,66,.07);
+  backdrop-filter:blur(3px)}
+.globo b{font-size:25px;font-weight:300;letter-spacing:-.02em;color:#fff;line-height:1}
+.globo span{margin-top:5px;font-size:8.5px;letter-spacing:.17em;text-transform:uppercase;
+  color:rgba(255,255,255,.52)}
+/* se reusa el floatY del hero; el alternate y los tiempos distintos evitan que
+   los dos globos suban y bajen a la vez */
+.globo-1{top:4%;  left:-30px; animation:floatY 6.4s ease-in-out 0s   infinite alternate}
+.globo-2{bottom:9%;right:-26px;animation:floatY 7.6s ease-in-out 1.1s infinite alternate}
 
 /* ---------- CONTACTO ---------- */
 .contact{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:100px 24px 60px;position:relative}
@@ -335,6 +354,13 @@ button{font:inherit}
   /* en movil el ancho disponible es ~260px (320 de viewport menos el padding
      de .exp-stick), asi que aqui manda el ancho y no la altura */
   .morph-stage{width:250px;height:400px;aspect-ratio:auto}
+  /* los globos se encogen con la figura y se pegan mas al borde, si no
+     sobresalen del viewport en pantallas de 320px */
+  .globo{width:78px;height:78px}
+  .globo b{font-size:19px}
+  .globo span{font-size:7.5px;letter-spacing:.14em}
+  .globo-1{left:-14px}
+  .globo-2{right:-12px}
   .layer .fcard{display:none}
   .layer .fcard.keep{display:block}
   .shelf{padding:0 40px}
@@ -432,18 +458,16 @@ button{font:inherit}
           <div class="symb-top mono"><span data-t="symbiosis"></span><b><span id="symbPct">0</span>%</b></div>
           <div class="symb-rail"><div class="symb-fill" id="symbFill"></div></div>
         </div>
+        <!-- los dos numeros que sobreviven flotan junto a la figura en vez de
+             ir en una fila debajo de la timeline: complementan, no compiten -->
+        <div class="globo globo-1 mono"><b>5+</b><span data-t="stYears"></span></div>
+        <div class="globo globo-2 mono"><b>18</b><span data-t="stProjects"></span></div>
       </div>
 
       <div>
         <h2 style="font-weight:300;font-size:clamp(28px,4vw,38px);letter-spacing:-.025em;margin-bottom:10px" data-t="expTitle"></h2>
         <p class="mono" style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.5);max-width:56ch;margin-bottom:30px" data-t="expSub"></p>
         <div class="timeline"><div class="timeline-inner" id="timeline"></div></div>
-        <div class="exp-stats mono">
-          <div class="exp-stat"><b>5+</b><span data-t="stYears"></span></div>
-          <div class="exp-stat"><b>18</b><span data-t="stProjects"></span></div>
-          <div class="exp-stat"><b>6</b><span data-t="stCompanies"></span></div>
-          <div class="exp-stat"><b>10</b><span data-t="stTools"></span></div>
-        </div>
       </div>
 
     </div>
@@ -776,9 +800,9 @@ var T = {
   es:{role:'Fundador & CEO de HERO', all:'Todos', talk:'Hablemos', view:'Ver proyectos', projects:'Proyectos',
       shelfHint:'PASA EL CURSOR SOBRE UNA PORTADA · CLIC PARA ABRIR',
       clientsLabel:'Soluciones entregadas para',
-      expEyebrow:'[ EXPERIENCIA / SIMBIOSIS ]', expTitle:'De humano a máquina', symbiosis:'Simbiosis',
-      expSub:'Cinco años transformando datos en decisiones. Scrollea: la trayectoria evoluciona de lo orgánico a lo autónomo.',
-      stYears:'Años', stProjects:'Proyectos', stCompanies:'Empresas', stTools:'Herramientas',
+      expEyebrow:'[ EXPERIENCIA / SIMBIOSIS ]', expTitle:'De analista a fundador', symbiosis:'Simbiosis',
+      expSub:'Cinco años transformando datos en decisiones. Scrollea: cada etapa suma una capa más de autónomo.',
+      stYears:'Años', stProjects:'Proyectos',
       back:'Volver al catálogo', stackL:'Stack principal', demo:'Ver proyecto', tracklist:'Tracklist',
       liner:'Liner notes', impactL:'Resultado', credits:'Créditos', coverArt:'Cover art',
       devRole:'Desarrollador & Arquitecto', availOn:'Disponible en', repo:'Enlace', lastUpd:'Última actualización',
@@ -788,9 +812,9 @@ var T = {
   en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
       shelfHint:'HOVER A COVER · CLICK TO OPEN',
       clientsLabel:'Solutions delivered for',
-      expEyebrow:'[ EXPERIENCE / SYMBIOSIS ]', expTitle:'From human to machine', symbiosis:'Symbiosis',
-      expSub:'Five years turning data into decisions. Scroll: the journey evolves from organic to autonomous.',
-      stYears:'Years', stProjects:'Projects', stCompanies:'Companies', stTools:'Tools',
+      expEyebrow:'[ EXPERIENCE / SYMBIOSIS ]', expTitle:'From analyst to founder', symbiosis:'Symbiosis',
+      expSub:'Five years turning data into decisions. Scroll: each stage adds one more layer of autonomous.',
+      stYears:'Years', stProjects:'Projects',
       back:'Back to catalog', stackL:'Main stack', demo:'View project', tracklist:'Tracklist',
       liner:'Liner notes', impactL:'Outcome', credits:'Credits', coverArt:'Cover art',
       devRole:'Developer & Architect', availOn:'Available on', repo:'Link', lastUpd:'Last update',
