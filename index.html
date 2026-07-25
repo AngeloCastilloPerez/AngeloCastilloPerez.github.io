@@ -158,12 +158,18 @@ button{font:inherit}
 /* el padding-left tiene que cubrir el dot (-34px), el translateX(-6px) de las
    etapas inactivas y los 4px de anillo de la activa: 34+6+4 = 44 minimo.
    Con 34px el overflow:hidden recortaba 6px del circulo y el anillo entero. */
+/* la banda de fundido de arriba va en px fijos, no en %: con 8% de una caja
+   de 62vh medía ~45px y variaba con el viewport, asi que no habia forma de
+   dejar la primera etapa siempre fuera de ella. */
 .timeline{position:relative;padding-left:46px;max-height:62vh;overflow:hidden;
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent);
-  mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent)}
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 46px,#000 88%,transparent);
+  mask-image:linear-gradient(180deg,transparent 0,#000 46px,#000 88%,transparent)}
 /* el rail va por el centro del dot activo: 46-34 + 19/2 = 21.5 */
 .timeline::before{content:"";position:absolute;left:21px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);z-index:1}
-.timeline-inner{transition:transform .5s cubic-bezier(.22,1,.36,1)}
+/* empuja la primera etapa por debajo de la banda de fundido (46px), si no
+   nacia dentro y el mask le comia el 86% de la opacidad. Al hacer scroll el
+   contenido sube y entra al fundido, que es justo lo que se busca. */
+.timeline-inner{padding-top:52px;transition:transform .5s cubic-bezier(.22,1,.36,1)}
 .stage{position:relative;padding:0 0 22px;opacity:.35;transform:translateX(-6px);
   transition:opacity .35s ease,transform .35s ease}
 .stage.on{opacity:1;transform:translateX(0)}
@@ -274,6 +280,7 @@ button{font:inherit}
   .modal-top,.modal-mid{grid-template-columns:1fr;gap:34px}
   .exp-grid{grid-template-columns:1fr;gap:34px;justify-items:center}
   .timeline{max-height:none;width:100%;-webkit-mask-image:none;mask-image:none}
+  .timeline-inner{padding-top:0}   /* sin mask no hay banda que esquivar */
   #experiencia{height:auto}
   .exp-stick{position:static;min-height:0;padding:80px 30px}
   .exp-figure{position:sticky;top:20px}
