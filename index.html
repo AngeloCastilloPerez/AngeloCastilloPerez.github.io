@@ -1077,14 +1077,28 @@ function paintLayers(){
 }
 
 /* --- scrub de video ---------------------------------------------------
-   currentTime solo se toca si hay diferencia real y con el video a la vista.
-   Devuelve true si aun no llego al objetivo, para pedir otro frame.      */
+   Los dos videos son de 24 fps. El objetivo se cuantiza a la rejilla de
+   frames: pedir 3.117s y 3.129s pinta el MISMO frame, pero cada peticion
+   obliga a decodificar igual. Redondear elimina esos seeks inutiles.
+
+   Y se salta DIRECTO al objetivo. Antes se avanzaba en pasos de 0.5s como
+   maximo, asi que recorrer el video entero encadenaba ~16 seeks; como los
+   archivos tienen un solo keyframe, cada paso decodifica desde el frame 0
+   y el costo crece con la posicion (~11.7ms por segundo de video, medido).
+   Sumado daba ~740ms frente a ~92ms de un unico seek. Ademas el clamp hacia
+   que el video fuera por detras del scroll en vez de seguirlo.            */
+var FRAME = 1/24;
+
 function seekTo(v, objetivo, visible){
   if(!v || !visible || !isFinite(v.duration) || v.duration <= 0) return false;
-  var delta = objetivo - v.currentTime;
-  if(Math.abs(delta) < 0.04) return false;
-  if(v.seeking) return true;   /* seek en vuelo: esperar sin encolar otro */
-  v.currentTime = v.currentTime + Math.max(-0.5, Math.min(0.5, delta));
+  var t = Math.round(objetivo/FRAME)*FRAME;
+  var max = v.duration - FRAME;
+  if(t < 0) t = 0; else if(t > max) t = max;
+  if(Math.abs(t - v.currentTime) < FRAME*0.5) return false;
+  if(v.seeking) return true;   /* seek en vuelo: esperar sin encolar otro.
+                                  Al terminar se ira al objetivo MAS RECIENTE,
+                                  no al que habia cuando se pidio este. */
+  v.currentTime = t;
   return true;
 }
 function stepVideos(){
