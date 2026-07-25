@@ -58,8 +58,10 @@ button{font:inherit}
   background:transparent;color:rgba(255,255,255,.46);transition:all .25s ease}
 .langbtn.on{background:#fff;color:#080810}
 
+/* sin transition: la opacidad la escribe el scroll frame a frame, y una
+   transicion encima solo agregaba 150ms de retraso al fundido */
 .hero-content{position:relative;z-index:5;height:100%;display:flex;align-items:center;justify-content:center;
-  pointer-events:none;transition:opacity .15s linear}
+  pointer-events:none;will-change:transform,opacity}
 .hero-inner{max-width:720px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:20px;
   pointer-events:auto;padding:0 24px}
 .eyebrow{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.46)}
@@ -143,7 +145,8 @@ button{font:inherit}
 .exp-figure{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
 .morph-stage{position:relative;width:200px;height:320px}
 .morph-stage svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.lyr{transition:opacity .18s linear}
+/* idem: el morfismo lo controla el scroll, la transicion lo hacia arrastrar */
+.lyr{will-change:opacity}
 .symb{width:100%;max-width:240px}
 .symb-top{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;letter-spacing:.18em;
   text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
@@ -152,10 +155,14 @@ button{font:inherit}
 .symb-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#FF8C42,#FF3D5A 55%,#7B2FFF);
   transition:width .12s linear}
 
-.timeline{position:relative;padding-left:34px;max-height:62vh;overflow:hidden;
+/* el padding-left tiene que cubrir el dot (-34px), el translateX(-6px) de las
+   etapas inactivas y los 4px de anillo de la activa: 34+6+4 = 44 minimo.
+   Con 34px el overflow:hidden recortaba 6px del circulo y el anillo entero. */
+.timeline{position:relative;padding-left:46px;max-height:62vh;overflow:hidden;
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent);
   mask-image:linear-gradient(180deg,transparent,#000 8%,#000 88%,transparent)}
-.timeline::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);z-index:1}
+/* el rail va por el centro del dot activo: 46-34 + 19/2 = 21.5 */
+.timeline::before{content:"";position:absolute;left:21px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);z-index:1}
 .timeline-inner{transition:transform .5s cubic-bezier(.22,1,.36,1)}
 .stage{position:relative;padding:0 0 22px;opacity:.35;transform:translateX(-6px);
   transition:opacity .35s ease,transform .35s ease}
@@ -863,7 +870,7 @@ function render(){
   renderShelf();
   renderTimeline();
   if(state.openId) fillModal();
-  onScroll();
+  refresh();
 }
 
 /* ============================================================
@@ -931,93 +938,159 @@ function stepModal(d){
    SCROLL: video scrub + parallax + morfismo de experiencia
    ============================================================ */
 var targetTime = 0;
+var heroP = 0;            /* progreso del hero, 0..1 */
+var mx = 0, my = 0;       /* desvio del cursor, -1..1 */
+var heroInView = true;
+var ticking = false, mouseTick = false;
 
-function onScroll(){
-  /* --- HERO --- */
-  var track = $('heroTrack'), v = $('heroVideo');
-  if(track && v){
-    var r = track.getBoundingClientRect(), vh = window.innerHeight;
-    var total = r.height - vh;
-    var p = total > 0 ? (-r.top)/total : 0;
-    p = Math.max(0, Math.min(1, p));
+/* --- nodos cacheados -------------------------------------------------
+   antes se resolvia un querySelectorAll('.stage') y ocho querySelector('.lyr')
+   en CADA evento de scroll. Ahora se resuelven una vez por render.       */
+var N = {stages:[], layers:[], human:[], robot:[]};
 
-    if(isFinite(v.duration) && v.duration > 0) targetTime = p * (v.duration - 0.05);
+function cacheNodes(){
+  N.track = $('heroTrack'); N.v = $('heroVideo'); N.content = $('heroContent');
+  N.bg = $('heroBg');
+  N.layers = [$('l1'), $('l2'), $('l3')];
+  N.sec = $('experiencia'); N.fill = $('symbFill'); N.pct = $('symbPct');
+  N.timeline = $('timeline');
+  N.stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
+  N.human = []; N.robot = [];
+  for(var i=0;i<4;i++){
+    N.human.push(document.querySelector('.lyr[data-h="'+i+'"]'));
+    N.robot.push(document.querySelector('.lyr[data-r="'+i+'"]'));
+  }
+}
 
-    var content = $('heroContent');
-    if(content){
-      content.style.opacity = Math.max(0, 1 - p*1.6).toFixed(2);
-      content.style.transform = 'translateY('+(p*-40).toFixed(0)+'px)';
+/* --- medidas de layout -----------------------------------------------
+   scrollHeight/clientHeight/offsetTop no cambian al hacer scroll, pero
+   leerlos dentro del handler forzaba un reflow sincrono por evento.
+   Se miden una vez por render y por resize.                             */
+var M = {stageTop:[], over:0, trackH:0};
+
+function measure(){
+  if(!N.timeline) return;
+  var wrap = N.timeline.parentNode;
+  M.trackH = wrap.clientHeight;
+  M.over = N.timeline.scrollHeight - M.trackH;
+  M.stageTop = N.stages.map(function(s){ return s.offsetTop; });
+}
+
+/* ultimos valores escritos: si no cambian, no se toca el DOM */
+var last = {pct:-1, tlShift:null, stageOn:[]};
+
+function updateScroll(){
+  var wh = window.innerHeight;
+
+  /* ---- HERO ---- */
+  if(N.track && N.v){
+    var r = N.track.getBoundingClientRect();
+    var total = r.height - wh;
+    heroP = total > 0 ? Math.max(0, Math.min(1, (-r.top)/total)) : 0;
+    heroInView = r.bottom > 0 && r.top < wh;
+
+    if(isFinite(N.v.duration) && N.v.duration > 0) targetTime = heroP*(N.v.duration - 0.05);
+
+    if(N.content){
+      N.content.style.opacity = Math.max(0, 1 - heroP*1.6).toFixed(2);
+      N.content.style.transform = 'translate3d(0,'+(heroP*-40).toFixed(0)+'px,0)';
     }
-    var cf = Math.max(0, 1 - p*1.9).toFixed(2);
-    [$('l1'),$('l2'),$('l3')].forEach(function(el,i){
-      if(el){ el.style.opacity = cf; el.style.transform = 'translateY('+(p*-(60+i*30)).toFixed(0)+'px)'; }
-    });
+    paintLayers();
   }
 
-  /* --- EXPERIENCIA --- */
-  var sec = $('experiencia');
-  if(!sec) return;
-  var sr = sec.getBoundingClientRect(), wh = window.innerHeight;
+  /* ---- EXPERIENCIA ---- */
+  if(!N.sec) return;
+  var sr = N.sec.getBoundingClientRect();
   var stotal = sr.height - wh;
   var sp = stotal > 0 ? (-sr.top)/stotal : (sr.top < wh*0.5 ? 1 : 0);
   sp = Math.max(0, Math.min(1, sp));
 
-  $('symbFill').style.width = (sp*100).toFixed(0)+'%';
-  $('symbPct').textContent = Math.round(sp*100);
+  if(N.fill) N.fill.style.width = (sp*100).toFixed(0)+'%';
+  var pct = Math.round(sp*100);
+  if(N.pct && pct !== last.pct){ N.pct.textContent = pct; last.pct = pct; }
 
   /* morfismo por capas, de la cabeza a las piernas */
   for(var i=0;i<4;i++){
     var local = Math.max(0, Math.min(1, (sp - i*0.17) / 0.30));
-    var h = document.querySelector('.lyr[data-h="'+i+'"]');
-    var rb = document.querySelector('.lyr[data-r="'+i+'"]');
-    if(h) h.style.opacity = (1 - local).toFixed(3);
-    if(rb) rb.style.opacity = local.toFixed(3);
+    if(N.human[i]) N.human[i].style.opacity = (1 - local).toFixed(3);
+    if(N.robot[i]) N.robot[i].style.opacity = local.toFixed(3);
   }
 
-  var stages = document.querySelectorAll('.stage');
   var active = 0;
-  for(var s=0;s<stages.length;s++){
+  for(var s=0;s<N.stages.length;s++){
     var on = sp >= STAGES[s].morph - 0.09;
-    stages[s].classList.toggle('on', on);
     if(on) active = s;
+    if(last.stageOn[s] !== on){ N.stages[s].classList.toggle('on', on); last.stageOn[s] = on; }
   }
 
   /* la timeline se desplaza para mantener visible la etapa activa */
-  var inner = $('timeline');
-  if(inner && stages.length && !window.matchMedia('(max-width:1024px)').matches){
-    var track = inner.parentNode;
-    var over = inner.scrollHeight - track.clientHeight;
-    if(over > 0){
-      var shift = Math.max(0, Math.min(over, stages[active].offsetTop - track.clientHeight*0.22));
-      inner.style.transform = 'translateY(-'+shift.toFixed(0)+'px)';
-    } else {
-      inner.style.transform = 'none';
+  if(N.timeline){
+    var shift = 'none';
+    if(N.stages.length && M.over > 0 && !window.matchMedia('(max-width:1024px)').matches){
+      var y = Math.max(0, Math.min(M.over, (M.stageTop[active]||0) - M.trackH*0.22));
+      shift = 'translate3d(0,-'+y.toFixed(0)+'px,0)';
     }
-  } else if(inner){
-    inner.style.transform = 'none';
+    if(shift !== last.tlShift){ N.timeline.style.transform = shift; last.tlShift = shift; }
   }
 }
 
-function seekLoop(){
-  var v = $('heroVideo');
-  if(v && isFinite(v.duration) && !v.seeking){
-    var delta = targetTime - v.currentTime;
-    if(Math.abs(delta) > 0.033){
-      v.currentTime = v.currentTime + Math.max(-0.5, Math.min(0.5, delta));
-    }
+/* las capas flotantes reciben scroll Y cursor. Se combinan en UNA sola
+   escritura de transform: antes cada handler pisaba el valor del otro y
+   las tarjetas saltaban entre dos posiciones distintas. */
+var LDEPTH = [10, 20, 34];
+function paintLayers(){
+  var cf = Math.max(0, 1 - heroP*1.9).toFixed(2);
+  for(var i=0;i<3;i++){
+    var el = N.layers[i];
+    if(!el) continue;
+    var x = -mx*LDEPTH[i];
+    var y = heroP*-(60+i*30) - my*LDEPTH[i];
+    el.style.opacity = cf;
+    el.style.transform = 'translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0)';
   }
-  requestAnimationFrame(seekLoop);
+}
+
+/* --- scrub del video --------------------------------------------------
+   currentTime solo se toca si hay diferencia real y con el hero a la vista.
+   Devuelve true si aun no llego al objetivo, para pedir otro frame.      */
+function stepVideo(){
+  var v = N.v;
+  if(!v || !heroInView || !isFinite(v.duration) || v.duration <= 0) return false;
+  var delta = targetTime - v.currentTime;
+  if(Math.abs(delta) < 0.04) return false;
+  if(v.seeking) return true;   /* seek en vuelo: esperar sin encolar otro */
+  v.currentTime = v.currentTime + Math.max(-0.5, Math.min(0.5, delta));
+  return true;
+}
+
+/* --- un solo rAF para todo -------------------------------------------
+   scroll y mousemove solo marcan "hay trabajo"; el DOM se toca una vez por
+   frame. Al quedarse quieto el loop se apaga en vez de girar para siempre. */
+function requestTick(){
+  if(!ticking){ ticking = true; requestAnimationFrame(frame); }
+}
+function frame(){
+  ticking = false;
+  updateScroll();
+  if(stepVideo()) requestTick();
+}
+
+function refresh(){
+  cacheNodes(); measure();
+  last.pct = -1; last.tlShift = null; last.stageOn = [];
+  requestTick();
 }
 
 function onMouseMove(e){
   if(window.matchMedia('(max-width:760px)').matches) return;
-  var nx = (e.clientX/window.innerWidth - 0.5)*2;
-  var ny = (e.clientY/window.innerHeight - 0.5)*2;
-  [[$('l1'),10],[$('l2'),20],[$('l3'),34]].forEach(function(pair){
-    if(pair[0]) pair[0].style.transform = 'translate3d('+(-nx*pair[1])+'px,'+(-ny*pair[1])+'px,0)';
-  });
-  var bg = $('heroBg');
-  if(bg) bg.style.transform = 'scale(1.08) translate3d('+(nx*7)+'px,'+(ny*7)+'px,0)';
+  mx = (e.clientX/window.innerWidth - 0.5)*2;
+  my = (e.clientY/window.innerHeight - 0.5)*2;
+  if(!mouseTick){ mouseTick = true; requestAnimationFrame(paintMouse); }
+}
+function paintMouse(){
+  mouseTick = false;
+  paintLayers();
+  if(N.bg) N.bg.style.transform = 'scale(1.08) translate3d('+(mx*7)+'px,'+(my*7)+'px,0)';
 }
 
 /* ============================================================
@@ -1041,21 +1114,20 @@ function onMouseMove(e){
     if(e.key === 'ArrowRight') stepModal(1);
   });
 
-  window.addEventListener('scroll', onScroll, {passive:true});
-  window.addEventListener('resize', onScroll);
-  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('scroll', requestTick, {passive:true});
+  window.addEventListener('resize', function(){ measure(); requestTick(); });
+  window.addEventListener('mousemove', onMouseMove, {passive:true});
 
   var v = $('heroVideo');
   if(v){
     v.muted = true; v.loop = false; v.playsInline = true;
     var prime = function(){
-      v.play().then(function(){ v.pause(); v.currentTime = 0; onScroll(); })
-              .catch(function(){ onScroll(); });
+      v.play().then(function(){ v.pause(); v.currentTime = 0; requestTick(); })
+              .catch(function(){ requestTick(); });
     };
     if(v.readyState >= 2) prime(); else v.addEventListener('loadeddata', prime, {once:true});
   }
-  requestAnimationFrame(seekLoop);
-  onScroll();
+  refresh();
 })();
 </script>
 </body>
