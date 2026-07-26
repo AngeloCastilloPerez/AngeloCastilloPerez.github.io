@@ -822,7 +822,87 @@ var PROJECTS = [
    updated:{es:'25 de Julio, 2026',en:'July 25, 2026'},
    tracks:[{es:'Búsqueda en cinco frentes',en:'Five-front Search'},{es:'Síntesis con citas',en:'Synthesis with Citations'},{es:'Validación anti-alucinación',en:'Anti-hallucination Validation'},{es:'Reparto por correo y web',en:'Email & Web Delivery'},{es:'Curación desde el cockpit',en:'Curation from the Cockpit'}],
    notes:{es:'Cinco búsquedas alimentan una síntesis, y el filtro anti-alucinación vive en el código, no en el prompt: un evento sin fecha o sin URL verificable se descarta antes de llegar a nadie. La web pública es HTML, CSS y JS sin build.',en:'Five searches feed one synthesis, and the anti-hallucination filter lives in code, not in the prompt: an event without a date or a verifiable URL is dropped before it reaches anyone. The public site is HTML, CSS and JS with no build step.'},
-   impact:{es:'Una hora diaria de lectura dispersa convertida en cinco minutos de inteligencia con fuentes citadas.',en:'An hour of scattered daily reading turned into five minutes of intelligence with cited sources.'}}
+   impact:{es:'Una hora diaria de lectura dispersa convertida en cinco minutos de inteligencia con fuentes citadas.',en:'An hour of scattered daily reading turned into five minutes of intelligence with cited sources.'}},
+
+  /* Trabajo de cliente. La mayoria no tiene enlace publico: el entregable vive
+     en el tenant del cliente, asi que url:null y el modal oculta los botones de
+     "ver proyecto" en vez de dejarlos muertos. */
+  {id:'15', name:'Arca Continental Lindley', cat:'data', img:'lindley', year:'2025', url:null,
+   es:'Sistema de 50 KPIs para la operación de planta: manufactura, costos, mermas y sustentabilidad en un solo modelo de indicadores.',
+   en:'A 50-KPI system for plant operations: manufacturing, costs, waste and sustainability in a single indicator model.',
+   stack:'BI · Modelado de KPIs · ETL',
+   tags:['DATA','KPIs','Manufactura','BI'],
+   status:{es:'Entregado',en:'Delivered'},
+   updated:{es:'2025',en:'2025'},
+   tracks:[{es:'Levantamiento con áreas de planta',en:'Discovery with Plant Areas'},{es:'Definición de 50 KPIs',en:'Definition of 50 KPIs'},{es:'Modelado de datos',en:'Data Modeling'},{es:'Dashboards por dominio',en:'Dashboards per Domain'},{es:'Despliegue y adopción',en:'Rollout & Adoption'}],
+   notes:{es:'La operación de planta no tenía un modelo unificado de indicadores. Se levantaron y modelaron 50 KPIs junto a las áreas de manufactura, costos, mermas y sustentabilidad, consolidados en dashboards por dominio para la gestión de la operación.',en:'Plant operations lacked a unified indicator model. 50 KPIs were defined and modeled together with the manufacturing, cost, waste and sustainability teams, consolidated into per-domain dashboards for running the operation.'},
+   impact:{es:'50 KPIs operativos estandarizados y monitoreados en un solo modelo: manufactura, costos, mermas y sustentabilidad.',en:'50 standardized operational KPIs monitored in one model: manufacturing, costs, waste and sustainability.'}},
+
+  {id:'16', name:'Yamaha Motors', cat:'data', img:'yamaha', year:'2025', url:GH+'Proyecto---YAMAHA',
+   es:'Arquitectura de datos en Azure Data Factory para Yamaha Motors Perú: reportería en Power BI, configuración avanzada de Azure y gobierno de datos.',
+   en:'Data architecture on Azure Data Factory for Yamaha Motors Perú: Power BI reporting, advanced Azure setup and data governance.',
+   stack:'Azure Data Factory · Power BI · Data Governance',
+   tags:['DATA','Azure Data Factory','Power BI','Data Governance'],
+   status:{es:'Entregado',en:'Delivered'},
+   updated:{es:'2025',en:'2025'},
+   tracks:[{es:'Diseño de la arquitectura de datos',en:'Data Architecture Design'},{es:'Pipelines en Azure Data Factory',en:'Azure Data Factory Pipelines'},{es:'Configuración avanzada de Azure',en:'Advanced Azure Setup'},{es:'Gobierno de datos',en:'Data Governance'},{es:'Reportería en Power BI',en:'Power BI Reporting'}],
+   notes:{es:'Tracking de ventas y servicio técnico con procesos manuales y sin trazabilidad. Se diseñó la arquitectura de datos sobre Azure Data Factory, con configuración avanzada del entorno, lineamientos de gobierno de datos y reportería en Power BI.',en:'Sales and technical service tracking relied on manual processes with no traceability. The data architecture was designed on Azure Data Factory, with advanced environment setup, data governance guidelines and Power BI reporting.'},
+   impact:{es:'80% de reducción en el tiempo de procesamiento de órdenes de servicio.',en:'80% reduction in service order processing time.'}},
+
+  {id:'17', name:'Mitsui', cat:'producto', img:'mitsui', year:'2025', url:null,
+   es:'Plataforma web de citas para mantenimiento vehicular conectada a SAP C4C: el agendamiento del cliente integrado con la operación del taller.',
+   en:'Web platform for vehicle maintenance appointments connected to SAP C4C: customer booking integrated with workshop operations.',
+   stack:'Web App · SAP C4C · APIs',
+   tags:['PRODUCTOS','SAP C4C','Web App','Integraciones'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'2025',en:'2025'},
+   tracks:[{es:'Flujo de agendamiento en línea',en:'Online Booking Flow'},{es:'Integración con SAP C4C',en:'SAP C4C Integration'},{es:'Gestión de sedes y horarios',en:'Sites & Schedule Management'},{es:'Notificaciones al cliente',en:'Customer Notifications'},{es:'Puesta en producción',en:'Production Rollout'}],
+   notes:{es:'El agendamiento de mantenimientos dependía de canales manuales. Se construyó una plataforma web de citas conectada a SAP C4C, integrando la reserva del cliente con la agenda y la operación del taller.',en:'Maintenance scheduling depended on manual channels. A web booking platform connected to SAP C4C was built, integrating the customer’s reservation with the workshop’s schedule and operations.'},
+   impact:{es:'Agendamiento de mantenimiento en línea integrado de punta a punta con SAP C4C.',en:'Online maintenance booking integrated end-to-end with SAP C4C.'}},
+
+  {id:'18', name:'Adium', cat:'data', img:'adium', year:'2025', url:null,
+   es:'Arquitectura de datos en Microsoft Fabric: notebooks, pipelines y dataflows para centralizar la analítica del negocio.',
+   en:'Data architecture on Microsoft Fabric: notebooks, pipelines and dataflows to centralize business analytics.',
+   stack:'Microsoft Fabric · PySpark · Dataflows',
+   tags:['DATA','Microsoft Fabric','PySpark','Dataflows'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'2025',en:'2025'},
+   tracks:[{es:'Diseño de la arquitectura',en:'Architecture Design'},{es:'Notebooks PySpark',en:'PySpark Notebooks'},{es:'Pipelines de orquestación',en:'Orchestration Pipelines'},{es:'Dataflows de transformación',en:'Transformation Dataflows'},{es:'Capa de consumo BI',en:'BI Consumption Layer'}],
+   notes:{es:'Fuentes de datos dispersas y transformaciones sin orquestar. Se implementó la arquitectura de datos sobre Microsoft Fabric combinando notebooks, pipelines y dataflows, con ingesta, transformación y consumo gobernados en una sola plataforma.',en:'Scattered data sources and unorchestrated transformations. The data architecture was implemented on Microsoft Fabric combining notebooks, pipelines and dataflows, with governed ingestion, transformation and consumption on a single platform.'},
+   impact:{es:'Analítica centralizada en Fabric con ingesta, transformación y consumo gobernados.',en:'Analytics centralized on Fabric with governed ingestion, transformation and consumption.'}},
+
+  {id:'19', name:'Elite Ingeniería', cat:'producto', img:'elite', year:'2025', url:null,
+   es:'Aplicaciones de Seguridad y Salud en el Trabajo (SST): correos transaccionales con Resend y video de capacitación servido con Mux.',
+   en:'Workplace Health & Safety (SST) applications: transactional email with Resend and training video delivered with Mux.',
+   stack:'Web Apps · Resend · Mux',
+   tags:['PRODUCTOS','SST','Resend','Mux'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'2025',en:'2025'},
+   tracks:[{es:'Aplicaciones SST',en:'SST Applications'},{es:'Integración de correo (Resend)',en:'Email Integration (Resend)'},{es:'Video de capacitación (Mux)',en:'Training Video (Mux)'},{es:'Gestión de usuarios y roles',en:'Users & Roles Management'},{es:'Despliegue',en:'Deployment'}],
+   notes:{es:'Gestión de seguridad y salud en el trabajo llevada en documentos y procesos manuales. Se desarrollaron aplicaciones que digitalizan los flujos SST, con notificaciones transaccionales vía Resend y capacitaciones en video servidas con Mux.',en:'Workplace health & safety managed through documents and manual processes. Applications were built to digitize SST workflows, with transactional notifications via Resend and video training delivered through Mux.'},
+   impact:{es:'Procesos SST digitalizados, con notificaciones y video de capacitación integrados.',en:'SST processes digitized, with notifications and training video built in.'}},
+
+  {id:'20', name:'AELU', cat:'producto', img:'aelu', year:'2025', url:null,
+   es:'Plataforma para la gestión de clases: inscripciones en línea y seguimiento contable de cada programa en un solo sistema.',
+   en:'Platform for class management: online enrollment and per-program accounting tracking in a single system.',
+   stack:'Web App · Inscripciones · Contabilidad',
+   tags:['PRODUCTOS','Web App','Inscripciones','Contabilidad'],
+   status:{es:'En producción',en:'In production'},
+   updated:{es:'2025',en:'2025'},
+   tracks:[{es:'Catálogo de clases',en:'Class Catalog'},{es:'Inscripciones en línea',en:'Online Enrollment'},{es:'Seguimiento contable',en:'Accounting Tracking'},{es:'Reportes de gestión',en:'Management Reports'},{es:'Despliegue',en:'Deployment'}],
+   notes:{es:'Inscripciones y control contable de las clases gestionados por separado y a mano. Se construyó una plataforma que centraliza el catálogo, la inscripción de los socios y el seguimiento contable de cada programa.',en:'Class enrollment and accounting control were handled separately and by hand. A platform was built to centralize the catalog, member enrollment and the accounting follow-up of each program.'},
+   impact:{es:'Inscripciones y contabilidad de clases centralizadas en una sola plataforma.',en:'Class enrollment and accounting centralized in a single platform.'}},
+
+  {id:'21', name:'Strategio', cat:'data', img:'strategio', year:'2025', url:null,
+   es:'Soporte continuo a la operación de BI: mantenimiento de reportes y de los procesos de actualización de datos.',
+   en:'Ongoing support for the BI operation: report maintenance and data refresh processes.',
+   stack:'Power BI · ETL · Soporte',
+   tags:['DATA','Power BI','ETL','Soporte'],
+   status:{es:'En curso',en:'Ongoing'},
+   updated:{es:'2025 — Presente',en:'2025 — Present'},
+   tracks:[{es:'Monitoreo de actualizaciones',en:'Refresh Monitoring'},{es:'Mantenimiento de reportes',en:'Report Maintenance'},{es:'Optimización de modelos',en:'Model Optimization'},{es:'Atención de incidencias',en:'Incident Response'}],
+   notes:{es:'Una operación de BI necesita continuidad, no solo entregas: se da soporte a los reportes y a sus procesos de actualización para que la data llegue puntual y confiable a los usuarios.',en:'A BI operation needs continuity, not just deliveries: reports and their refresh processes are supported so data reaches users on time and reliably.'},
+   impact:{es:'Operación de reportes estable, con actualizaciones puntuales y confiables.',en:'A stable reporting operation with timely, reliable refreshes.'}}
 ];
 
 /* Posiciones de las tarjetas flotantes del hero (top/left en %, ancho en px) */
@@ -844,7 +924,16 @@ var POS = [
      Estas dos van en los huecos de arriba-derecha y abajo-centro, fuera de la
      franja central donde vive el texto del hero. */
   {top:-7, left:60, w:145, depth:2, dur:7.2, delay:1.3},
-  {top:88, left:38, w:150, depth:3, dur:6.7, delay:2.0}
+  {top:88, left:38, w:150, depth:3, dur:6.7, delay:2.0},
+  /* Siete mas por los proyectos de cliente. Van en los bordes y las esquinas:
+     la franja central (left 28-72 / top 22-78) es donde vive el texto del hero. */
+  {top:-8, left:31, w:145, depth:1, dur:7.6, delay:1.7},
+  {top:14, left:93, w:150, depth:2, dur:6.3, delay:0.5},
+  {top:68, left:-6, w:160, depth:3, dur:8.0, delay:2.2},
+  {top:92, left:47, w:145, depth:2, dur:7.0, delay:1.0},
+  {top:90, left:26, w:155, depth:1, dur:6.1, delay:2.5},
+  {top:44, left:-4, w:145, depth:2, dur:7.7, delay:0.3},
+  {top:46, left:91, w:150, depth:3, dur:6.6, delay:1.5}
 ];
 
 /* Clientes / empresas atendidas */
@@ -898,7 +987,7 @@ var T = {
       expEyebrow:'[ EXPERIENCIA ]', expTitle:'De analista a fundador', symbiosis:'Simbiosis',
       stYears:'Años', stProjects:'Proyectos',
       back:'Volver al catálogo', stackL:'Stack principal', demo:'Ver proyecto', tracklist:'Tracklist',
-      viewCase:'Ver el caso', caseLink:'Caso de estudio',
+      viewCase:'Ver el caso', caseLink:'Caso de estudio', privateProject:'Proyecto privado de cliente',
       liner:'Liner notes', impactL:'Resultado', credits:'Créditos', coverArt:'Cover art',
       devRole:'Desarrollador & Arquitecto', availOn:'Disponible en', repo:'Enlace', lastUpd:'Última actualización',
       contactEyebrow:'[ CONTACTO ]', contactH:'¿Construimos algo juntos?',
@@ -910,7 +999,7 @@ var T = {
       expEyebrow:'[ EXPERIENCE ]', expTitle:'From analyst to founder', symbiosis:'Symbiosis',
       stYears:'Years', stProjects:'Projects',
       back:'Back to catalog', stackL:'Main stack', demo:'View project', tracklist:'Tracklist',
-      viewCase:'View case study', caseLink:'Case study',
+      viewCase:'View case study', caseLink:'Case study', privateProject:'Private client project',
       liner:'Liner notes', impactL:'Outcome', credits:'Credits', coverArt:'Cover art',
       devRole:'Developer & Architect', availOn:'Available on', repo:'Link', lastUpd:'Last update',
       contactEyebrow:'[ CONTACT ]', contactH:'Shall we build something together?',
@@ -1094,13 +1183,26 @@ function fillModal(){
   $('mStatus').innerHTML = '<span class="dot-live"></span>'+p.status[L];
   $('mUpd').textContent = p.updated[L];
   $('mNotes').textContent = p.notes[L];
-  /* si el proyecto no tiene demo publica, los tres enlaces van al caso de
-     estudio; el pie muestra "caso de estudio" en vez de un dominio */
+  /* Tres casos:
+     - caseUrl: no hay demo publica pero si caso de estudio, y los enlaces van ahi
+     - url: enlace publico normal
+     - ninguno: trabajo de cliente sin nada publico. Se ocultan los botones en
+       vez de dejarlos apuntando a nada, y el pie lo dice explicitamente. */
   var link = p.caseUrl ? (p.caseUrl + (L==='en' ? '?lang=en' : '')) : p.url;
-  $('mDemo').href = link;
-  $('mExt').href = link;
-  $('mRepo').href = link;
-  $('mRepo').textContent = p.caseUrl ? t.caseLink : p.url.replace(/^https?:\/\//,'').replace(/\/$/,'');
+  if(link){
+    $('mDemo').style.display = '';
+    $('mExt').style.display = '';
+    $('mDemo').href = link;
+    $('mExt').href = link;
+    $('mRepo').href = link;
+    $('mRepo').textContent = p.caseUrl ? t.caseLink
+      : p.url.replace(/^https?:\/\//,'').replace(/\/$/,'');
+  } else {
+    $('mDemo').style.display = 'none';
+    $('mExt').style.display = 'none';
+    $('mRepo').removeAttribute('href');
+    $('mRepo').textContent = t.privateProject;
+  }
   $('mSku').textContent = 'AC-'+p.id+'26';
 
   $('mTags').innerHTML = p.tags.map(function(g){ return '<span class="tag">'+g+'</span>'; }).join('');
