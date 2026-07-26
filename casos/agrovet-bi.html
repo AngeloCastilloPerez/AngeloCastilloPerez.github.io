@@ -136,9 +136,14 @@ figure.shot img{width:100%}
 figure.shot figcaption{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;
   color:rgba(255,255,255,.42);padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
 /* la vista reconstruida se embute viva en vez de como captura: el hover, el
-   colapso de la jerarquia y el cambio de tema son parte de lo entregado. */
-figure.shot .live{position:relative;height:760px;background:#080810}
-figure.shot .live iframe{width:100%;height:100%;border:0;display:block}
+   colapso de la jerarquia y el cambio de tema son parte de lo entregado.
+   Rompe el ancho del .wrap: dentro de 1112px el dashboard cae por debajo de su
+   breakpoint de dos columnas y se apila todo en una sola. */
+figure.shot.bleed{width:min(1560px,calc(100vw - 48px));margin-left:50%;transform:translateX(-50%)}
+figure.shot .live{position:relative;background:#080810}
+/* alto de arranque; el JS lo ajusta al contenido real para que no haya un
+   scroll dentro de otro scroll */
+figure.shot .live iframe{width:100%;height:1180px;border:0;display:block}
 figure.shot .cap-row{display:flex;justify-content:space-between;align-items:center;gap:16px;
   flex-wrap:wrap;padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
 figure.shot .cap-row figcaption{padding:0;border:0}
@@ -146,7 +151,12 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
   text-transform:uppercase;white-space:nowrap}
 .pending{margin-top:22px;border:1px dashed rgba(255,255,255,.16);border-radius:12px;padding:16px 18px;
   font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7;color:rgba(255,255,255,.42)}
-@media(max-width:700px){ figure.shot .live{height:560px} }
+@media(max-width:900px){
+  /* en movil el dashboard se apila igual: no tiene sentido sangrar el ancho,
+     y el iframe pasa a alto fijo con scroll propio */
+  figure.shot.bleed{width:auto;margin-left:0;transform:none}
+  figure.shot .live iframe{height:620px}
+}
 
 /* ---------- DECISIONES ---------- */
 .dec{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:26px 34px}
@@ -338,9 +348,9 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
           </ul>
         </div>
       </div>
-      <figure class="shot">
+      <figure class="shot bleed">
         <div class="live">
-          <iframe src="vistas/02-rentabilidad-maquila.html" loading="lazy"
+          <iframe id="view02" src="vistas/02-rentabilidad-maquila.html" loading="lazy"
                   title="Rentabilidad de la línea de maquila — vista interactiva"></iframe>
         </div>
         <div class="cap-row">
@@ -695,6 +705,33 @@ function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''
 document.getElementById('lbX').onclick = closeLb;
 lb.onclick = function(e){ if(e.target === lb) closeLb(); };
 document.addEventListener('keydown', function(e){ if(e.key==='Escape' && lb.classList.contains('open')) closeLb(); });
+
+/* La vista embebida es del mismo origen, asi que se puede medir su alto real y
+   ajustar el iframe: sin esto queda un scroll dentro del scroll de la pagina.
+   Se re-mide al colapsar filas de la tabla y al cambiar el ancho. */
+(function(){
+  var fr = document.getElementById('view02');
+  if(!fr) return;
+  var fit = function(){
+    try{
+      var d = fr.contentDocument;
+      if(!d || !d.body) return;
+      /* en movil manda el alto fijo del CSS: el dashboard se apila y seria enorme */
+      if(matchMedia('(max-width:900px)').matches){ fr.style.height = ''; return; }
+      fr.style.height = Math.max(700, d.documentElement.scrollHeight) + 'px';
+    }catch(e){ /* si algun dia se sirve cross-origin, se queda el alto del CSS */ }
+  };
+  fr.addEventListener('load', function(){
+    fit();
+    try{
+      var d = fr.contentDocument;
+      /* el colapso de la jerarquia cambia el alto */
+      d.addEventListener('click', function(){ setTimeout(fit, 0); });
+      if(window.ResizeObserver) new ResizeObserver(fit).observe(d.documentElement);
+    }catch(e){}
+  });
+  addEventListener('resize', fit);
+})();
 
 /* ?lang=en para poder linkear la version en ingles desde el portafolio */
 var qs = new URLSearchParams(location.search);

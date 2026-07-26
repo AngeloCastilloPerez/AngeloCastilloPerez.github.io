@@ -189,8 +189,20 @@ td.name{white-space:normal}
 #tip dt{color:var(--muted)}
 #tip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
 
-@media(max-width:1120px){
+/* el breakpoint estaba en 1120px, justo por encima del ancho que le daba el
+   iframe del caso (~1112px): las dos columnas colapsaban a una y todo se
+   apilaba. A 980px las dos columnas siguen siendo legibles. */
+@media(max-width:1240px){
+  .body{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:12px}
+  /* el tornado lleva 3 columnas (nombre | valor | plot), .net solo 2 */
+  .tor-row{grid-template-columns:168px 66px minmax(0,1fr);gap:10px}
+  .net{grid-template-columns:168px minmax(0,1fr);gap:10px}
+  .tor-name{font-size:12px}
+}
+@media(max-width:980px){
   .body{grid-template-columns:1fr}
+}
+@media(max-width:900px){
   .kpis{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:620px){
