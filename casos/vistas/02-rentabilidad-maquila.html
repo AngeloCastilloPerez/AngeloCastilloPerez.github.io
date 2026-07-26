@@ -5,216 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FARMAVET · Rentabilidad de maquila · YTD Abril 2026</title>
 <meta name="robots" content="noindex">
-<style>
-/* ============================================================
-   VISTA 02 — RENTABILIDAD DE MAQUILA
-   Datos de demostracion. Tokens compartidos con las otras cuatro
-   vistas: si cambian aqui, cambian en todas.
-   ============================================================ */
-:root{
-  --surface:#fcfcfb; --plane:#f9f9f7; --raised:#ffffff;
-  --text-1:#0b0b0b; --text-2:#52514e; --muted:#898781;
-  --grid:#e1e0d9; --baseline:#c3c2b7;
-  --s1:#2a78d6; --s2:#eb6834;
-  /* rampa secuencial azul: la magnitud usa un solo tono por niveles */
-  --seq-1:#2a78d6; --seq-2:#5598e7; --seq-3:#9ec5f4; --seq-track:#e8e7e1;
-  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
-  --good-soft:rgba(12,163,12,.10); --crit-soft:rgba(208,59,59,.10); --warn-soft:rgba(250,178,25,.16);
-  /* par divergente: frio (aporta) vs calido (destruye), medio neutro */
-  --div-pos:#2a78d6; --div-neg:#eb6834; --div-mid:#f0efec;
-  --hover:rgba(0,0,0,.035); --ring:rgba(11,11,11,.10);
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --surface:#0d0d16; --plane:#080810; --raised:#13131f;
-    --text-1:#ffffff; --text-2:#c3c2b7; --muted:#898781;
-    --grid:#2c2c2a; --baseline:#383835;
-    --s1:#3987e5; --s2:#d95926;
-    --seq-1:#3987e5; --seq-2:#2a78d6; --seq-3:#1c5cab; --seq-track:#22222c;
-    --good-soft:rgba(12,163,12,.16); --crit-soft:rgba(208,59,59,.18); --warn-soft:rgba(250,178,25,.16);
-    --div-pos:#3987e5; --div-neg:#d95926; --div-mid:#383835;
-    --hover:rgba(255,255,255,.05); --ring:rgba(255,255,255,.10);
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --surface:#0d0d16; --plane:#080810; --raised:#13131f;
-  --text-1:#ffffff; --text-2:#c3c2b7; --muted:#898781;
-  --grid:#2c2c2a; --baseline:#383835;
-  --s1:#3987e5; --s2:#d95926;
-  --seq-1:#3987e5; --seq-2:#2a78d6; --seq-3:#1c5cab; --seq-track:#22222c;
-  --good-soft:rgba(12,163,12,.16); --crit-soft:rgba(208,59,59,.18); --warn-soft:rgba(250,178,25,.16);
-  --div-pos:#3987e5; --div-neg:#d95926; --div-mid:#383835;
-  --hover:rgba(255,255,255,.05); --ring:rgba(255,255,255,.10);
-  color-scheme:dark;
-}
-
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--plane);color:var(--text-1);
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-h1,h2,h3,p{margin:0}
-button,select{font:inherit}
-button:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
-.num{font-variant-numeric:tabular-nums}
-.shell{max-width:1600px;margin:0 auto;padding:28px 32px 40px}
-
-/* ---------- cabecera ---------- */
-.top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
-.brand{font-size:12px;font-weight:700;letter-spacing:.22em;
-  background:linear-gradient(135deg,#FF3D5A,#FF8C42);-webkit-background-clip:text;background-clip:text;color:transparent}
-.top h1{margin:6px 0 3px;font-size:25px;font-weight:700;letter-spacing:-.012em;text-wrap:balance}
-.sub{font-size:13px;color:var(--text-2)}
-.filters{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
-.filters label{display:flex;flex-direction:column;gap:4px}
-.fk{font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.filters select,.tbtn{background:var(--surface);color:var(--text-1);border:1px solid var(--grid);
-  border-radius:6px;padding:6px 10px;font-size:13px}
-.tbtn{color:var(--text-2);cursor:pointer;padding:7px 12px;font-size:12px}
-.tbtn:hover{border-color:var(--s1);color:var(--text-1)}
-
-/* ---------- tarjetas ---------- */
-.card{background:var(--surface);border:1px solid var(--grid);border-radius:10px}
-.card-h{padding:16px 20px 0}
-.card-t{font-size:14.5px;font-weight:600;letter-spacing:-.005em}
-.card-s{margin-top:3px;font-size:11.5px;line-height:1.5;color:var(--muted)}
-.card-f{padding:11px 20px;border-top:1px solid var(--grid);font-size:11.5px;line-height:1.6;color:var(--muted)}
-
-/* ---------- tira de KPIs ---------- */
-.kpis{margin-top:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.kpi{background:var(--surface);border:1px solid var(--grid);border-radius:10px;padding:16px 18px 15px}
-.kpi.lead{border-color:var(--ring);box-shadow:inset 3px 0 0 var(--crit)}
-.kpi-k{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.kpi-v{margin-top:6px;font-size:29px;font-weight:700;letter-spacing:-.015em;line-height:1.05}
-.kpi-u{margin-left:5px;font-size:14px;font-weight:600;color:var(--text-2)}
-.kpi-m{margin-top:8px;font-size:11.5px;color:var(--text-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;
-  font-size:11.5px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
-.chip.g{background:var(--good-soft);color:var(--good)}
-.chip.b{background:var(--crit-soft);color:var(--crit)}
-.chip.n{background:var(--hover);color:var(--text-2)}
-
-/* ---------- cuerpo en dos columnas ---------- */
-.body{margin-top:14px;display:grid;grid-template-columns:minmax(0,1.62fr) minmax(0,1fr);gap:14px;align-items:start}
-
-/* ---------- tornado ---------- */
-.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:11.5px;color:var(--text-2);margin-top:12px}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.sw{width:12px;height:8px;border-radius:2px;display:inline-block}
-.tor{padding:14px 20px 4px}
-/* nombre | valor | trazado. El valor va en columna propia: dentro del plot
-   chocaba con el nombre en las barras negativas mas largas. */
-.tor-row{display:grid;grid-template-columns:190px 72px minmax(0,1fr);gap:12px;align-items:center;
-  padding:4px 6px;margin:0 -6px;border-radius:6px;cursor:default}
-.tor-row:hover{background:var(--hover)}
-.tor-name{font-size:12.5px;color:var(--text-2);text-align:right;line-height:1.3}
-.tor-row.hi .tor-name{color:var(--text-1);font-weight:600}
-.tor-val{font-size:12px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums}
-.tor-row.hi .tor-val{color:var(--text-1);font-weight:700}
-.plot{position:relative;height:20px}
-.gl{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--grid)}
-.gl.zero{background:var(--baseline);top:-5px;bottom:-5px}
-.bar{position:absolute;top:3px;bottom:3px;border-radius:0}
-.bar.pos{background:var(--div-neg);border-radius:0 4px 4px 0}   /* +pp = destruye */
-.bar.neg{background:var(--div-pos);border-radius:4px 0 0 4px}   /* -pp = aporta   */
-.axis{position:relative;height:18px;margin-top:2px}
-.axis span{position:absolute;top:0;transform:translateX(-50%);font-size:10.5px;color:var(--muted);
-  font-variant-numeric:tabular-nums}
-.axis-t{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px}
-.net{margin:8px -6px 0;padding:11px 6px 4px;border-top:1px solid var(--baseline);
-  display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;align-items:center}
-.net-k{font-size:12.5px;font-weight:700;text-align:right}
-.net-v{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--text-2)}
-
-/* ---------- estructura del costo ---------- */
-.struct{padding:14px 20px 6px}
-.grp{margin-bottom:16px}
-.grp-k{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;
-  color:var(--text-1);font-weight:600}
-.grp-d{font-size:11.5px;font-variant-numeric:tabular-nums}
-.gbar{margin-top:7px;position:relative;height:12px}
-.gbar .track{position:absolute;inset:0;border-radius:3px;background:var(--seq-track)}
-.gbar .fill{position:absolute;top:0;height:12px;border-radius:0 3px 3px 0;left:0}
-.grow{display:flex;align-items:center;gap:9px;margin-top:5px}
-.grow-k{width:62px;font-size:10.5px;color:var(--muted);flex:none}
-.grow-p{flex:1;position:relative;height:10px}
-.grow-v{width:52px;text-align:right;font-size:11px;color:var(--text-2);flex:none;
-  font-variant-numeric:tabular-nums}
-.bridge{margin-top:4px;padding:14px 0 2px;border-top:1px solid var(--grid)}
-.bridge-k{font-size:11.5px;color:var(--muted);margin-bottom:10px}
-.bstep{display:flex;align-items:center;gap:10px;margin-bottom:7px}
-.bstep-k{width:62px;font-size:10.5px;color:var(--muted);flex:none}
-.bstep-p{flex:1;position:relative;height:12px}
-.bstep-v{width:58px;text-align:right;font-size:12px;font-weight:600;flex:none;
-  font-variant-numeric:tabular-nums}
-
-/* ---------- tabla ---------- */
-.tw{margin-top:14px}
-.scroll{overflow-x:auto}
-table{width:100%;min-width:1020px;border-collapse:collapse}
-caption{text-align:left;padding:0 20px 10px;font-size:11.5px;color:var(--muted)}
-th,td{padding:6px 10px;font-size:12.5px;text-align:right;white-space:nowrap}
-th{position:sticky;top:0;z-index:2;background:var(--surface);font-size:9.5px;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-  border-bottom:1px solid var(--grid);padding-top:9px;padding-bottom:9px}
-th:first-child,td:first-child{text-align:left;padding-left:20px}
-th:last-child,td:last-child{padding-right:20px}
-tbody tr{border-top:1px solid var(--grid)}
-tbody tr:hover{background:var(--hover)}
-tr.lvl0>td:first-child{font-weight:600}
-tr.lvl1>td:first-child{font-weight:600}
-tr.sub{border-top:1px solid var(--baseline)}
-tr.sub td{font-weight:700;padding-top:9px;padding-bottom:9px}
-td.name{white-space:normal}
-.tog{border:none;background:none;color:var(--muted);cursor:pointer;padding:0 5px 0 0;
-  font-size:10px;line-height:1;width:16px;text-align:left}
-.tog:hover{color:var(--s1)}
-.sp{display:inline-block}
-.rail{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end;width:100%}
-.rail-t{position:relative;width:88px;height:5px;border-radius:3px;background:var(--seq-track);flex:none}
-.rail-f{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
-.rail-v{min-width:52px;text-align:right;font-size:12px;color:var(--text-2);
-  font-variant-numeric:tabular-nums}
-.muted{color:var(--muted)}
-.dim{color:var(--text-2)}
-
-/* ---------- tooltip ---------- */
-#tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .1s ease;
-  max-width:320px;background:var(--raised);color:var(--text-1);border:1px solid var(--ring);
-  border-radius:8px;padding:9px 12px;font-size:12px;line-height:1.6;
-  box-shadow:0 12px 32px rgba(0,0,0,.28)}
-#tip.on{opacity:1}
-#tip b{display:block;margin-bottom:3px;font-size:12.5px}
-#tip dl{margin:0;display:grid;grid-template-columns:auto auto;gap:1px 14px}
-#tip dt{color:var(--muted)}
-#tip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
-
-/* el breakpoint estaba en 1120px, justo por encima del ancho que le daba el
-   iframe del caso (~1112px): las dos columnas colapsaban a una y todo se
-   apilaba. A 980px las dos columnas siguen siendo legibles. */
-@media(max-width:1240px){
-  .body{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:12px}
-  /* el tornado lleva 3 columnas (nombre | valor | plot), .net solo 2 */
-  .tor-row{grid-template-columns:168px 66px minmax(0,1fr);gap:10px}
-  .net{grid-template-columns:168px minmax(0,1fr);gap:10px}
-  .tor-name{font-size:12px}
-}
-@media(max-width:980px){
-  .body{grid-template-columns:1fr}
-}
-@media(max-width:900px){
-  .kpis{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:620px){
-  .shell{padding:20px 16px 32px}
-  .kpis{grid-template-columns:1fr}
-  .tor-row,.net{grid-template-columns:1fr;gap:4px}
-  .tor-name,.net-k{text-align:left}
-}
-</style>
+<link rel="stylesheet" href="vista.css">
 </head>
 <body>
-
 <div class="shell">
 
   <div class="top">
@@ -234,12 +27,11 @@ td.name{white-space:normal}
     </div>
   </div>
 
-  <!-- KPIs: de la base al resultado, izquierda a derecha -->
+  <!-- SECCION 1 · KPIs -->
   <div class="kpis" id="kpis"></div>
 
-  <div class="body">
-
-    <!-- ¿qué movió el margen? -->
+  <!-- SECCION 2 · que movio el margen | variable o fijo -->
+  <div class="body w62">
     <section class="card">
       <div class="card-h">
         <div class="card-t">¿Qué componente movió el margen?</div>
@@ -250,31 +42,51 @@ td.name{white-space:normal}
           <span><i class="sw" style="background:var(--div-pos)"></i>aporta margen (−&nbsp;pp)</span>
         </div>
       </div>
-      <div class="tor" id="tor"></div>
+      <div class="card-b" id="tor"></div>
       <div class="card-f">Ordenado por impacto: los dos brazos se leen como bloques, no en zigzag.</div>
     </section>
 
-    <!-- ¿es estructural? -->
     <section class="card">
       <div class="card-h">
         <div class="card-t">¿Variable o fijo?</div>
         <div class="card-s">Peso de cada bloque de costo sobre ventas maquila. Dice si el daño es
           estructural o de absorción.</div>
       </div>
-      <div class="struct" id="struct"></div>
+      <div class="card-b" id="struct"></div>
       <div class="card-f">El costo fijo mejoró por dilución: más ventas sobre la misma base.
         Todo el deterioro está en el variable.</div>
     </section>
-
   </div>
 
-  <!-- detalle -->
-  <section class="card tw">
+  <!-- SECCION 3 · margen | mezcla del costo -->
+  <div class="body eq">
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Margen bruto de maquila</div>
+        <div class="card-s">De dónde a dónde se movió, en porcentaje de ventas maquila.</div>
+      </div>
+      <div class="card-b" id="bridge"></div>
+      <div class="card-f">248 puntos base perdidos en un año, con las ventas creciendo 11.33 %.</div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Mezcla del costo de maquila</div>
+        <div class="card-s">Qué parte del costo es variable y qué parte fija, en los dos años.</div>
+      </div>
+      <div class="card-b" id="mix"></div>
+      <div class="card-f">El variable pasa de 65.75 % a 69.56 % del costo total: la estructura se
+        vuelve más sensible al volumen.</div>
+    </section>
+  </div>
+
+  <!-- SECCION 4 · tabla -->
+  <section class="card" style="margin-top:13px">
     <div class="card-h" style="padding-bottom:12px">
       <div class="card-t">Detalle · costos sobre ventas maquila</div>
       <div class="card-s">Var&nbsp;% mide el cambio de magnitud de la línea:
-        (|Actual| − |Anterior|) ÷ |Anterior|. Por eso un costo que sube da Var&nbsp;% positivo
-        y una eficiencia lo da negativo. El color del chip evalúa si eso es favorable.</div>
+        (|Actual| − |Anterior|) ÷ |Anterior|. Por eso un costo que sube da Var&nbsp;% positivo y una
+        eficiencia lo da negativo. El color del chip evalúa si eso es favorable.</div>
     </div>
     <div class="scroll">
       <table id="tbl">
@@ -297,17 +109,19 @@ td.name{white-space:normal}
   </section>
 
 </div>
+<div id="tip" role="tooltip"></div>
 
-<div id="tip" role="tooltip" aria-hidden="true"></div>
-
+<script src="vista.js"></script>
 <script>
 /* ============================================================
-   DATOS
-   Verificados: Costo Variable = MOD + Servicios + Mat. directos +
-   Mat. indirectos; Costo Fijo = MOI + GIF + Deprec.;
-   Costo de Maquila = Variable + Fijo; UB Maquila = VM + Costo Maquila.
+   DATOS — verificados:
+   Costo Variable = MOD + Servicios + Mat. directos + Mat. indirectos
+   Costo Fijo = MOI + GIF + Deprec.
+   Costo de Maquila = Variable + Fijo
+   Utilidad Bruta Maquila = Ventas Maquila + Costo de Maquila
    ============================================================ */
 var VM = 2184600, VM_PY = 1962300;
+var MG = 10.83, MG_PY = 13.31;
 
 /* lvl, kind, nombre, actual, %VM, anterior, %VM PY, ΔAbs, Var% */
 var ROWS = [
@@ -324,8 +138,9 @@ var ROWS = [
   [2,'cost','Deprec. de inm, maq. y equipo'  , -172400,  -7.89, -164900,  -8.40,   -7500,   4.55],
   [0,'sub' ,'Utilidad Bruta Maquila'         ,  236600,  10.83,  261100,  13.31,  -24500,  -9.38]
 ];
+var W = {}; ROWS.forEach(function(r){ W[r[2]] = {a:r[4], p:r[6]}; });
 
-/* impacto en pp = %VM actual − %VM anterior, en valor absoluto del peso del costo.
+/* impacto en pp = |%VM| actual − |%VM| anterior.
    Orden por valor con signo: primero lo que destruye, al final lo que aporta. */
 var PP = [
   ['Mano de obra directa'          ,  5.02],
@@ -336,332 +151,174 @@ var PP = [
   ['Servicios'                     , -0.58],
   ['Mano de obra indirecta'        , -1.73]
 ];
-var NET = 2.48;              /* suma de PP: el costo gana 2.48 pp de peso */
-var MG = 10.83, MG_PY = 13.31; /* margen bruto maquila, actual y anterior */
 
-/* pesos por linea, para no repetir cifras entre el tornado y la tabla */
-var WEIGHT = {};
-ROWS.forEach(function(r){ WEIGHT[r[2]] = {a:r[4], p:r[6]}; });
+/* ---------- SECCION 1 · KPIs ---------- */
+V.kpis(document.getElementById('kpis'), [
+  {k:'Ventas Maquila', v:V.n0(VM), m:'vs '+V.n0(VM_PY)+' PY',
+   chip:{t:'↑ +11.33 %', c:'g'},
+   tip:['Ventas Maquila',[['YTD Abr 2026',V.n0(VM)],['YTD Abr 2025',V.n0(VM_PY)],
+        ['Δ absoluto','+222,300'],['Var %','+11.33 %']]]},
+  {k:'Costo de Maquila', v:'89.17', u:'% de VM', m:'86.69 % PY',
+   chip:{t:'↑ +2.48 pp', c:'b'},
+   tip:['Costo de Maquila sobre ventas maquila',[['YTD Abr 2026','89.17 %'],
+        ['YTD Abr 2025','86.69 %'],['Δ peso','+2.48 pp'],
+        ['Lectura','gana peso: destruye margen']]]},
+  {k:'Utilidad Bruta Maquila', v:V.n0(236600), m:'vs '+V.n0(261100)+' PY',
+   chip:{t:'↓ '+V.MIN+'9.38 %', c:'b'},
+   tip:['Utilidad Bruta Maquila',[['YTD Abr 2026',V.n0(236600)],['YTD Abr 2025',V.n0(261100)],
+        ['Δ absoluto',V.MIN+'24,500'],['Var %',V.MIN+'9.38 %']]]},
+  {k:'Margen bruto maquila', v:MG.toFixed(2), u:'% de VM', m:MG_PY.toFixed(2)+' % PY', mark:'lead',
+   chip:{t:'↓ '+V.MIN+'248 pb', c:'b'},
+   tip:['Margen bruto de maquila',[['YTD Abr 2026',V.pc(MG)],['YTD Abr 2025',V.pc(MG_PY)],
+        ['Δ',V.MIN+'2.48 pp ('+V.MIN+'248 pb)'],
+        ['Lectura','es el indicador que manda la vista']]]}
+]);
 
-/* ---------- formato ---------- */
-var MIN = '−';                                   /* menos tipográfico */
-function n0(v){ return (v<0?MIN:'') + Math.abs(v).toLocaleString('en-US'); }
-function sg(v){ return (v>=0?'+':MIN) + Math.abs(v).toLocaleString('en-US'); }
-function pc(v,d){ return v.toFixed(d===undefined?2:d) + ' %'; }
-function spp(v){ return (v>=0?'+':MIN) + Math.abs(v).toFixed(2); }
-function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls;
-  if(txt!==undefined) e.textContent=txt; return e; }
-
-/* ============================================================
-   TOOLTIP — capa real de hover, no el title del navegador:
-   el title tarda ~1s, no se puede estilar y no existe en touch.
-   ============================================================ */
-var tip = document.getElementById('tip');
-function tipHTML(title, pairs){
-  var h = '<b>'+title+'</b><dl>';
-  for(var i=0;i<pairs.length;i++){
-    h += '<dt>'+pairs[i][0]+'</dt><dd>'+pairs[i][1]+'</dd>';
-  }
-  return h + '</dl>';
-}
-function bindTip(node, title, pairs){
-  node.addEventListener('pointerenter', function(){
-    tip.innerHTML = tipHTML(title, pairs);
-    tip.classList.add('on');
-  });
-  node.addEventListener('pointermove', function(ev){
-    var pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
-    var x = ev.clientX + pad, y = ev.clientY + pad;
-    if(x + w > innerWidth - 8)  x = ev.clientX - w - pad;
-    if(y + h > innerHeight - 8) y = ev.clientY - h - pad;
-    tip.style.left = Math.max(8,x) + 'px';
-    tip.style.top  = Math.max(8,y) + 'px';
-  });
-  node.addEventListener('pointerleave', function(){ tip.classList.remove('on'); });
-}
-
-/* ============================================================
-   KPIs — la lectura va de la base al resultado
-   ============================================================ */
-(function(){
-  var host = document.getElementById('kpis');
-  var k = [
-    {k:'Ventas Maquila', v:n0(VM), u:'', m:'vs '+n0(VM_PY)+' PY',
-     chip:{t:'↑ +11.33 %', c:'g'},
-     tip:['Ventas Maquila',[['YTD Abr 2026',n0(VM)],['YTD Abr 2025',n0(VM_PY)],
-          ['Δ absoluto','+222,300'],['Var %','+11.33 %']]]},
-    {k:'Costo de Maquila', v:'89.17', u:'% de VM', m:'86.69 % PY',
-     chip:{t:'↑ +2.48 pp', c:'b'},
-     tip:['Costo de Maquila sobre ventas maquila',[['YTD Abr 2026','89.17 %'],
-          ['YTD Abr 2025','86.69 %'],['Δ','+2.48 pp'],['Lectura','gana peso: destruye margen']]]},
-    {k:'Utilidad Bruta Maquila', v:n0(236600), u:'', m:'vs '+n0(261100)+' PY',
-     chip:{t:'↓ '+MIN+'9.38 %', c:'b'},
-     tip:['Utilidad Bruta Maquila',[['YTD Abr 2026',n0(236600)],['YTD Abr 2025',n0(261100)],
-          ['Δ absoluto',MIN+'24,500'],['Var %',MIN+'9.38 %']]]},
-    {k:'Margen bruto maquila', v:MG.toFixed(2), u:'% de VM', m:MG_PY.toFixed(2)+' % PY', lead:true,
-     chip:{t:'↓ '+MIN+'248 pb', c:'b'},
-     tip:['Margen bruto de maquila',[['YTD Abr 2026',pc(MG)],['YTD Abr 2025',pc(MG_PY)],
-          ['Δ',MIN+'2.48 pp ('+MIN+'248 pb)'],['Lectura','es el indicador que manda la vista']]]}
-  ];
-  k.forEach(function(c){
-    var d = el('div','kpi'+(c.lead?' lead':''));
-    d.appendChild(el('div','kpi-k',c.k));
-    var v = el('div','kpi-v'); v.appendChild(el('span','num',c.v));
-    if(c.u) v.appendChild(el('span','kpi-u',c.u));
-    d.appendChild(v);
-    var m = el('div','kpi-m');
-    m.appendChild(el('span','chip '+c.chip.c,c.chip.t));
-    m.appendChild(el('span',null,c.m));
-    d.appendChild(m);
-    bindTip(d, c.tip[0], c.tip[1]);
-    host.appendChild(d);
-  });
-})();
-
-/* ============================================================
-   TORNADO — dominio con ticks reales.
-   El original no tenía eje: cuatro de las siete barras quedaban
-   sin etiqueta y sin escala, o sea ilegibles.
-   ============================================================ */
+/* ---------- SECCION 2 · tornado ---------- */
 (function(){
   var host = document.getElementById('tor');
-  var LO = -2, HI = 5.5, SPAN = HI - LO;
-  var x = function(v){ return (v - LO) / SPAN * 100; };
-  var zero = x(0);
-  var TICKS = [-2,-1,0,1,2,3,4,5];
-
-  /* las tres mayores por magnitud llevan enfasis; el resto queda legible
-     por el eje y su etiqueta en tinta secundaria */
-  var top3 = PP.map(function(p){ return Math.abs(p[1]); }).sort(function(a,b){ return b-a; }).slice(0,3);
-  var cut = top3[top3.length-1];
-
-  PP.forEach(function(p){
-    var name = p[0], pp = p[1], pos = pp > 0, w = Math.abs(pp)/SPAN*100;
-    var hi = Math.abs(pp) >= cut;
-    var row = el('div','tor-row'+(hi?' hi':''));
-    row.appendChild(el('div','tor-name',name));
-    row.appendChild(el('div','tor-val',spp(pp)+' pp'));
-
-    var plot = el('div','plot');
-    TICKS.forEach(function(t){
-      var g = el('div','gl'+(t===0?' zero':''));
-      g.style.left = x(t)+'%';
-      plot.appendChild(g);
-    });
-    var bar = el('div','bar '+(pos?'pos':'neg'));
-    if(pos){ bar.style.left = zero+'%'; bar.style.width = w+'%'; }
-    else   { bar.style.left = (zero-w)+'%'; bar.style.width = w+'%'; }
-    plot.appendChild(bar);
-    row.appendChild(plot);
-
-    var w26 = WEIGHT[name];
-    bindTip(row, name, [
-      ['Peso 2026', pc(Math.abs(w26.a))],
-      ['Peso 2025', pc(Math.abs(w26.p))],
-      ['Impacto', spp(pp)+' pp'],
-      ['Lectura', pos ? 'gana peso: destruye margen' : 'pierde peso: aporta margen']
-    ]);
-    host.appendChild(row);
+  V.tornado(host, {
+    items: PP.map(function(p){
+      var w = W[p[0]];
+      return {name:p[0], v:p[1], tip:[
+        ['Peso 2026', V.pc(Math.abs(w.a))],
+        ['Peso 2025', V.pc(Math.abs(w.p))],
+        ['Impacto', V.spp(p[1])+' pp'],
+        ['Lectura', p[1] > 0 ? 'gana peso: destruye margen' : 'pierde peso: aporta margen']
+      ]};
+    }),
+    lo:-2, hi:5.5, ticks:[-2,-1,0,1,2,3,4,5],
+    unit:'pp', axisLabel:'puntos porcentuales sobre ventas maquila'
   });
-
-  /* eje */
-  var ax = el('div','tor-row');
-  ax.style.cursor = 'default';
-  ax.appendChild(el('div',null,''));
-  ax.appendChild(el('div',null,''));
-  var axis = el('div','axis');
-  TICKS.forEach(function(t){
-    var s = el('span','num',(t>0?'+':t<0?MIN:'')+Math.abs(t));
-    s.style.left = x(t)+'%';
-    axis.appendChild(s);
-  });
-  ax.appendChild(axis);
-  host.appendChild(ax);
-  var at = el('div','tor-row');
-  at.appendChild(el('div',null,''));
-  at.appendChild(el('div',null,''));
-  at.appendChild(el('div','axis-t','puntos porcentuales sobre ventas maquila'));
-  host.appendChild(at);
-
-  /* Efecto neto: es un RESULTADO, no un componente. Sale del par
-     divergente y usa estado + icono + palabra, para que el peor
-     resultado no herede el color de "aporta margen". */
-  var net = el('div','net');
-  net.appendChild(el('div','net-k','Efecto neto'));
-  var nv = el('div','net-v');
-  nv.appendChild(el('span','chip b','↓ '+MIN+'2.48 pp de margen'));
-  nv.appendChild(el('span',null,'el costo gana +2.48 pp de peso sobre ventas'));
+  /* El efecto neto es un RESULTADO, no un componente: sale del par divergente
+     y usa estado con icono y palabra, para que el peor resultado no herede el
+     color de "aporta margen". */
+  var net = V.el('div','net');
+  net.appendChild(V.el('div','net-k','Efecto neto'));
+  var nv = V.el('div','net-v');
+  nv.appendChild(V.el('span','chip b','↓ '+V.MIN+'2.48 pp de margen'));
+  nv.appendChild(V.el('span',null,'el costo gana +2.48 pp de peso sobre ventas'));
   net.appendChild(nv);
   host.appendChild(net);
 })();
 
-/* ============================================================
-   ESTRUCTURA — variable vs fijo, dos series, leyenda + etiqueta
-   ============================================================ */
+/* ---------- SECCION 2 · variable vs fijo ---------- */
 (function(){
-  var host = document.getElementById('struct');
-  var MAXP = 70;                     /* dominio 0–70 % de VM */
-  var G = [
-    {k:'Costo Variable', a:62.03, p:57.00, d:5.03},
-    {k:'Costo Fijo',     a:27.14, p:29.69, d:-2.55}
-  ];
-  G.forEach(function(g){
-    var box = el('div','grp');
-    var head = el('div','grp-k');
-    head.appendChild(el('span',null,g.k));
-    var dchip = el('span','chip '+(g.d>0?'b':'g'));
-    dchip.textContent = (g.d>0?'↑ +':'↓ '+MIN)+Math.abs(g.d).toFixed(2)+' pp';
-    head.appendChild(dchip);
-    box.appendChild(head);
-
-    /* dos periodos del MISMO indicador son ordinales, no dos identidades:
-       van en una rampa de un tono. Azul y naranja ya significan
-       aporta/destruye en el tornado de al lado; reusarlos aqui como
-       2026/2025 le daria dos significados al mismo color en una pantalla. */
-    [['2026',g.a,'var(--seq-1)'],['2025',g.p,'var(--seq-3)']].forEach(function(s){
-      var r = el('div','grow');
-      r.appendChild(el('div','grow-k',s[0]));
-      var p = el('div','grow-p');
-      var t = el('div','track'); t.style.position='absolute'; t.style.inset='0';
-      t.style.borderRadius='3px'; t.style.background='var(--seq-track)';
-      p.appendChild(t);
-      var f = el('div'); f.style.position='absolute'; f.style.left='0'; f.style.top='0';
-      f.style.bottom='0'; f.style.width=(s[1]/MAXP*100)+'%'; f.style.background=s[2];
-      f.style.borderRadius='3px'; f.style.boxShadow='0 0 0 2px var(--surface)';
-      p.appendChild(f);
-      r.appendChild(p);
-      r.appendChild(el('div','grow-v',pc(s[1])));
-      box.appendChild(r);
-      bindTip(r, g.k+' · '+s[0], [['Peso sobre VM',pc(s[1])],
-        ['Δ vs otro año',spp(s[0]==='2026'?g.d:-g.d)+' pp']]);
-    });
-    host.appendChild(box);
-  });
-
-  var lg = el('div','legend');
-  lg.style.margin = '0 0 4px';
+  V.grouped(document.getElementById('struct'), [
+    {k:'Costo Variable', chip:{t:'↑ +5.03 pp', c:'b'}, rows:[
+      {k:'2026', v:62.03, color:'var(--seq-1)', label:'62.03 %',
+       tip:[['Importe',V.n0(-1355100)],['Peso sobre VM','62.03 %'],['Δ','+5.03 pp']]},
+      {k:'2025', v:57.00, color:'var(--seq-3)', label:'57.00 %',
+       tip:[['Importe',V.n0(-1118500)],['Peso sobre VM','57.00 %']]}
+    ]},
+    {k:'Costo Fijo', chip:{t:'↓ '+V.MIN+'2.55 pp', c:'g'}, rows:[
+      {k:'2026', v:27.14, color:'var(--seq-1)', label:'27.14 %',
+       tip:[['Importe',V.n0(-592900)],['Peso sobre VM','27.14 %'],['Δ',V.MIN+'2.55 pp']]},
+      {k:'2025', v:29.69, color:'var(--seq-3)', label:'29.69 %',
+       tip:[['Importe',V.n0(-582700)],['Peso sobre VM','29.69 %']]}
+    ]}
+  ], 70);
+  var lg = V.el('div','legend');
   lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
                + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
-  host.appendChild(lg);
-
-  /* puente del margen: de dónde a dónde */
-  var br = el('div','bridge');
-  br.appendChild(el('div','bridge-k','Margen bruto maquila · de 2025 a 2026'));
-  [['2025',MG_PY,'var(--seq-3)'],['2026',MG,'var(--seq-1)']].forEach(function(s){
-    var r = el('div','bstep');
-    r.appendChild(el('div','bstep-k',s[0]));
-    var p = el('div','bstep-p');
-    var t = el('div'); t.style.position='absolute'; t.style.inset='0';
-    t.style.borderRadius='3px'; t.style.background='var(--seq-track)';
-    p.appendChild(t);
-    var f = el('div'); f.style.position='absolute'; f.style.left='0'; f.style.top='0';
-    f.style.bottom='0'; f.style.width=(s[1]/15*100)+'%'; f.style.background=s[2];
-    f.style.borderRadius='3px'; f.style.boxShadow='0 0 0 2px var(--surface)';
-    p.appendChild(f);
-    r.appendChild(p);
-    r.appendChild(el('div','bstep-v num',pc(s[1])));
-    br.appendChild(r);
-  });
-  var f = el('div','bstep');
-  f.style.marginTop = '10px';
-  f.appendChild(el('div','bstep-k',''));
-  var fv = el('div'); fv.style.flex='1';
-  fv.appendChild(el('span','chip b','↓ '+MIN+'248 pb'));
-  f.appendChild(fv);
-  br.appendChild(f);
-  host.appendChild(br);
+  document.getElementById('struct').appendChild(lg);
 })();
 
-/* ============================================================
-   TABLA — <table> real, con jerarquía colapsable
-   ============================================================ */
+/* ---------- SECCION 3 · margen ---------- */
+(function(){
+  V.grouped(document.getElementById('bridge'), [
+    {k:'Margen bruto sobre ventas maquila', chip:{t:'↓ '+V.MIN+'248 pb', c:'b'}, rows:[
+      {k:'2026', v:MG, color:'var(--seq-1)', label:V.pc(MG),
+       tip:[['Utilidad Bruta Maquila',V.n0(236600)],['Sobre ventas maquila',V.pc(MG)]]},
+      {k:'2025', v:MG_PY, color:'var(--seq-3)', label:V.pc(MG_PY),
+       tip:[['Utilidad Bruta Maquila',V.n0(261100)],['Sobre ventas maquila',V.pc(MG_PY)]]}
+    ]}
+  ], 15);
+  var lg = V.el('div','legend');
+  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
+               + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
+  document.getElementById('bridge').appendChild(lg);
+})();
+
+/* ---------- SECCION 3 · mezcla del costo ----------
+   Variable y fijo como porcentaje del costo de maquila, no de las ventas:
+   1,355,100 / 1,948,000 = 69.56 %   ·   592,900 / 1,948,000 = 30.44 %
+   1,118,500 / 1,701,200 = 65.75 %   ·   582,700 / 1,701,200 = 34.25 % */
+V.stack100(document.getElementById('mix'), [
+  {k:'YTD Abr 2026 · costo de '+V.n0(1948000), segs:[
+    {k:'Variable', v:1355100, pct:69.56, color:'var(--s2)', label:V.n0(1355100),
+     tip:[['Importe',V.n0(1355100)],['% del costo','69.56 %'],['Abr 2025','65.75 %']]},
+    {k:'Fijo', v:592900, pct:30.44, color:'var(--seq-1)', label:V.n0(592900),
+     tip:[['Importe',V.n0(592900)],['% del costo','30.44 %'],['Abr 2025','34.25 %']]}
+  ]},
+  {k:'YTD Abr 2025 · costo de '+V.n0(1701200), segs:[
+    {k:'Variable', v:1118500, pct:65.75, color:'var(--s2)', label:V.n0(1118500),
+     tip:[['Importe',V.n0(1118500)],['% del costo','65.75 %']]},
+    {k:'Fijo', v:582700, pct:34.25, color:'var(--seq-1)', label:V.n0(582700),
+     tip:[['Importe',V.n0(582700)],['% del costo','34.25 %']]}
+  ]}
+]);
+
+/* ---------- SECCION 4 · tabla ---------- */
 (function(){
   var tb = document.querySelector('#tbl tbody');
   var SEQ = ['var(--seq-1)','var(--seq-2)','var(--seq-3)'];
+  var MAXBAR = 2184600;
 
-  ROWS.forEach(function(r, i){
+  ROWS.forEach(function(r){
     var lvl=r[0], kind=r[1], name=r[2], act=r[3], pv=r[4], prev=r[5], pvPY=r[6], d=r[7], vp=r[8];
     var fav = kind==='cost' ? vp < 0 : vp > 0;
-    /* Δ de PESO, en valor absoluto: un costo que gana peso da +pp. Con
-       pv - pvPY (los % de costo se guardan negativos) daba -5.03 pp para un
-       costo que crecio 5.03, o sea lo contrario de lo que dice el tornado. */
+    /* Δ de PESO en valor absoluto: un costo que gana peso da +pp, igual que en
+       el tornado. Con pv-pvPY el signo saldria invertido, porque los
+       porcentajes de costo se guardan negativos. */
     var dpp = Math.abs(pv) - Math.abs(pvPY);
-    var tr = el('tr','lvl'+lvl+(kind==='sub'?' sub':''));
-    tr.dataset.lvl = lvl;
-    if(lvl===1) tr.dataset.parent = name;
+    var isBase = kind === 'ing';
 
-    /* nombre + indent + toggle en los nodos con hijos */
-    var td = el('td','name');
-    td.style.paddingLeft = (20 + lvl*17) + 'px';
-    if(lvl===1){
-      var b = el('button','tog','▾');
-      b.type='button';
-      b.setAttribute('aria-expanded','true');
-      b.setAttribute('aria-label','Colapsar '+name);
-      b.onclick = function(){
-        var open = b.getAttribute('aria-expanded')==='true';
-        b.setAttribute('aria-expanded', open?'false':'true');
-        b.setAttribute('aria-label', (open?'Expandir ':'Colapsar ')+name);
-        b.textContent = open ? '▸' : '▾';
-        var n = tr.nextElementSibling;
-        while(n && n.dataset.lvl === '2'){ n.style.display = open ? 'none' : ''; n = n.nextElementSibling; }
-      };
-      td.appendChild(b);
-    }
-    td.appendChild(el('span','sp',name));
+    var tr = V.el('tr','lvl'+lvl+(kind==='sub'?' sub':''));
+    tr.dataset.lvl = lvl;
+
+    var td = V.el('td','name');
+    td.style.paddingLeft = (20 + lvl*17)+'px';
+    if(name==='Costo Variable' || name==='Costo Fijo') td.appendChild(V.makeToggle(tr, name, 2));
+    td.appendChild(V.el('span',null,name));
     tr.appendChild(td);
 
-    tr.appendChild(el('td','num',n0(act)));
-
-    /* % vs VM: la base siempre es 100 %, el riel ahí solo es ruido */
-    var pt = el('td');
-    var rail = el('div','rail');
-    if(kind!=='ing'){
-      var track = el('span','rail-t');
-      var fill = el('span','rail-f');
-      fill.style.width = Math.min(100, Math.abs(pv)) + '%';
-      fill.style.background = SEQ[Math.min(2,lvl)];
-      track.appendChild(fill);
-      rail.appendChild(track);
-    }
-    rail.appendChild(el('span','rail-v',pc(pv)));
-    pt.appendChild(rail);
-    tr.appendChild(pt);
-
-    tr.appendChild(el('td','num dim',n0(prev)));
-    tr.appendChild(el('td','num muted',pc(pvPY)));
-
-    var dp = el('td','num'+(kind==='ing'?' muted':''));
-    dp.textContent = kind==='ing' ? '—' : spp(dpp)+' pp';
-    tr.appendChild(dp);
-
-    tr.appendChild(el('td','num dim',sg(d)));
-
-    var ct = el('td');
-    var chip = el('span','chip '+(fav?'g':'b'));
-    chip.textContent = (vp>0?'↑ +':'↓ '+MIN)+Math.abs(vp).toFixed(2)+' %';
-    ct.appendChild(chip);
+    var ct = V.el('td');
+    ct.appendChild(V.cellBar(act, MAXBAR, SEQ[Math.min(2,lvl)]));
     tr.appendChild(ct);
 
-    bindTip(tr, name, [
-      ['Actual', n0(act)+'  ('+pc(pv)+' VM)'],
-      ['Anterior', n0(prev)+'  ('+pc(pvPY)+' VM)'],
-      ['Δ absoluto', sg(d)],
-      ['Δ peso sobre VM', kind==='ing' ? '—' : spp(dpp)+' pp'],
-      ['Var %', (vp>0?'+':MIN)+Math.abs(vp).toFixed(2)+' %'],
+    var pt = V.el('td');
+    /* la base siempre es 100 %: el riel ahi solo es ruido */
+    pt.appendChild(isBase ? V.el('span','rail-v',V.pc(pv))
+                          : V.railPct(pv, SEQ[Math.min(2,lvl)]));
+    tr.appendChild(pt);
+
+    tr.appendChild(V.el('td','num dim',V.n0(prev)));
+    tr.appendChild(V.el('td','num muted',V.pc(pvPY)));
+
+    var dp = V.el('td','num'+(isBase?' muted':''));
+    dp.textContent = isBase ? '—' : V.spp(dpp)+' pp';
+    tr.appendChild(dp);
+
+    tr.appendChild(V.el('td','num dim',V.sg(d)));
+
+    var vc = V.el('td');
+    vc.appendChild(V.varChip(vp, fav));
+    tr.appendChild(vc);
+
+    V.bindTip(tr, name, [
+      ['Actual', V.n0(act)+'  ('+V.pc(pv)+' VM)'],
+      ['Anterior', V.n0(prev)+'  ('+V.pc(pvPY)+' VM)'],
+      ['Δ absoluto', V.sg(d)],
+      ['Δ peso sobre VM', isBase ? '—' : V.spp(dpp)+' pp'],
+      ['Var %', (vp>0?'+':V.MIN)+Math.abs(vp).toFixed(2)+' %'],
       ['Evaluación', fav ? 'favorable' : 'desfavorable']
     ]);
     tb.appendChild(tr);
   });
 })();
 
-/* ---------- tema ---------- */
-document.getElementById('themeBtn').onclick = function(){
-  var r = document.documentElement;
-  var cur = r.getAttribute('data-theme')
-    || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  r.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
-};
+V.themeBtn();
 </script>
 </body>
 </html>

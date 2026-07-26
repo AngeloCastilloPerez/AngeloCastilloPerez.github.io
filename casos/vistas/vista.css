@@ -1,0 +1,264 @@
+/* ============================================================
+   SISTEMA DE LAS VISTAS — FARMAVET (datos de demostracion)
+   Compartido por las cinco vistas del caso Agrovet BI.
+   Un token cambiado aqui cambia en las cinco.
+   ============================================================ */
+:root{
+  --surface:#fcfcfb; --plane:#f9f9f7; --raised:#ffffff;
+  --text-1:#0b0b0b; --text-2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --baseline:#c3c2b7;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  /* rampa secuencial azul: la magnitud va en un solo tono */
+  --seq-1:#2a78d6; --seq-2:#5598e7; --seq-3:#9ec5f4; --seq-track:#e8e7e1;
+  --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
+  --good-soft:rgba(12,163,12,.10); --crit-soft:rgba(208,59,59,.10); --warn-soft:rgba(250,178,25,.16);
+  /* par divergente: frio aporta / calido resta, medio neutro */
+  --div-pos:#2a78d6; --div-neg:#eb6834; --div-mid:#f0efec;
+  --hover:rgba(0,0,0,.035); --ring:rgba(11,11,11,.10);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --surface:#0d0d16; --plane:#080810; --raised:#13131f;
+  --text-1:#ffffff; --text-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --baseline:#383835;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --seq-1:#3987e5; --seq-2:#2a78d6; --seq-3:#1c5cab; --seq-track:#22222c;
+  --good-soft:rgba(12,163,12,.16); --crit-soft:rgba(208,59,59,.18); --warn-soft:rgba(250,178,25,.16);
+  --div-pos:#3987e5; --div-neg:#d95926; --div-mid:#383835;
+  --hover:rgba(255,255,255,.05); --ring:rgba(255,255,255,.10);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --surface:#0d0d16; --plane:#080810; --raised:#13131f;
+  --text-1:#ffffff; --text-2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --baseline:#383835;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --seq-1:#3987e5; --seq-2:#2a78d6; --seq-3:#1c5cab; --seq-track:#22222c;
+  --good-soft:rgba(12,163,12,.16); --crit-soft:rgba(208,59,59,.18); --warn-soft:rgba(250,178,25,.16);
+  --div-pos:#3987e5; --div-neg:#d95926; --div-mid:#383835;
+  --hover:rgba(255,255,255,.05); --ring:rgba(255,255,255,.10);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--plane);color:var(--text-1);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0}
+button,select{font:inherit}
+button:focus-visible,select:focus-visible{outline:2px solid var(--s1);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.shell{max-width:1600px;margin:0 auto;padding:26px 28px 34px}
+
+/* ---------- cabecera ---------- */
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.brand{font-size:12px;font-weight:700;letter-spacing:.22em;
+  background:linear-gradient(135deg,#FF3D5A,#FF8C42);-webkit-background-clip:text;background-clip:text;color:transparent}
+.top h1{margin:6px 0 3px;font-size:24px;font-weight:700;letter-spacing:-.012em;text-wrap:balance}
+.sub{font-size:13px;color:var(--text-2)}
+.filters{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap}
+.filters label{display:flex;flex-direction:column;gap:4px}
+.fk{font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.filters select,.tbtn{background:var(--surface);color:var(--text-1);border:1px solid var(--grid);
+  border-radius:6px;padding:6px 10px;font-size:13px}
+.tbtn{color:var(--text-2);cursor:pointer;padding:7px 12px;font-size:12px}
+.tbtn:hover{border-color:var(--s1);color:var(--text-1)}
+.tbtn.on{background:var(--text-1);color:var(--surface);border-color:var(--text-1)}
+.seg{display:inline-flex;gap:6px}
+
+/* ---------- tarjeta ---------- */
+.card{background:var(--surface);border:1px solid var(--grid);border-radius:10px}
+.card-h{padding:15px 20px 0}
+.card-t{font-size:14.5px;font-weight:600;letter-spacing:-.005em}
+.card-s{margin-top:3px;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.card-b{padding:14px 20px 6px}
+.card-f{padding:11px 20px;border-top:1px solid var(--grid);font-size:11.5px;line-height:1.6;color:var(--muted)}
+
+/* ---------- KPIs ---------- */
+.kpis{margin-top:18px;display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:13px}
+.kpi{background:var(--surface);border:1px solid var(--grid);border-radius:10px;padding:15px 17px 14px}
+.kpi.lead{box-shadow:inset 3px 0 0 var(--crit)}
+.kpi.leadg{box-shadow:inset 3px 0 0 var(--good)}
+.kpi-k{font-size:11px;color:var(--muted)}
+.kpi-v{margin-top:6px;font-size:27px;font-weight:700;letter-spacing:-.015em;line-height:1.05}
+.kpi-u{margin-left:5px;font-size:13.5px;font-weight:600;color:var(--text-2)}
+.kpi-m{margin-top:8px;font-size:11.5px;color:var(--text-2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;
+  font-size:11.5px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.chip.g{background:var(--good-soft);color:var(--good)}
+.chip.b{background:var(--crit-soft);color:var(--crit)}
+.chip.w{background:var(--warn-soft);color:var(--warn)}
+.chip.n{background:var(--hover);color:var(--text-2)}
+
+/* ---------- rejillas de seccion ---------- */
+/* cada grafico en su propia tarjeta y su propia seccion */
+.body{margin-top:13px;display:grid;gap:13px;align-items:start}
+.body.w62{grid-template-columns:minmax(0,1.62fr) minmax(0,1fr)}
+.body.eq{grid-template-columns:repeat(2,minmax(0,1fr))}
+.body.w15{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
+.body.one{grid-template-columns:1fr}
+
+/* ---------- leyenda ---------- */
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--text-2);margin-top:11px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:8px;border-radius:2px;display:inline-block;flex:none}
+
+/* ---------- tornado / barras divergentes ---------- */
+.tor-row{display:grid;grid-template-columns:190px 72px minmax(0,1fr);gap:12px;align-items:center;
+  padding:4px 6px;margin:0 -6px;border-radius:6px}
+.tor-row:hover{background:var(--hover)}
+.tor-name{font-size:12.5px;color:var(--text-2);text-align:right;line-height:1.3}
+.tor-row.hi .tor-name{color:var(--text-1);font-weight:600}
+.tor-val{font-size:12px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums}
+.tor-row.hi .tor-val{color:var(--text-1);font-weight:700}
+.plot{position:relative;height:20px}
+.gl{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--grid)}
+.gl.zero{background:var(--baseline);top:-5px;bottom:-5px}
+.bar{position:absolute;top:3px;bottom:3px}
+.bar.pos{background:var(--div-neg);border-radius:0 4px 4px 0}
+.bar.neg{background:var(--div-pos);border-radius:4px 0 0 4px}
+.axis{position:relative;height:18px;margin-top:2px}
+.axis span{position:absolute;top:0;transform:translateX(-50%);font-size:10.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums}
+.axis-t{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2px}
+.net{margin:8px -6px 0;padding:11px 6px 4px;border-top:1px solid var(--baseline);
+  display:grid;grid-template-columns:190px minmax(0,1fr);gap:12px;align-items:center}
+.net-k{font-size:12.5px;font-weight:700;text-align:right}
+.net-v{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--text-2)}
+
+/* ---------- barras horizontales agrupadas ---------- */
+.grp{margin-bottom:15px}
+.grp:last-child{margin-bottom:6px}
+.grp-k{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  font-size:12.5px;color:var(--text-1);font-weight:600}
+.grow{display:flex;align-items:center;gap:9px;margin-top:5px;padding:1px 0;border-radius:4px}
+.grow:hover{background:var(--hover)}
+.grow-k{width:58px;font-size:10.5px;color:var(--muted);flex:none}
+.grow-p{flex:1;position:relative;height:11px;min-width:40px}
+.grow-v{width:64px;text-align:right;font-size:11.5px;color:var(--text-2);flex:none;
+  font-variant-numeric:tabular-nums}
+.track{position:absolute;inset:0;border-radius:3px;background:var(--seq-track)}
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:3px;box-shadow:0 0 0 2px var(--surface)}
+
+/* ---------- cascada (waterfall) ---------- */
+.wf-row{display:grid;grid-template-columns:186px minmax(0,1fr) 108px;gap:12px;align-items:center;
+  padding:4px 6px;margin:0 -6px;border-radius:6px}
+.wf-row:hover{background:var(--hover)}
+.wf-row.tot{border-top:1px solid var(--baseline);margin-top:7px;padding-top:10px}
+.wf-k{font-size:12.5px;color:var(--text-2);text-align:right;line-height:1.3}
+.wf-row.tot .wf-k{color:var(--text-1);font-weight:700}
+.wf-v{font-size:12.5px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums}
+.wf-row.tot .wf-v{color:var(--text-1);font-weight:700}
+.wf-p{position:relative;height:22px}
+.wf-b{position:absolute;top:4px;bottom:4px;border-radius:3px;box-shadow:0 0 0 2px var(--surface)}
+.wf-c{position:absolute;height:1px;background:var(--baseline);top:50%}
+
+/* ---------- barra apilada 100 % ---------- */
+.st{margin-bottom:16px}
+.st:last-of-type{margin-bottom:6px}
+.st-k{font-size:12.5px;font-weight:600;margin-bottom:8px}
+.st-bar{display:flex;height:26px;border-radius:4px;overflow:hidden;background:var(--seq-track)}
+.st-seg{position:relative;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 2px var(--surface);font-size:11px;font-weight:700;color:#fff;
+  font-variant-numeric:tabular-nums;overflow:hidden;white-space:nowrap}
+.st-seg:first-child{border-radius:4px 0 0 4px}
+.st-seg:last-child{border-radius:0 4px 4px 0}
+.st-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:11px;color:var(--text-2)}
+.st-legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* ---------- columnas verticales ----------
+   Las barras, sus etiquetas y la linea de referencia se posicionan todas
+   contra el mismo alto (la columna completa), asi el covenant cae donde
+   corresponde. Antes la barra media contra un alto y la referencia contra
+   otro, y las barras por encima del covenant salian por debajo de la linea. */
+.vb{position:relative;display:flex;align-items:stretch;gap:10px;height:180px}
+.vb-ref{position:absolute;left:0;right:0;border-top:1px dashed var(--warn);pointer-events:none;z-index:2}
+.vb-ref b{position:absolute;right:0;top:-15px;font-size:10px;font-weight:600;color:var(--warn);
+  background:var(--surface);padding:0 4px}
+.vb-col{flex:1;position:relative;border-radius:5px}
+.vb-col:hover{background:var(--hover)}
+.vb-v{position:absolute;left:0;right:0;text-align:center;font-size:11.5px;font-weight:600;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.vb-b{position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:74px;border-radius:4px 4px 0 0;box-shadow:0 0 0 2px var(--surface)}
+.vb-x{display:flex;gap:10px;margin-top:7px;border-top:1px solid var(--baseline);padding-top:7px}
+.vb-x span{flex:1;text-align:center;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ---------- tarjeta de ratio ---------- */
+.ratios{margin-top:18px;display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:13px}
+.rc{background:var(--surface);border:1px solid var(--grid);border-radius:10px;padding:15px 17px 13px;
+  display:flex;flex-direction:column;gap:9px}
+.rc.ok{box-shadow:inset 3px 0 0 var(--good)}
+.rc.no{box-shadow:inset 3px 0 0 var(--crit)}
+.rc-k{font-size:12.5px;font-weight:600;line-height:1.25}
+.rc-def{font-size:10.5px;line-height:1.5;color:var(--muted)}
+.rc-vr{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.rc-v{font-size:27px;font-weight:700;letter-spacing:-.015em;line-height:1;font-variant-numeric:tabular-nums}
+.rc-o{font-size:11px;color:var(--text-2);font-variant-numeric:tabular-nums}
+.rc-sp{margin-top:auto}
+.rc-sp svg{display:block;width:100%;height:38px;overflow:visible}
+.rc-x{display:flex;justify-content:space-between;font-size:9.5px;color:var(--muted);margin-top:3px}
+
+/* ---------- tabla ---------- */
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+caption{text-align:left;padding:0 20px 10px;font-size:11.5px;color:var(--muted)}
+th,td{padding:6px 10px;font-size:12.5px;text-align:right;white-space:nowrap}
+th{position:sticky;top:0;z-index:2;background:var(--surface);font-size:9.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--grid);padding-top:9px;padding-bottom:9px}
+th:first-child,td:first-child{text-align:left;padding-left:20px}
+th:last-child,td:last-child{padding-right:20px}
+tbody tr{border-top:1px solid var(--grid)}
+tbody tr:hover{background:var(--hover)}
+tr.lvl0>td:first-child,tr.lvl1>td:first-child{font-weight:600}
+tr.sub{border-top:1px solid var(--baseline)}
+tr.sub td{font-weight:700;padding-top:9px;padding-bottom:9px}
+td.name{white-space:normal}
+.tog{border:none;background:none;color:var(--muted);cursor:pointer;padding:0 5px 0 0;
+  font-size:10px;line-height:1;width:16px;text-align:left}
+.tog:hover{color:var(--s1)}
+.rail{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end;width:100%}
+.rail-t{position:relative;width:84px;height:5px;border-radius:3px;background:var(--seq-track);flex:none}
+.rail-f{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.rail-v{min-width:52px;text-align:right;font-size:12px;color:var(--text-2);font-variant-numeric:tabular-nums}
+/* barra dentro de la celda, anclada al cero: ingresos a la derecha, costos a la izquierda */
+.cell{position:relative;display:block;height:16px;min-width:150px}
+.cell .z{position:absolute;top:-2px;bottom:-2px;width:1px;background:var(--baseline)}
+.cell .cb{position:absolute;top:3px;bottom:3px}
+.cell .cv{position:absolute;top:0;line-height:16px;font-size:12px;font-variant-numeric:tabular-nums;
+  white-space:nowrap;color:var(--text-1)}
+.muted{color:var(--muted)} .dim{color:var(--text-2)}
+
+/* ---------- tooltip ---------- */
+#tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .1s ease;
+  max-width:330px;background:var(--raised);color:var(--text-1);border:1px solid var(--ring);
+  border-radius:8px;padding:9px 12px;font-size:12px;line-height:1.6;
+  box-shadow:0 12px 32px rgba(0,0,0,.28)}
+#tip.on{opacity:1}
+#tip b{display:block;margin-bottom:3px;font-size:12.5px}
+#tip dl{margin:0;display:grid;grid-template-columns:auto auto;gap:1px 14px}
+#tip dt{color:var(--muted)}
+#tip dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+
+/* ---------- responsive ----------
+   El breakpoint de dos columnas va a 980px y no a 1120: dentro del iframe del
+   caso el ancho util es ~1112px y las tarjetas se apilaban todas. */
+@media(max-width:1240px){
+  .body.w62,.body.w15{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:12px}
+  .tor-row{grid-template-columns:168px 66px minmax(0,1fr);gap:10px}
+  .net{grid-template-columns:168px minmax(0,1fr);gap:10px}
+  .wf-row{grid-template-columns:166px minmax(0,1fr) 100px;gap:10px}
+  .tor-name,.wf-k{font-size:12px}
+}
+@media(max-width:980px){
+  .body.w62,.body.eq,.body.w15{grid-template-columns:1fr}
+}
+@media(max-width:900px){
+  .kpis,.ratios{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .shell{padding:18px 14px 26px}
+  .kpis,.ratios{grid-template-columns:1fr}
+  .tor-row,.net,.wf-row{grid-template-columns:1fr;gap:3px}
+  .tor-name,.net-k,.wf-k,.wf-v,.tor-val{text-align:left}
+}
