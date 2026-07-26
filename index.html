@@ -227,8 +227,9 @@ button{font:inherit}
 .symb-top span{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.72)}
 .symb-top b{font-size:14px;font-weight:400;color:#fff}
 .symb-rail{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+/* idem: el ancho lo escribe el scroll, la transicion solo lo hacia arrastrar */
 .symb-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#FF3D5A,#FF8C42);
-  box-shadow:0 0 14px rgba(255,61,90,.5);transition:width .12s linear}
+  box-shadow:0 0 14px rgba(255,61,90,.5);will-change:width}
 
 /* ----- columna derecha: timeline ----- */
 .exp-body{position:relative;padding:46px 48px 42px;min-width:0}
@@ -255,7 +256,10 @@ button{font:inherit}
   background:linear-gradient(180deg,rgba(255,140,66,.6),rgba(255,255,255,.1))}
 /* empuja la primera etapa por debajo de la banda de fundido de 46px: si no,
    nacia dentro y el mask le comia el 86% de la opacidad */
-.timeline-inner{padding-top:52px;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+/* sin transition: el transform ahora lo escribe el scroll frame a frame, y una
+   transicion encima solo agregaba medio segundo de retraso. Es el mismo caso
+   que .hero-content y .lyr en su momento. */
+.timeline-inner{padding-top:52px;will-change:transform}
 
 .stage{position:relative;padding:0 0 30px;opacity:.4;transform:translateX(-6px);
   transition:opacity .35s ease,transform .35s ease}
@@ -1196,7 +1200,9 @@ function updateScroll(){
   sp = Math.max(0, Math.min(1, sp));
   expInView = sr.bottom > 0 && sr.top < wh;
 
-  if(N.fill) N.fill.style.width = (sp*100).toFixed(0)+'%';
+  /* dos decimales: con toFixed(0) la barra avanzaba en escalones de 1%, que
+     sobre 520vh de scroll son saltos visibles */
+  if(N.fill) N.fill.style.width = (sp*100).toFixed(2)+'%';
   var pct = Math.round(sp*100);
   if(N.pct && pct !== last.pct){ N.pct.textContent = pct; last.pct = pct; }
 
@@ -1217,11 +1223,32 @@ function updateScroll(){
   if(N.timeline){
     var shift = 'none';
     if(N.stages.length && M.over > 0 && !window.matchMedia('(max-width:1024px)').matches){
-      var y = Math.max(0, Math.min(M.over, (M.stageTop[active]||0) - M.trackH*0.22));
-      shift = 'translate3d(0,-'+y.toFixed(0)+'px,0)';
+      var y = Math.max(0, Math.min(M.over, timelineY(sp) - M.trackH*0.22));
+      /* un decimal: redondear a entero cuantiza el movimiento a saltos de 1px
+         y eso se nota como micro-tembleque en un desplazamiento lento */
+      shift = 'translate3d(0,-'+y.toFixed(1)+'px,0)';
     }
     if(shift !== last.tlShift){ N.timeline.style.transform = shift; last.tlShift = shift; }
   }
+}
+
+/* Posicion continua de la timeline.
+   Antes se usaba M.stageTop[active], que es un indice DISCRETO: la timeline se
+   quedaba quieta mientras scrolleabas y de golpe saltaba a la siguiente etapa;
+   la transicion de .5s solo maquillaba el salto, y de paso metia medio segundo
+   de retraso respecto al scroll.
+   Ahora se interpola entre la posicion de la etapa actual y la de la siguiente
+   segun donde caiga sp entre sus dos umbrales, asi que sigue al scroll 1:1 sin
+   dejar de centrar cada etapa cuando le toca estar activa. */
+function timelineY(sp){
+  var n = STAGES.length, i = 0;
+  while(i < n-1 && sp >= STAGES[i+1].morph) i++;
+  var a = STAGES[i].morph;
+  var b = (i < n-1) ? STAGES[i+1].morph : 1;
+  var k = (b > a) ? Math.max(0, Math.min(1, (sp-a)/(b-a))) : 0;
+  var ya = M.stageTop[i] || 0;
+  var yb = (i < n-1) ? (M.stageTop[i+1] || ya) : ya;
+  return ya + (yb-ya)*k;
 }
 
 /* las capas flotantes reciben scroll Y cursor. Se combinan en UNA sola
