@@ -47,6 +47,8 @@ button{font:inherit}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
 
 @keyframes floatY{from{transform:translateY(-9px)}to{transform:translateY(11px)}}
+@keyframes heroPulse{0%,100%{box-shadow:0 0 14px rgba(255,61,90,.45)}50%{box-shadow:0 0 26px rgba(255,61,90,.75)}}
+@keyframes heroBlink{0%,100%{opacity:1}50%{opacity:.25}}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ---------- HERO ---------- */
@@ -161,99 +163,127 @@ button{font:inherit}
 .vinyl-cap b{color:#FF8C42;font-weight:500}
 .shelf-hint{text-align:center;margin-top:22px;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.3)}
 .shelf-chips{margin:26px auto 0;max-width:660px}
-
 /* ---------- EXPERIENCIA ---------- */
 #experiencia{position:relative;height:520vh;padding:0}
-.exp-stick{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;
-  padding:80px 38px;border-top:1px solid rgba(255,255,255,.08)}
-/* la columna es de 400 para dejar crecer la figura del morfismo.
-   El gap sube de 60 a 150: ensanchar la reja no habria servido de nada porque
-   esta centrada con margin auto —crecer la corre a la izquierda lo mismo que
-   la corre a la derecha—, asi que lo unico que empuja la timeline hacia la
-   derecha sin mover la figura es la separacion entre columnas. */
-.exp-grid{max-width:1180px;margin:0 auto;width:100%;display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);
-  gap:150px;align-items:center}
-.exp-figure{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
-/* el background es el mismo del body a proposito: .exp-stick es position:sticky
-   y eso crea un contexto de apilamiento, asi que el mix-blend-mode del video no
-   alcanza el fondo de la pagina. Sin este color el screen compone contra un
-   backdrop transparente y sale un rectangulo NEGRO. Al ser identico al fondo,
-   la caja en si no se ve. */
-/* La altura manda y el ancho sale de la proporcion 5/8, para que la figura sea
-   lo mas grande posible sin desbordar en pantallas bajas: el min() con vh la
-   encoge sola en portatiles de 700px de alto en vez de recortarse.
-   A 70vh de 855px son ~598x374, contra los 480x300 de antes. */
-.morph-stage{position:relative;aspect-ratio:5/8;height:min(600px,70vh);width:auto;background:#080810}
-/* el video trae su propio fondo (6,6,20) contra el de la pagina (8,8,16): son
-   casi iguales pero ese +4 de azul sobre un tono tan oscuro se lee como un
-   recuadro. contrast() aplasta ese fondo a negro puro y screen sobre negro
-   devuelve exactamente el color de abajo -> el recuadro desaparece.
-   El video es 720x1280 (0.5625) y la caja 300x480 (0.625): contain lo deja
-   entero, con barras laterales de 15px que ya no se distinguen. */
-.morph-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
-  mix-blend-mode:screen;filter:contrast(1.25) brightness(1.06)}
-.symb{width:100%;max-width:240px}
-.symb-top{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;letter-spacing:.18em;
-  text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
-.symb-top b{font-size:15px;font-weight:600;color:#C4A8FF;letter-spacing:.04em}
-.symb-rail{height:3px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden}
-.symb-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#FF8C42,#FF3D5A 55%,#7B2FFF);
-  transition:width .12s linear}
+.exp-stick{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;padding:40px 32px}
 
-/* el padding-left tiene que cubrir el dot (-34px), el translateX(-6px) de las
-   etapas inactivas y los 4px de anillo de la activa: 34+6+4 = 44 minimo.
-   Con 34px el overflow:hidden recortaba 6px del circulo y el anillo entero. */
-/* la banda de fundido de arriba va en px fijos, no en %: con 8% de una caja
-   de 62vh medía ~45px y variaba con el viewport, asi que no habia forma de
-   dejar la primera etapa siempre fuera de ella. */
-.timeline{position:relative;padding-left:46px;max-height:62vh;overflow:hidden;
+/* El HUD es un panel unico con borde, veta radial y dos esquinas diagonales,
+   en vez de la reja suelta de antes. auto-fit parte a una sola columna solo
+   cuando ya no caben dos de 460px, asi que el breakpoint sale del contenido. */
+.exp-panel{position:relative;width:100%;max-width:1560px;margin:0 auto;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);border-radius:20px;
+  background:radial-gradient(1200px 700px at 28% 40%,rgba(255,61,90,.05),transparent 60%),#080810;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr))}
+/* las esquinas son triangulos hechos con bordes: cero imagenes */
+.exp-panel::before,.exp-panel::after{content:"";position:absolute;width:0;height:0;z-index:4}
+.exp-panel::before{top:0;right:0;border-top:26px solid #FF8C42;border-left:26px solid transparent}
+.exp-panel::after{bottom:0;left:0;border-bottom:22px solid rgba(255,140,66,.55);border-right:22px solid transparent}
+
+/* ----- columna izquierda: HUD ----- */
+.exp-figure{position:relative;display:flex;flex-direction:column;
+  border-right:1px solid rgba(255,255,255,.08);padding:30px 34px 26px;
+  min-height:clamp(440px,66vh,760px)}
+.hud-head{display:flex;align-items:center;gap:16px}
+.hud-dots{margin-left:auto;display:grid;grid-template-columns:repeat(4,4px);gap:4px}
+.hud-dots i{display:block;width:4px;height:4px;background:rgba(255,255,255,.25)}
+.hud-dots i:nth-child(3),.hud-dots i:nth-child(5),.hud-dots i:nth-child(8){background:rgba(255,255,255,.12)}
+
+/* el video ocupa lo que sobra entre el header y la barra de simbiosis.
+   min-height:0 es obligatorio: sin el, un hijo flex no baja de su tamano
+   de contenido y el panel se estira de mas. */
+.morph-stage{position:relative;flex:1;min-height:0;margin-top:8px;background:#080810}
+/* el background del contenedor es el mismo del body a proposito: .exp-stick es
+   position:sticky y eso crea un contexto de apilamiento, asi que el
+   mix-blend-mode del video no alcanza el fondo de la pagina. Sin ese color el
+   screen compone contra un backdrop transparente y sale un rectangulo NEGRO.
+   contrast() aplasta el fondo propio del video (6,6,20) a negro puro, y screen
+   sobre negro devuelve exactamente el color de abajo.
+   El mask radial es del diseno: difumina el borde del encuadre para que la
+   figura no quede recortada en una caja. */
+.morph-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
+  mix-blend-mode:screen;filter:contrast(1.25) brightness(1.06);
+  -webkit-mask-image:radial-gradient(ellipse 62% 55% at 50% 48%,#000 62%,transparent 98%);
+          mask-image:radial-gradient(ellipse 62% 55% at 50% 48%,#000 62%,transparent 98%)}
+
+/* medidores circulares: reemplazan a los globos flotantes */
+.gauge{position:absolute;z-index:3;pointer-events:none}
+.gauge svg{position:absolute;inset:0}
+.gauge-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.gauge-txt b{font-weight:300;letter-spacing:-.03em;line-height:1;color:#fff}
+.gauge-txt span{margin-top:6px;letter-spacing:.22em;color:rgba(255,255,255,.46);text-transform:uppercase}
+.gauge-years{left:0;top:24px;width:150px;height:150px}
+.gauge-years .gauge-txt b{font-size:38px}
+.gauge-years .gauge-txt span{font-size:10px}
+.gauge-projects{right:0;bottom:16px;width:132px;height:132px}
+.gauge-projects .gauge-txt b{font-size:32px}
+.gauge-projects .gauge-txt span{font-size:9.5px;letter-spacing:.2em}
+
+.sys-labels{position:absolute;left:0;top:46%;z-index:3;display:flex;flex-direction:column;gap:18px}
+.sys-labels span{font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.30)}
+.hud-circuit{position:absolute;left:52px;top:44%;z-index:3;opacity:.5}
+
+.symb{margin-top:auto;padding-top:18px}
+.symb-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.symb-top span{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.symb-top b{font-size:14px;font-weight:400;color:#fff}
+.symb-rail{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.symb-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#FF3D5A,#FF8C42);
+  box-shadow:0 0 14px rgba(255,61,90,.5);transition:width .12s linear}
+
+/* ----- columna derecha: timeline ----- */
+.exp-body{position:relative;padding:46px 48px 42px;min-width:0}
+.exp-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px 30px}
+.exp-head h2{min-width:300px;flex:1 1 auto;margin:0;font-weight:300;letter-spacing:-.028em;
+  font-size:clamp(2rem,3.2vw,3rem);line-height:1.06}
+/* la ultima palabra del titulo va en degradado; se separa en un <i> desde el JS
+   para no tener que duplicar el markup por idioma */
+.exp-head h2 i{font-style:normal;background:linear-gradient(135deg,#FF3D5A,#FF8C42);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.exp-head h2::after{content:"";display:inline-block;width:12px;height:12px;margin-left:14px;vertical-align:top;
+  border-top:2px solid #FF8C42;border-right:2px solid #FF8C42}
+.coords{display:flex;align-items:center;gap:14px;flex:none;padding-top:10px}
+.coords span{font-size:10.5px;letter-spacing:.08em;color:#FF8C42}
+.exp-sub{font-size:13px;line-height:1.8;color:rgba(255,255,255,.46);margin:18px 0 34px;max-width:52ch}
+
+/* padding-left 66 = 44 del nodo + 6 del translateX de las etapas inactivas +
+   14 del halo pulsante, si no el overflow:hidden se los come. El rail va por
+   el centro del nodo: 66-44+11.5 = 33.5 */
+.timeline{position:relative;padding-left:66px;max-height:52vh;overflow:hidden;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 46px,#000 88%,transparent);
-  mask-image:linear-gradient(180deg,transparent 0,#000 46px,#000 88%,transparent)}
-/* el rail va por el centro del dot activo: 46-34 + 19/2 = 21.5 */
-.timeline::before{content:"";position:absolute;left:21px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);z-index:1}
-/* empuja la primera etapa por debajo de la banda de fundido (46px), si no
-   nacia dentro y el mask le comia el 86% de la opacidad. Al hacer scroll el
-   contenido sube y entra al fundido, que es justo lo que se busca. */
+          mask-image:linear-gradient(180deg,transparent 0,#000 46px,#000 88%,transparent)}
+.timeline::before{content:"";position:absolute;left:33px;top:0;bottom:0;width:1px;z-index:1;
+  background:linear-gradient(180deg,rgba(255,140,66,.6),rgba(255,255,255,.1))}
+/* empuja la primera etapa por debajo de la banda de fundido de 46px: si no,
+   nacia dentro y el mask le comia el 86% de la opacidad */
 .timeline-inner{padding-top:52px;transition:transform .5s cubic-bezier(.22,1,.36,1)}
-.stage{position:relative;padding:0 0 22px;opacity:.35;transform:translateX(-6px);
+
+.stage{position:relative;padding:0 0 30px;opacity:.4;transform:translateX(-6px);
   transition:opacity .35s ease,transform .35s ease}
 .stage.on{opacity:1;transform:translateX(0)}
-.stage-dot{position:absolute;left:-34px;top:3px;width:19px;height:19px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.18);background:#080810;display:flex;align-items:center;justify-content:center;
-  font-size:8.5px;color:rgba(255,255,255,.5);transition:all .35s ease}
-.stage.on .stage-dot{border-color:#FF8C42;color:#FF8C42;box-shadow:0 0 0 4px rgba(255,140,66,.08)}
-.stage.on.hero-stage .stage-dot{border-color:#C4A8FF;color:#C4A8FF;box-shadow:0 0 0 4px rgba(123,47,255,.12)}
-.stage-period{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.30);margin-bottom:5px}
+.stage-dot{position:absolute;left:-44px;top:26px;width:23px;height:23px;border-radius:50%;
+  border:1px dashed rgba(255,140,66,.5);display:flex;align-items:center;justify-content:center}
+.stage-dot i{width:11px;height:11px;border-radius:50%;background:#0D0D18;border:1px solid #FF8C42;
+  box-shadow:0 0 14px rgba(255,61,90,.45)}
+.stage.on .stage-dot i{animation:heroPulse 2.6s ease-in-out infinite}
+.stage.hero-stage .stage-dot{border-color:rgba(196,168,255,.5)}
+.stage.hero-stage .stage-dot i{border-color:#C4A8FF;box-shadow:0 0 14px rgba(123,47,255,.5)}
+.stage-period{font-size:11px;letter-spacing:.2em;color:rgba(255,255,255,.46);margin-bottom:12px}
 .stage.hero-stage .stage-period{color:#C4A8FF}
-.stage h3{font-size:17px;font-weight:400;letter-spacing:-.01em;margin-bottom:3px}
-.stage-co{font-size:11px;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:7px}
-.stage p{font-size:12.5px;line-height:1.65;color:rgba(255,255,255,.55);max-width:52ch;margin-bottom:9px}
-.skills{display:flex;flex-wrap:wrap;gap:6px}
-.skill{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);
-  border:1px solid rgba(255,255,255,.12);border-radius:5px;padding:4px 9px}
-/* Globos: los dos numeros que quedan ya no son una fila de stats debajo de la
-   timeline, sino burbujas que flotan junto a la figura. Complementan sin
-   competir, que era justo el punto: no son el foco de la seccion.
-   pointer-events:none para que no estorben al hover de la timeline. */
-.globo{position:absolute;z-index:3;pointer-events:none;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:104px;height:104px;border-radius:50%;
-  background:radial-gradient(circle at 34% 28%,rgba(255,140,66,.16),rgba(8,8,16,.72) 68%);
-  border:1px solid rgba(255,140,66,.24);
-  box-shadow:0 0 34px rgba(255,61,90,.14), inset 0 0 22px rgba(255,140,66,.07);
-  backdrop-filter:blur(3px)}
-.globo b{font-size:25px;font-weight:300;letter-spacing:-.02em;color:#fff;line-height:1}
-.globo span{margin-top:5px;font-size:8.5px;letter-spacing:.17em;text-transform:uppercase;
-  color:rgba(255,255,255,.52)}
-/* se reusa el floatY del hero; el alternate y los tiempos distintos evitan que
-   los dos globos suban y bajen a la vez */
-/* el -78 no es arbitrario: con -26 el globo se solapaba 38px sobre la pierna
-   derecha de la figura. Medido en pantalla, la persona llega hasta x=723 y el
-   globo arrancaba en 685. Corrido queda en el hueco de 150px entre columnas,
-   sin tocar ni a la figura ni a la timeline. */
-.globo-1{top:4%;  left:-30px; animation:floatY 6.4s ease-in-out 0s   infinite alternate}
-.globo-2{bottom:9%;right:-78px;animation:floatY 7.6s ease-in-out 1.1s infinite alternate}
-
+.stage-card{background:rgba(13,13,24,.66);border:1px solid rgba(255,255,255,.08);
+  border-left:2px solid rgba(255,140,66,.35);border-radius:0 14px 14px 0;padding:18px 22px;
+  transition:border-color .35s ease,box-shadow .35s ease}
+.stage.on .stage-card{border-color:rgba(255,140,66,.34);border-left-color:#FF8C42;
+  box-shadow:0 0 46px rgba(255,61,90,.12)}
+.stage.on.hero-stage .stage-card{border-color:rgba(196,168,255,.34);border-left-color:#C4A8FF;
+  box-shadow:0 0 46px rgba(123,47,255,.14)}
+.stage h3{margin:0;font-weight:500;font-size:18px;letter-spacing:-.01em}
+.stage-co{font-size:12px;color:rgba(255,255,255,.72);margin-top:5px}
+.stage p{font-size:12.5px;line-height:1.75;color:rgba(255,255,255,.46);margin:12px 0 0;max-width:58ch}
+.skills{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.skill{font-size:10px;letter-spacing:.14em;text-transform:uppercase;border-radius:6px;padding:5px 10px;
+  color:rgba(255,255,255,.46);border:1px solid rgba(255,255,255,.08)}
+/* la primera de cada etapa va en flama, como en el diseno */
+.skill:first-child{color:#FF8C42;border-color:rgba(255,140,66,.34)}
 /* ---------- CONTACTO ---------- */
 .contact{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:100px 24px 60px;position:relative}
 .contact h2{font-weight:300;font-size:clamp(30px,5vw,44px);letter-spacing:-.025em;text-wrap:balance;margin:0 0 14px}
@@ -342,12 +372,14 @@ button{font:inherit}
 /* ---------- RESPONSIVE ---------- */
 @media (max-width:1024px){
   .modal-top,.modal-mid{grid-template-columns:1fr;gap:34px}
-  .exp-grid{grid-template-columns:1fr;gap:34px;justify-items:center}
+  /* el auto-fit del panel ya cae a una columna solo; aqui solo se quita el
+     borde divisor, que en vertical no tiene sentido */
+  .exp-figure{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
+  .exp-body{padding:34px 30px 36px}
   .timeline{max-height:none;width:100%;-webkit-mask-image:none;mask-image:none}
   .timeline-inner{padding-top:0}   /* sin mask no hay banda que esquivar */
   #experiencia{height:auto}
-  .exp-stick{position:static;min-height:0;padding:80px 30px}
-  .exp-figure{position:sticky;top:20px}
+  .exp-stick{position:static;min-height:0;padding:40px 22px}
 }
 @media (max-width:760px){
   .section{padding:80px 22px 50px}
@@ -355,16 +387,19 @@ button{font:inherit}
   .topnav{gap:12px}
   .toplink b{display:none}
   .hero-track{height:220vh}
-  /* en movil el ancho disponible es ~260px (320 de viewport menos el padding
-     de .exp-stick), asi que aqui manda el ancho y no la altura */
-  .morph-stage{width:250px;height:400px;aspect-ratio:auto}
-  /* los globos se encogen con la figura y se pegan mas al borde, si no
-     sobresalen del viewport en pantallas de 320px */
-  .globo{width:78px;height:78px}
-  .globo b{font-size:19px}
-  .globo span{font-size:7.5px;letter-spacing:.14em}
-  .globo-1{left:-14px}
-  .globo-2{right:-12px}
+  /* el HUD se aprieta: menos padding, medidores mas chicos y el circuito
+     decorativo fuera, que en 320px solo estorba */
+  .exp-figure{padding:22px 20px 20px;min-height:clamp(360px,58vh,520px)}
+  .exp-body{padding:28px 20px 30px}
+  .timeline{padding-left:52px}
+  .timeline::before{left:26px}
+  .stage-dot{left:-37px}
+  .gauge-years{width:108px;height:108px;top:8px}
+  .gauge-years .gauge-txt b{font-size:27px}
+  .gauge-projects{width:96px;height:96px;bottom:6px}
+  .gauge-projects .gauge-txt b{font-size:23px}
+  .gauge-txt span{font-size:8px !important;letter-spacing:.16em}
+  .hud-circuit,.sys-labels{display:none}
   .layer .fcard{display:none}
   .layer .fcard.keep{display:block}
   .shelf{padding:0 40px}
@@ -449,28 +484,77 @@ button{font:inherit}
 <!-- ============ EXPERIENCIA ============ -->
 <section id="experiencia">
   <div class="exp-stick">
-    <div class="exp-grid">
+    <div class="exp-panel">
 
+      <!-- ---- IZQUIERDA: HUD ---- -->
       <div class="exp-figure">
-        <div class="eyebrow mono" data-t="expEyebrow"></div>
+        <div class="hud-head">
+          <svg width="34" height="12" viewBox="0 0 34 12" style="flex:none" aria-hidden="true">
+            <path d="M1 12 L7 0 M8 12 L14 0 M15 12 L21 0" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+          </svg>
+          <span class="eyebrow mono" data-t="expEyebrow"></span>
+          <div class="hud-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+
         <!-- el morfismo humano->androide ya viene animado en el video; el scroll
              solo lo scrubea (ver morphTime en la seccion de SCROLL) -->
         <div class="morph-stage">
           <video id="morphVideo" src="assets/v2/morph.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+
+          <div class="gauge gauge-years">
+            <svg viewBox="0 0 150 150" aria-hidden="true">
+              <circle cx="75" cy="75" r="70" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1"/>
+              <circle cx="75" cy="75" r="63" fill="rgba(13,13,24,.72)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+              <circle cx="75" cy="75" r="70" fill="none" stroke="#FF8C42" stroke-width="3" stroke-linecap="round"
+                      stroke-dasharray="140 300" transform="rotate(-120 75 75)"/>
+            </svg>
+            <div class="gauge-txt"><b>5+</b><span class="mono" data-t="stYears"></span></div>
+          </div>
+
+          <div class="gauge gauge-projects">
+            <svg viewBox="0 0 132 132" aria-hidden="true">
+              <circle cx="66" cy="66" r="61" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="1"/>
+              <circle cx="66" cy="66" r="54" fill="rgba(13,13,24,.72)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+              <circle cx="66" cy="66" r="61" fill="none" stroke="#FF8C42" stroke-width="3" stroke-linecap="round"
+                      stroke-dasharray="250 200" transform="rotate(-90 66 66)"/>
+            </svg>
+            <div class="gauge-txt"><b>18</b><span class="mono" data-t="stProjects"></span></div>
+          </div>
+
+          <div class="sys-labels mono" aria-hidden="true">
+            <span>SYS_01</span><span>SYS_02</span><span>SYS_03</span>
+          </div>
+          <svg class="hud-circuit" width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+            <path d="M0 12 H46 L70 36 M0 48 H38 L62 72 M0 84 H30 L54 108" fill="none"
+                  stroke="rgba(255,140,66,.45)" stroke-width="1"/>
+            <circle cx="70" cy="36" r="2.5" fill="#FF8C42"/>
+            <circle cx="62" cy="72" r="2.5" fill="#FF8C42"/>
+            <circle cx="54" cy="108" r="2.5" fill="#FF8C42"/>
+          </svg>
         </div>
+
         <div class="symb">
           <div class="symb-top mono"><span data-t="symbiosis"></span><b><span id="symbPct">0</span>%</b></div>
           <div class="symb-rail"><div class="symb-fill" id="symbFill"></div></div>
         </div>
-        <!-- los dos numeros que sobreviven flotan junto a la figura en vez de
-             ir en una fila debajo de la timeline: complementan, no compiten -->
-        <div class="globo globo-1 mono"><b>5+</b><span data-t="stYears"></span></div>
-        <div class="globo globo-2 mono"><b>18</b><span data-t="stProjects"></span></div>
       </div>
 
-      <div>
-        <h2 style="font-weight:300;font-size:clamp(28px,4vw,38px);letter-spacing:-.025em;margin-bottom:10px" data-t="expTitle"></h2>
-        <p class="mono" style="font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.5);max-width:56ch;margin-bottom:30px" data-t="expSub"></p>
+      <!-- ---- DERECHA: TIMELINE ---- -->
+      <div class="exp-body">
+        <div class="exp-head">
+          <!-- el contenido lo pone applyStrings, que separa la ultima palabra
+               para el degradado sin duplicar markup por idioma -->
+          <h2 id="expTitle"></h2>
+          <div class="coords mono">
+            <svg width="70" height="8" viewBox="0 0 70 8" aria-hidden="true">
+              <rect x="0" y="3" width="44" height="2" fill="rgba(255,255,255,.18)"/>
+              <rect x="30" y="0" width="8" height="8" fill="#FF8C42" style="animation:heroBlink 2.2s infinite"/>
+              <rect x="48" y="3" width="22" height="2" fill="rgba(255,255,255,.10)"/>
+            </svg>
+            <span>// 8.1116&deg; S, 79.0288&deg; W</span>
+          </div>
+        </div>
+        <p class="exp-sub mono" data-t="expSub"></p>
         <div class="timeline"><div class="timeline-inner" id="timeline"></div></div>
       </div>
 
@@ -850,6 +934,19 @@ function applyStrings(){
   for(var j=0;j<btns.length;j++){
     btns[j].classList.toggle('on', btns[j].getAttribute('data-lang')===state.lang);
   }
+
+  /* el titulo de experiencia lleva la ultima palabra en degradado. Se parte
+     aqui en vez de en el markup para no duplicarlo por idioma: "fundador" en
+     es y "founder" en en salen del mismo string de T. */
+  var h = document.getElementById('expTitle');
+  if(h){
+    var pal = (t.expTitle || '').split(' ');
+    var fin = pal.pop();
+    h.textContent = pal.join(' ') + (pal.length ? ' ' : '');
+    var em = document.createElement('i');
+    em.textContent = fin;
+    h.appendChild(em);
+  }
 }
 
 function renderChips(container){
@@ -943,12 +1040,16 @@ function renderTimeline(){
     d.className = 'stage' + (s.company==='HERO' ? ' hero-stage' : '');
     d.setAttribute('data-i', String(i));
     var skills = s.skills.map(function(k){ return '<span class="skill mono">'+k+'</span>'; }).join('');
-    d.innerHTML = '<div class="stage-dot mono">'+s.n+'</div>'
+    /* el nodo ya no lleva el numero de etapa: en el diseno es un aro punteado
+       con un punto que late. El numero seguia en s.n por si hace falta. */
+    d.innerHTML = '<div class="stage-dot"><i></i></div>'
       + '<div class="stage-period mono">'+s.period+'</div>'
-      + '<h3>'+s.title[state.lang]+'</h3>'
-      + '<div class="stage-co mono">'+s.company+'</div>'
-      + '<p class="mono">'+s.desc[state.lang]+'</p>'
-      + '<div class="skills">'+skills+'</div>';
+      + '<div class="stage-card">'
+      +   '<h3>'+s.title[state.lang]+'</h3>'
+      +   '<div class="stage-co mono">'+s.company+'</div>'
+      +   '<p class="mono">'+s.desc[state.lang]+'</p>'
+      +   '<div class="skills">'+skills+'</div>'
+      + '</div>';
     tl.appendChild(d);
   });
 }
