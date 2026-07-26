@@ -121,32 +121,43 @@ section.blk{padding:64px 0;border-top:1px solid rgba(255,255,255,.07)}
 /* ---------- VISTAS / GALERIA ---------- */
 .view{border-top:1px solid rgba(255,255,255,.07);padding-top:38px;margin-top:44px}
 .view:first-of-type{border-top:none;padding-top:0;margin-top:0}
-.view-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start;margin-bottom:26px}
-.view-n{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:#FF8C42;margin-bottom:12px}
-.view-head h3{font-weight:300;font-size:clamp(21px,2.6vw,28px);letter-spacing:-.02em;line-height:1.2}
-.view-head p{font-size:13px;line-height:1.8;color:rgba(255,255,255,.6)}
+/* El titulo va a ancho completo y la descripcion con sus bullets a dos columnas
+   debajo. Antes era una grilla 50/50 con el titulo solo en la izquierda: dos
+   lineas de texto contra ~150px de contenido en la derecha dejaban un hueco
+   muerto del alto de la columna en cada una de las cinco vistas. */
+.view-title{margin-bottom:24px}
+.view-n{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:#FF8C42;margin-bottom:10px}
+.view-title h3{font-weight:300;font-size:clamp(21px,2.6vw,30px);letter-spacing:-.02em;line-height:1.15;
+  max-width:34ch;text-wrap:balance}
+.view-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start;
+  margin-bottom:26px}
+.view-body p{font-size:13px;line-height:1.8;color:rgba(255,255,255,.6)}
 .bullets{list-style:none;margin:0;padding:0;display:grid;gap:11px}
 .bullets li{position:relative;padding-left:20px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
   line-height:1.7;color:rgba(255,255,255,.68)}
 .bullets li::before{content:"\25B8";position:absolute;left:0;top:0;color:#FF8C42}
 figure.shot{margin:0;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;
   background:#0d0d16;box-shadow:0 30px 70px rgba(0,0,0,.5)}
-figure.shot button{display:block;width:100%;padding:0;border:none;background:none;cursor:zoom-in}
-figure.shot img{width:100%}
 figure.shot figcaption{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;
   color:rgba(255,255,255,.42);padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
 /* la vista reconstruida se embute viva en vez de como captura: el hover, el
-   colapso de la jerarquia y el cambio de tema son parte de lo entregado. */
-figure.shot .live{position:relative;height:760px;background:#080810}
-figure.shot .live iframe{width:100%;height:100%;border:0;display:block}
+   colapso de la jerarquia y el cambio de tema son parte de lo entregado.
+   Ocupa el ancho del .wrap y nada mas: sacarla del contenedor con margenes
+   negativos dependia del ancho del padre y se desbordaba. El dashboard ya se
+   maqueta a dos columnas desde 980px, asi que a 1112px entra bien. */
+figure.shot .live{position:relative;background:#080810}
+/* alto de arranque; el JS lo ajusta al contenido real para que no haya un
+   scroll dentro de otro scroll */
+figure.shot .live iframe{width:100%;height:1180px;border:0;display:block}
 figure.shot .cap-row{display:flex;justify-content:space-between;align-items:center;gap:16px;
   flex-wrap:wrap;padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
 figure.shot .cap-row figcaption{padding:0;border:0}
 figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;white-space:nowrap}
-.pending{margin-top:22px;border:1px dashed rgba(255,255,255,.16);border-radius:12px;padding:16px 18px;
-  font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7;color:rgba(255,255,255,.42)}
-@media(max-width:700px){ figure.shot .live{height:560px} }
+@media(max-width:900px){
+  /* en movil el dashboard se apila: alto fijo con scroll propio */
+  figure.shot .live iframe{height:620px}
+}
 
 /* ---------- DECISIONES ---------- */
 .dec{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:26px 34px}
@@ -182,18 +193,11 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
 .disclaimer{margin-top:26px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.8;
   color:rgba(255,255,255,.34);max-width:74ch}
 
-/* ---------- LIGHTBOX ---------- */
-.lb{position:fixed;inset:0;z-index:90;display:none;background:rgba(4,4,9,.94);padding:28px;
   align-items:center;justify-content:center}
-.lb.open{display:flex}
-.lb img{max-width:100%;max-height:90vh;object-fit:contain;border-radius:8px;
-  border:1px solid rgba(255,255,255,.12)}
-.lb-x{position:absolute;top:20px;right:24px;width:40px;height:40px;border-radius:50%;
-  border:1px solid rgba(255,255,255,.2);background:none;color:#fff;font-size:18px;cursor:pointer}
-.lb-x:hover{border-color:#FF8C42;color:#FF8C42}
 
 @media(max-width:900px){
-  .case-grid,.view-head{grid-template-columns:1fr;gap:32px}
+  .case-grid{grid-template-columns:1fr;gap:32px}
+  .view-body{grid-template-columns:1fr;gap:22px}
   .flow{grid-template-columns:1fr;gap:12px}
   .node:not(:last-child)::after{content:"\2193";right:auto;left:50%;top:auto;bottom:-13px;transform:translateX(-50%)}
   .wrap{padding:0 22px}
@@ -309,38 +313,43 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
 
     <!-- 01 EERR -->
     <article class="view">
-      <div class="view-head">
-        <div>
-          <div class="view-n" data-t="vn01"></div>
-          <h3 data-t="v1H"></h3>
-        </div>
-        <div>
-          <p data-t="v1P" style="margin-bottom:18px"></p>
-          <ul class="bullets">
-            <li data-t="v1b1"></li><li data-t="v1b2"></li><li data-t="v1b3"></li>
-          </ul>
-        </div>
+      <div class="view-title">
+        <div class="view-n" data-t="vn01"></div>
+        <h3 data-t="v1H"></h3>
       </div>
-      <div class="pending" data-t="pending"></div>
+      <div class="view-body">
+        <p data-t="v1P"></p>
+        <ul class="bullets">
+          <li data-t="v1b1"></li><li data-t="v1b2"></li><li data-t="v1b3"></li>
+        </ul>
+      </div>
+      <figure class="shot">
+        <div class="live">
+          <iframe id="view01" src="vistas/01-estado-de-resultados.html" loading="lazy"
+                  title="Estado de resultados comparativo — vista interactiva"></iframe>
+        </div>
+        <div class="cap-row">
+          <figcaption class="mono" data-t="v1C"></figcaption>
+          <a href="vistas/01-estado-de-resultados.html" target="_blank" rel="noopener" data-t="openView"></a>
+        </div>
+      </figure>
     </article>
 
     <!-- 02 MAQUILA -->
     <article class="view">
-      <div class="view-head">
-        <div>
-          <div class="view-n" data-t="vn02"></div>
-          <h3 data-t="v2H"></h3>
-        </div>
-        <div>
-          <p data-t="v2P" style="margin-bottom:18px"></p>
-          <ul class="bullets">
-            <li data-t="v2b1"></li><li data-t="v2b2"></li><li data-t="v2b3"></li>
-          </ul>
-        </div>
+      <div class="view-title">
+        <div class="view-n" data-t="vn02"></div>
+        <h3 data-t="v2H"></h3>
+      </div>
+      <div class="view-body">
+        <p data-t="v2P"></p>
+        <ul class="bullets">
+          <li data-t="v2b1"></li><li data-t="v2b2"></li><li data-t="v2b3"></li>
+        </ul>
       </div>
       <figure class="shot">
         <div class="live">
-          <iframe src="vistas/02-rentabilidad-maquila.html" loading="lazy"
+          <iframe id="view02" src="vistas/02-rentabilidad-maquila.html" loading="lazy"
                   title="Rentabilidad de la línea de maquila — vista interactiva"></iframe>
         </div>
         <div class="cap-row">
@@ -352,53 +361,74 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
 
     <!-- 03 BALANCE -->
     <article class="view">
-      <div class="view-head">
-        <div>
-          <div class="view-n" data-t="vn03"></div>
-          <h3 data-t="v3H"></h3>
-        </div>
-        <div>
-          <p data-t="v3P" style="margin-bottom:18px"></p>
-          <ul class="bullets">
-            <li data-t="v3b1"></li><li data-t="v3b2"></li><li data-t="v3b3"></li>
-          </ul>
-        </div>
+      <div class="view-title">
+        <div class="view-n" data-t="vn03"></div>
+        <h3 data-t="v3H"></h3>
       </div>
-      <div class="pending" data-t="pending"></div>
+      <div class="view-body">
+        <p data-t="v3P"></p>
+        <ul class="bullets">
+          <li data-t="v3b1"></li><li data-t="v3b2"></li><li data-t="v3b3"></li>
+        </ul>
+      </div>
+      <figure class="shot">
+        <div class="live">
+          <iframe id="view03" src="vistas/03-estado-de-situacion.html" loading="lazy"
+                  title="Estado de situacion con comparativo — vista interactiva"></iframe>
+        </div>
+        <div class="cap-row">
+          <figcaption class="mono" data-t="v3C"></figcaption>
+          <a href="vistas/03-estado-de-situacion.html" target="_blank" rel="noopener" data-t="openView"></a>
+        </div>
+      </figure>
     </article>
 
     <!-- 04 RATIOS -->
     <article class="view">
-      <div class="view-head">
-        <div>
-          <div class="view-n" data-t="vn04"></div>
-          <h3 data-t="v4H"></h3>
-        </div>
-        <div>
-          <p data-t="v4P" style="margin-bottom:18px"></p>
-          <ul class="bullets">
-            <li data-t="v4b1"></li><li data-t="v4b2"></li><li data-t="v4b3"></li>
-          </ul>
-        </div>
+      <div class="view-title">
+        <div class="view-n" data-t="vn04"></div>
+        <h3 data-t="v4H"></h3>
       </div>
-      <div class="pending" data-t="pending"></div>
+      <div class="view-body">
+        <p data-t="v4P"></p>
+        <ul class="bullets">
+          <li data-t="v4b1"></li><li data-t="v4b2"></li><li data-t="v4b3"></li>
+        </ul>
+      </div>
+      <figure class="shot">
+        <div class="live">
+          <iframe id="view04" src="vistas/04-ratios-financieros.html" loading="lazy"
+                  title="Ratios financieros con objetivo — vista interactiva"></iframe>
+        </div>
+        <div class="cap-row">
+          <figcaption class="mono" data-t="v4C"></figcaption>
+          <a href="vistas/04-ratios-financieros.html" target="_blank" rel="noopener" data-t="openView"></a>
+        </div>
+      </figure>
     </article>
 
     <!-- 05 DEUDA -->
     <article class="view">
-      <div class="view-head">
-        <div>
-          <div class="view-n" data-t="vn05"></div>
-          <h3 data-t="v5H"></h3>
-        </div>
-        <div>
-          <p data-t="v5P" style="margin-bottom:18px"></p>
-          <ul class="bullets">
-            <li data-t="v5b1"></li><li data-t="v5b2"></li><li data-t="v5b3"></li>
-          </ul>
-        </div>
+      <div class="view-title">
+        <div class="view-n" data-t="vn05"></div>
+        <h3 data-t="v5H"></h3>
       </div>
-      <div class="pending" data-t="pending"></div>
+      <div class="view-body">
+        <p data-t="v5P"></p>
+        <ul class="bullets">
+          <li data-t="v5b1"></li><li data-t="v5b2"></li><li data-t="v5b3"></li>
+        </ul>
+      </div>
+      <figure class="shot">
+        <div class="live">
+          <iframe id="view05" src="vistas/05-variacion-de-deuda.html" loading="lazy"
+                  title="Variacion de deuda y lineas bancarias — vista interactiva"></iframe>
+        </div>
+        <div class="cap-row">
+          <figcaption class="mono" data-t="v5C"></figcaption>
+          <a href="vistas/05-variacion-de-deuda.html" target="_blank" rel="noopener" data-t="openView"></a>
+        </div>
+      </figure>
     </article>
 
     <p class="disclaimer" data-t="shotNote"></p>
@@ -449,11 +479,6 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
     <div class="copyright">&copy; 2026 ANGELO CASTILLO &middot; HERO</div>
   </div>
 </footer>
-
-<div class="lb" id="lb">
-  <button class="lb-x" id="lbX" aria-label="Cerrar">&times;</button>
-  <img id="lbImg" src="" alt="">
-</div>
 
 <script>
 /* ============================================================
@@ -536,7 +561,6 @@ var T = {
     v5C:'Variación de deuda &mdash; composición, horizonte de pago y disponibilidad',
 
     openView:'Abrir la vista ↗',
-    pending:'Vista en reconstrucción. El reporte productivo es privado, así que cada vista se rehace con datos de demostración antes de publicarse.',
     shotNote:'Las vistas publicadas son reconstrucciones con datos de demostración: la estructura, las medidas y la lógica son las del reporte entregado, las cifras no. El informe original vive en el tenant del cliente.',
 
     s4K:'Decisiones técnicas',
@@ -634,7 +658,6 @@ var T = {
     v5C:'Debt movement &mdash; composition, repayment horizon and headroom',
 
     openView:'Open the view ↗',
-    pending:'View being rebuilt. The production report is private, so each view is reconstructed with demonstration data before it is published.',
     shotNote:'The published views are reconstructions with demonstration data: the structure, the measures and the logic are those of the delivered report, the figures are not. The original report lives in the client tenant.',
 
     s4K:'Technical decisions',
@@ -680,21 +703,30 @@ document.querySelectorAll('.langbtn').forEach(function(b){
   b.onclick = function(){ lang = b.getAttribute('data-lang'); applyStrings(); };
 });
 
-/* lightbox: cada captura se puede abrir a pantalla completa. Sin alert ni
-   dialog, solo un overlay que se cierra con click fuera o Escape. */
-var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
-document.querySelectorAll('[data-zoom]').forEach(function(b){
-  b.onclick = function(){
-    lbImg.src = b.getAttribute('data-zoom');
-    lbImg.alt = b.querySelector('img') ? b.querySelector('img').alt : '';
-    lb.classList.add('open');
-    document.body.style.overflow = 'hidden';
+/* Las cinco vistas van embebidas y son del mismo origen, asi que se puede medir
+   su alto real y ajustar cada iframe: sin esto queda un scroll dentro del scroll
+   de la pagina. Se re-mide al colapsar filas y al cambiar el ancho. */
+document.querySelectorAll('.live iframe').forEach(function(fr){
+  var fit = function(){
+    try{
+      var d = fr.contentDocument;
+      if(!d || !d.body) return;
+      /* en movil manda el alto fijo del CSS: el dashboard se apila y seria enorme */
+      if(matchMedia('(max-width:900px)').matches){ fr.style.height = ''; return; }
+      fr.style.height = Math.max(700, d.documentElement.scrollHeight) + 'px';
+    }catch(e){ /* si algun dia se sirve cross-origin, se queda el alto del CSS */ }
   };
+  fr.addEventListener('load', function(){
+    fit();
+    try{
+      var d = fr.contentDocument;
+      /* el colapso de la jerarquia y los conmutadores cambian el alto */
+      d.addEventListener('click', function(){ setTimeout(fit, 0); });
+      if(window.ResizeObserver) new ResizeObserver(fit).observe(d.documentElement);
+    }catch(e){}
+  });
+  addEventListener('resize', fit);
 });
-function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; lbImg.src=''; }
-document.getElementById('lbX').onclick = closeLb;
-lb.onclick = function(e){ if(e.target === lb) closeLb(); };
-document.addEventListener('keydown', function(e){ if(e.key==='Escape' && lb.classList.contains('open')) closeLb(); });
 
 /* ?lang=en para poder linkear la version en ingles desde el portafolio */
 var qs = new URLSearchParams(location.search);

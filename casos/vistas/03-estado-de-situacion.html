@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FARMAVET · Estado de situación · Abril 2026</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="vista.css">
+</head>
+<body>
+<div class="shell">
+
+  <div class="top">
+    <div>
+      <div class="brand">FARMAVET</div>
+      <h1>Estado de situación · Abril 2026</h1>
+      <div class="sub">Comparativo contra Abril 2025 &mdash; miles de PEN</div>
+    </div>
+    <div class="filters">
+      <label><span class="fk">Mes</span>
+        <select><option>Abr</option><option>Mar</option><option>Feb</option><option>Ene</option></select></label>
+      <label><span class="fk">Año</span>
+        <select><option>2026</option><option>2025</option></select></label>
+      <label><span class="fk">Vista</span>
+        <span class="seg"><button class="tbtn on" type="button" data-mode="res">Resumen</button><button class="tbtn" type="button" data-mode="det">Detalle</button></span></label>
+      <button class="tbtn" id="themeBtn" type="button">Claro / Oscuro</button>
+    </div>
+  </div>
+
+  <!-- SECCION 1 · KPIs -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- SECCION 2 · agregados -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h">
+      <div class="card-t">Agregados del balance</div>
+      <div class="card-s">Cada bloque en las dos fechas. Son el mismo concepto en dos momentos, así que
+        van agrupados y no apilados, y el color distingue la fecha.</div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--seq-1)"></i>Abr 2026</span>
+        <span><i class="sw" style="background:var(--seq-3)"></i>Abr 2025</span>
+      </div>
+    </div>
+    <div class="card-b" id="agg"></div>
+    <div class="card-f" id="tie"></div>
+  </section>
+
+  <!-- SECCION 3 · patrimonio | estructura de financiamiento -->
+  <div class="body eq">
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Apertura del patrimonio neto · Abr 2026</div>
+        <div class="card-s">Es una descomposición que suma al total, así que va como cascada: cada
+          componente aporta o resta y el último paso es el total.</div>
+      </div>
+      <div class="card-b" id="pat"></div>
+      <div class="card-f">El capital sostiene el patrimonio: los resultados acumulados restan
+        8,927 mil, casi todo el capital aportado.</div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Cómo se financia el activo</div>
+        <div class="card-s">Qué parte del activo la ponen terceros y qué parte los accionistas.</div>
+      </div>
+      <div class="card-b" id="fin"></div>
+      <div class="card-f">El pasivo financia el 82.49 % del activo, contra 83.47 % el año anterior:
+        mejora, pero el apalancamiento sigue alto.</div>
+    </section>
+  </div>
+
+  <!-- SECCION 4 · corriente vs no corriente -->
+  <div class="body eq">
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Activo · corriente y no corriente</div>
+        <div class="card-s">Dónde está inmovilizado el activo.</div>
+      </div>
+      <div class="card-b" id="act"></div>
+      <div class="card-f">El 88.95 % del activo es no corriente: planta y equipo, poco convertible
+        en caja a corto plazo.</div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Liquidez · corriente contra corriente</div>
+        <div class="card-s">El activo corriente frente al pasivo que vence en menos de un año.</div>
+      </div>
+      <div class="card-b" id="liq"></div>
+      <div class="card-f">Razón corriente de 0.38: por cada sol que vence en el año hay 38 céntimos
+        de activo corriente. Es la tensión principal del balance.</div>
+    </section>
+  </div>
+
+  <!-- SECCION 5 · tabla -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h" style="padding-bottom:12px">
+      <div class="card-t">Detalle · estado de situación</div>
+      <div class="card-s">Los componentes suman a su agregado. El botón Resumen / Detalle de arriba
+        muestra u oculta el desglose.</div>
+    </div>
+    <div class="scroll">
+      <table id="tbl">
+        <caption>Estado de situación financiera a Abril 2026 vs Abril 2025, en miles de PEN.</caption>
+        <thead><tr>
+          <th scope="col">Concepto</th>
+          <th scope="col">Abr 2026</th>
+          <th scope="col">Abr 2025</th>
+          <th scope="col">% del activo</th>
+          <th scope="col">Δ Abs</th>
+          <th scope="col">Var&nbsp;%</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="card-f">Miles de PEN &middot; datos de demostración</div>
+  </section>
+
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script src="vista.js"></script>
+<script>
+/* ============================================================
+   DATOS — miles de PEN. Verificado:
+   Activo Corriente + No Corriente = Total Activo = Pasivo + Patrimonio
+   Los componentes suman a su agregado.
+   Capital + Resultado del periodo + Resultados acumulados = Patrimonio
+   ============================================================ */
+var TA = 11625, TA_PY = 11615;
+
+/* lvl, kind, nombre, 2026, 2025 */
+var ROWS = [
+  [0,'tot' ,'Total Activo'                    , 11625, 11615],
+  [1,'agg' ,'Activo Corriente'                ,  1285,  1120],
+  [2,'item','Caja y equivalentes'             ,   285,   198],
+  [2,'item','Cuentas por cobrar comerciales'  ,   612,   540],
+  [2,'item','Inventarios'                     ,   344,   339],
+  [2,'item','Otros activos corrientes'        ,    44,    43],
+  [1,'agg' ,'Activo No Corriente'             , 10340, 10495],
+  [2,'item','Inm., maq. y equipo neto'        ,  9480,  9660],
+  [2,'item','Intangibles'                     ,   415,   404],
+  [2,'item','Activo por impuesto diferido'    ,   445,   431],
+  [0,'tot' ,'Total Pasivo y Patrimonio'       , 11625, 11615],
+  [1,'agg' ,'Pasivo Corriente'                ,  3410,  3240],
+  [2,'item','Deuda financiera corto plazo'    ,  1120,  1035],
+  [2,'item','Cuentas por pagar comerciales'   ,  1684,  1621],
+  [2,'item','Remuneraciones y tributos'       ,   421,   401],
+  [2,'item','Otros pasivos corrientes'        ,   185,   183],
+  [1,'agg' ,'Pasivo No Corriente'             ,  6180,  6455],
+  [2,'item','Deuda financiera largo plazo'    ,  5723,  6012],
+  [2,'item','Pasivo por impuesto diferido'    ,   457,   443],
+  [1,'agg' ,'Patrimonio Neto'                 ,  2035,  1920],
+  /* el resultado del periodo ata con la utilidad operativa YTD del EERR:
+     112,300 PEN -> 112 mil en 2026, 84,400 -> 84 mil en 2025 */
+  [2,'item','Capital'                         , 10850, 10850],
+  [2,'item','Resultados acumulados'           , -8927, -9014],
+  [2,'item','Resultado del periodo'           ,   112,    84]
+];
+
+/* ---------- SECCION 1 · KPIs ---------- */
+V.kpis(document.getElementById('kpis'), [
+  {k:'Total Activo', v:V.n0(11625), u:'mil', m:'vs '+V.n0(TA_PY)+' mil PY',
+   chip:{t:'↑ +0.09 %', c:'n'},
+   tip:['Total Activo',[['Abr 2026',V.n0(11625)+' mil'],['Abr 2025',V.n0(TA_PY)+' mil'],
+        ['Δ absoluto','+10 mil'],['Var %','+0.09 %']]]},
+  {k:'Total Pasivo', v:V.n0(9590), u:'mil', m:'vs '+V.n0(9695)+' mil PY',
+   chip:{t:'↓ '+V.MIN+'1.08 %', c:'g'},
+   tip:['Total Pasivo',[['Abr 2026',V.n0(9590)+' mil'],['Abr 2025',V.n0(9695)+' mil'],
+        ['Δ absoluto',V.MIN+'105 mil'],['Var %',V.MIN+'1.08 %'],
+        ['Lectura','baja el pasivo: favorable']]]},
+  {k:'Patrimonio Neto', v:V.n0(2035), u:'mil', m:'vs '+V.n0(1920)+' mil PY',
+   chip:{t:'↑ +5.99 %', c:'g'},
+   tip:['Patrimonio Neto',[['Abr 2026',V.n0(2035)+' mil'],['Abr 2025',V.n0(1920)+' mil'],
+        ['Δ absoluto','+115 mil'],['Var %','+5.99 %'],
+        ['Origen','el resultado del periodo, +112 mil']]]},
+  {k:'Pasivo / Patrimonio', v:'4.71', u:'x', m:'5.05 x PY', mark:'lead',
+   chip:{t:'↓ '+V.MIN+'0.34 x', c:'g'},
+   tip:['Índice de endeudamiento',[['Abr 2026','4.71 x'],['Abr 2025','5.05 x'],
+        ['Δ',V.MIN+'0.34 x'],['Regla','menor es mejor'],
+        ['Objetivo','3.00 x — sigue sin cumplirse']]]}
+]);
+
+/* ---------- SECCION 2 · agregados agrupados ---------- */
+(function(){
+  var AGG = [
+    ['Total Activo', 11625, 11615],
+    ['Total Pasivo y Patrimonio', 11625, 11615],
+    ['Activo No Corriente', 10340, 10495],
+    ['Total Pasivo', 9590, 9695],
+    ['Pasivo No Corriente', 6180, 6455],
+    ['Pasivo Corriente', 3410, 3240],
+    ['Patrimonio Neto', 2035, 1920],
+    ['Activo Corriente', 1285, 1120]
+  ];
+  V.grouped(document.getElementById('agg'), AGG.map(function(a){
+    var d = a[1]-a[2], vp = +(d/Math.abs(a[2])*100).toFixed(2);
+    return {
+      k:a[0],
+      chip:{t:(d>=0?'↑ +':'↓ '+V.MIN)+Math.abs(vp).toFixed(2)+' %', c:'n'},
+      rows:[
+        {k:'2026', v:a[1], color:'var(--seq-1)', label:V.n0(a[1])+' mil',
+         tip:[['Abr 2026',V.n0(a[1])+' mil'],['% del activo',V.pc(a[1]/TA*100)]]},
+        {k:'2025', v:a[2], color:'var(--seq-3)', label:V.n0(a[2])+' mil',
+         tip:[['Abr 2025',V.n0(a[2])+' mil'],['% del activo',V.pc(a[2]/TA_PY*100)]]}
+      ]
+    };
+  }), 11625);
+
+  /* el cuadre se declara con icono y palabra, no con un color solo */
+  var f = document.getElementById('tie');
+  f.innerHTML = '<span class="chip g">✓ cuadrado</span> '
+    + 'Total Activo 11,625 mil = Total Pasivo 9,590 + Patrimonio 2,035. '
+    + 'Idéntico en Abr 2025: 11,615 = 9,695 + 1,920.';
+})();
+
+/* ---------- SECCION 3 · cascada del patrimonio ---------- */
+V.waterfall(document.getElementById('pat'), [
+  {k:'Capital', v:10850, kind:'base', label:V.n0(10850),
+   tip:[['Importe','10,850 mil'],['Abr 2025','10,850 mil'],['Δ','sin cambios']]},
+  {k:'Resultados acumulados', v:-8927, kind:'delta', label:V.n0(-8927),
+   tip:[['Importe',V.MIN+'8,927 mil'],['Abr 2025',V.MIN+'9,014 mil'],['Δ','+87 mil']]},
+  {k:'Resultado del periodo', v:112, kind:'delta', label:V.n0(112),
+   tip:[['Importe','+112 mil'],['Abr 2025','+84 mil'],['Δ','+28 mil'],
+        ['Origen','la utilidad operativa YTD del EERR: 112,300 PEN']]},
+  {k:'Patrimonio Neto', v:2035, kind:'total', label:V.n0(2035),
+   tip:[['Importe','2,035 mil'],['Abr 2025','1,920 mil'],['Var %','+5.99 %']]}
+], {axisLabel:'miles de PEN'});
+
+/* ---------- SECCION 3 · estructura de financiamiento ---------- */
+V.stack100(document.getElementById('fin'), [
+  {k:'Abr 2026 · activo de ' + V.n0(11625) + ' mil', segs:[
+    {k:'Pasivo', v:9590, pct:82.49, color:'var(--s2)', label:V.n0(9590)+' mil',
+     tip:[['Importe','9,590 mil'],['% del activo','82.49 %'],['Abr 2025','83.47 %']]},
+    {k:'Patrimonio', v:2035, pct:17.51, color:'var(--seq-1)', label:V.n0(2035)+' mil',
+     tip:[['Importe','2,035 mil'],['% del activo','17.51 %'],['Abr 2025','16.53 %']]}
+  ]},
+  {k:'Abr 2025 · activo de ' + V.n0(11615) + ' mil', segs:[
+    {k:'Pasivo', v:9695, pct:83.47, color:'var(--s2)', label:V.n0(9695)+' mil',
+     tip:[['Importe','9,695 mil'],['% del activo','83.47 %']]},
+    {k:'Patrimonio', v:1920, pct:16.53, color:'var(--seq-1)', label:V.n0(1920)+' mil',
+     tip:[['Importe','1,920 mil'],['% del activo','16.53 %']]}
+  ]}
+]);
+
+/* ---------- SECCION 4 · composicion del activo ---------- */
+V.stack100(document.getElementById('act'), [
+  {k:'Abr 2026', segs:[
+    {k:'No corriente', v:10340, pct:88.95, color:'var(--seq-1)', label:V.n0(10340)+' mil',
+     tip:[['Importe','10,340 mil'],['% del activo','88.95 %'],['Abr 2025','90.36 %']]},
+    {k:'Corriente', v:1285, pct:11.05, color:'var(--s3)', label:V.n0(1285)+' mil',
+     tip:[['Importe','1,285 mil'],['% del activo','11.05 %'],['Abr 2025','9.64 %']]}
+  ]},
+  {k:'Abr 2025', segs:[
+    {k:'No corriente', v:10495, pct:90.36, color:'var(--seq-1)', label:V.n0(10495)+' mil',
+     tip:[['Importe','10,495 mil'],['% del activo','90.36 %']]},
+    {k:'Corriente', v:1120, pct:9.64, color:'var(--s3)', label:V.n0(1120)+' mil',
+     tip:[['Importe','1,120 mil'],['% del activo','9.64 %']]}
+  ]}
+]);
+
+/* ---------- SECCION 4 · liquidez ---------- */
+(function(){
+  V.grouped(document.getElementById('liq'), [
+    {k:'Abr 2026 · razón corriente 0.38', chip:{t:'↑ +0.03 x', c:'g'}, rows:[
+      {k:'Activo cte', v:1285, color:'var(--seq-1)', label:V.n0(1285)+' mil',
+       tip:[['Importe','1,285 mil'],['Δ vs PY','+165 mil']]},
+      {k:'Pasivo cte', v:3410, color:'var(--s2)', label:V.n0(3410)+' mil',
+       tip:[['Importe','3,410 mil'],['Δ vs PY','+170 mil']]}
+    ]},
+    {k:'Abr 2025 · razón corriente 0.35', rows:[
+      {k:'Activo cte', v:1120, color:'var(--seq-3)', label:V.n0(1120)+' mil',
+       tip:[['Importe','1,120 mil']]},
+      {k:'Pasivo cte', v:3240, color:'var(--seq-3)', label:V.n0(3240)+' mil',
+       tip:[['Importe','3,240 mil']]}
+    ]}
+  ], 3410);
+  var lg = V.el('div','legend');
+  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>activo corriente</span>'
+               + '<span><i class="sw" style="background:var(--s2)"></i>pasivo corriente</span>'
+               + '<span><i class="sw" style="background:var(--seq-3)"></i>Abr 2025</span>';
+  document.getElementById('liq').appendChild(lg);
+})();
+
+/* ---------- SECCION 5 · tabla ---------- */
+(function(){
+  var tb = document.querySelector('#tbl tbody');
+  var SEQ = ['var(--seq-1)','var(--seq-2)','var(--seq-3)'];
+
+  ROWS.forEach(function(r){
+    var lvl=r[0], kind=r[1], name=r[2], a=r[3], p=r[4];
+    var d = a-p, vp = +(d/Math.abs(p)*100).toFixed(2);
+    var pct = a/TA*100;
+    var tr = V.el('tr','lvl'+lvl+(kind==='tot'?' sub':''));
+    tr.dataset.lvl = lvl;
+    if(kind==='item') tr.classList.add('detrow');
+
+    var td = V.el('td','name');
+    td.style.paddingLeft = (20 + lvl*16)+'px';
+    if(kind==='agg') td.appendChild(V.makeToggle(tr, name, 2));
+    td.appendChild(V.el('span',null,name));
+    tr.appendChild(td);
+
+    tr.appendChild(V.el('td','num',V.n0(a)));
+    tr.appendChild(V.el('td','num dim',V.n0(p)));
+
+    var pt = V.el('td');
+    pt.appendChild(V.railPct(pct, SEQ[Math.min(2,lvl)]));
+    tr.appendChild(pt);
+
+    tr.appendChild(V.el('td','num dim',V.sg(d)));
+
+    var vc = V.el('td');
+    /* en el balance no hay un "favorable" universal: el pasivo que baja es
+       bueno y el activo que baja no. Se evalua por concepto. */
+    var down = /Pasivo|Deuda|pagar|Remuneraciones|acumulados/.test(name);
+    var fav = down ? d < 0 : d > 0;
+    vc.appendChild(V.varChip(vp, fav));
+    tr.appendChild(vc);
+
+    V.bindTip(tr, name, [
+      ['Abr 2026', V.n0(a)+' mil'],
+      ['Abr 2025', V.n0(p)+' mil'],
+      ['% del activo', V.pc(pct)],
+      ['Δ absoluto', V.sg(d)+' mil'],
+      ['Var %', (vp>0?'+':V.MIN)+Math.abs(vp).toFixed(2)+' %'],
+      ['Evaluación', fav ? 'favorable' : 'desfavorable']
+    ]);
+    tb.appendChild(tr);
+  });
+
+  /* Resumen / Detalle */
+  var btns = document.querySelectorAll('[data-mode]');
+  btns.forEach(function(b){
+    b.onclick = function(){
+      var det = b.dataset.mode === 'det';
+      btns.forEach(function(o){ o.classList.toggle('on', o === b); });
+      document.querySelectorAll('.detrow').forEach(function(tr){
+        tr.style.display = det ? '' : 'none';
+      });
+      document.querySelectorAll('.tog').forEach(function(t){
+        t.style.visibility = det ? 'visible' : 'hidden';
+      });
+    };
+  });
+  document.querySelector('[data-mode="res"]').click();
+})();
+
+V.themeBtn();
+</script>
+</body>
+</html>

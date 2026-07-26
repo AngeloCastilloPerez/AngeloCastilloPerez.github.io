@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FARMAVET · Variación de deuda · 2026</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="vista.css">
+</head>
+<body>
+<div class="shell">
+
+  <div class="top">
+    <div>
+      <div class="brand">FARMAVET</div>
+      <h1>Variación de deuda · 2026</h1>
+      <div class="sub">Posición de deuda financiera &mdash; importes en PEN</div>
+    </div>
+    <div class="filters">
+      <label><span class="fk">Estado</span><select><option>Todas</option><option>Vigente</option></select></label>
+      <label><span class="fk">Financiamiento</span><select><option>Todas</option><option>Bancario</option></select></label>
+      <label><span class="fk">Tipo</span><select><option>Todas</option><option>Back To Back</option></select></label>
+      <label><span class="fk">Año</span><select><option>2026</option><option>2025</option></select></label>
+      <button class="tbtn" id="themeBtn" type="button">Claro / Oscuro</button>
+    </div>
+  </div>
+
+  <!-- SECCION 1 · KPIs -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- SECCION 2 · composicion | Deuda/EBITDA -->
+  <div class="body eq">
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Composición de la deuda</div>
+        <div class="card-s">Dos cortes de la misma deuda: por instrumento y por plazo. Alineados para
+          poder compararlos, y en barra 100 % porque con dos categorías se lee mejor que en una dona.</div>
+      </div>
+      <div class="card-b" id="comp"></div>
+      <div class="card-f">El back to back domina el instrumento, pero un tercio de la deuda vence a
+        mediano plazo: los dos cortes no coinciden.</div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Deuda / EBITDA por año</div>
+        <div class="card-s">Serie única, así que no lleva leyenda: el título la nombra. La línea
+          punteada es el covenant de 4.0x.</div>
+      </div>
+      <div class="card-b" id="ebitda"></div>
+      <div class="card-f" id="ebitdaF"></div>
+    </section>
+  </div>
+
+  <!-- SECCION 3 · horizonte de pago -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h">
+      <div class="card-t">Horizonte de pago</div>
+      <div class="card-s">Amortizaciones por año. La suma es igual al total de la deuda. Es magnitud,
+        así que va en una rampa de un solo tono y no en colores por categoría.</div>
+    </div>
+    <div class="card-b" id="hor"></div>
+    <div class="card-f" id="horF"></div>
+  </section>
+
+  <!-- SECCION 4 · lineas bancarias -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h">
+      <div class="card-t">Disponibilidad de líneas bancarias</div>
+      <div class="card-s">La pregunta es con qué financiar el próximo movimiento, así que está
+        ordenado por disponible y no por usado.</div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--s2)"></i>usado</span>
+        <span><i class="sw" style="background:var(--seq-1)"></i>disponible</span>
+      </div>
+    </div>
+    <div class="card-b" id="lineas"></div>
+    <div class="card-f" id="lineasF"></div>
+  </section>
+
+  <!-- SECCION 5 · tabla -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h" style="padding-bottom:12px">
+      <div class="card-t">Detalle · deuda y líneas</div>
+      <div class="card-s">Instrumentos de deuda y líneas aprobadas por banco.</div>
+    </div>
+    <div class="scroll">
+      <table id="tbl">
+        <caption>Posición de deuda financiera y líneas bancarias a 2026, en PEN.</caption>
+        <thead><tr>
+          <th scope="col">Concepto</th>
+          <th scope="col">Importe</th>
+          <th scope="col">% del total</th>
+          <th scope="col">Plazo</th>
+          <th scope="col">Vence</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="card-f">PEN &middot; datos de demostración</div>
+  </section>
+
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script src="vista.js"></script>
+<script>
+/* ============================================================
+   DATOS — atan con el balance de la vista 03:
+   deuda corto plazo 1,120 mil + largo plazo 5,723 mil = 6,843 mil
+   caja 285 mil.  Y con la vista 04: DFN / EBITDA = 3.61
+   Verificado: instrumentos suman el total; plazos suman el total;
+   el horizonte de pago suma el total.
+   ============================================================ */
+var TOT = 6842500, CAJA = 285000, DFN = 6557500, EBITDA = 1815000;
+
+var INSTR = [
+  {k:'Back To Back',           v:5187900, pct:75.82, plazo:'Largo plazo',   vence:'2028 – 2030'},
+  {k:'Préstamo estructurado',  v:1654600, pct:24.18, plazo:'Mediano plazo', vence:'2026 – 2027'}
+];
+var PLAZO = [
+  {k:'Largo plazo',   v:4462300, pct:65.21},
+  {k:'Mediano plazo', v:2380200, pct:34.79}
+];
+var HOR = [
+  {x:'2026', v:1120400},
+  {x:'2027', v:1860300},
+  {x:'2028', v:1540900},
+  {x:'2029', v:1205600},
+  {x:'2030', v:1115300}
+];
+var DE = [
+  {x:'2023', v:4.2}, {x:'2024', v:4.6}, {x:'2025', v:3.9}, {x:'2026', v:3.8}
+];
+var BANCOS = [
+  {k:'Banco Andino', linea:150000, usado: 40000, disp:110000},
+  {k:'Banco Norte',  linea:250000, usado:165000, disp: 85000},
+  {k:'Banco Sur',    linea:150000, usado: 92000, disp: 58000}
+];
+
+/* ---------- SECCION 1 · KPIs ---------- */
+V.kpis(document.getElementById('kpis'), [
+  {k:'Deuda financiera total', v:V.n0(TOT),
+   chip:{t:'↓ '+V.MIN+'2.9 %', c:'g'}, m:'vs 7,047,300 en 2025',
+   tip:['Deuda financiera total',[['2026',V.n0(TOT)],['2025',V.n0(7047300)],
+        ['Δ absoluto',V.MIN+'204,800'],['Var %',V.MIN+'2.91 %'],
+        ['En el balance','1,120 mil corto + 5,723 mil largo']]]},
+  {k:'Caja y equivalentes', v:V.n0(CAJA),
+   chip:{t:'↑ +43.9 %', c:'g'}, m:'vs 198,000 en 2025',
+   tip:['Caja y equivalentes',[['2026',V.n0(CAJA)],['2025',V.n0(198000)],
+        ['Δ absoluto','+87,000'],['Fuente','activo corriente del balance']]]},
+  {k:'Deuda financiera neta', v:V.n0(DFN), m:'deuda − caja',
+   chip:{t:'↓ '+V.MIN+'4.3 %', c:'g'},
+   tip:['Deuda financiera neta',[['Deuda total',V.n0(TOT)],['Menos caja',V.MIN+V.n0(CAJA)],
+        ['DFN',V.n0(DFN)],['DFN / EBITDA','3.61 x']]]},
+  {k:'Deuda / EBITDA', v:'3.8', u:'x', m:'covenant 4.0 x', mark:'leadg',
+   chip:{t:'✓ dentro', c:'g'},
+   tip:['Deuda / EBITDA',[['Deuda total',V.n0(TOT)],['EBITDA 12M',V.n0(EBITDA)],
+        ['Ratio','3.77 x → 3.8 x'],['Covenant','4.0 x'],['Holgura','0.2 x']]]}
+]);
+
+/* ---------- SECCION 2 · composicion ---------- */
+V.stack100(document.getElementById('comp'), [
+  {k:'Por instrumento · '+V.n0(TOT), segs:INSTR.map(function(i,n){
+    return {k:i.k, v:i.v, pct:i.pct, color:n?'var(--s2)':'var(--seq-1)', label:V.n0(i.v),
+      tip:[['Importe',V.n0(i.v)],['% del total',V.pc(i.pct)],['Plazo',i.plazo],['Vence',i.vence]]};
+  })},
+  {k:'Por plazo · '+V.n0(TOT), segs:PLAZO.map(function(i,n){
+    return {k:i.k, v:i.v, pct:i.pct, color:n?'var(--s3)':'var(--seq-2)', label:V.n0(i.v),
+      tip:[['Importe',V.n0(i.v)],['% del total',V.pc(i.pct)]]};
+  })}
+]);
+
+/* ---------- SECCION 2 · Deuda / EBITDA ---------- */
+(function(){
+  V.vbars(document.getElementById('ebitda'), DE.map(function(d){
+    return {x:d.x, v:d.v, label:d.v.toFixed(1)+' x',
+      color: d.v > 4.0 ? 'var(--crit)' : 'var(--seq-1)',
+      tip:[['Deuda / EBITDA',d.v.toFixed(1)+' x'],['Covenant','4.0 x'],
+           ['Estado', d.v > 4.0 ? 'por encima del covenant' : 'dentro del covenant']]};
+  }), {max:5, ref:{v:4.0, label:'covenant 4.0 x'}});
+  document.getElementById('ebitdaF').innerHTML =
+    '<span class="chip b">! 2024</span> El único año por encima del covenant, con 4.6x. '
+    + 'Desde entonces baja tres años seguidos hasta 3.8x.';
+})();
+
+/* ---------- SECCION 3 · horizonte de pago ---------- */
+(function(){
+  var max = Math.max.apply(null, HOR.map(function(h){ return h.v; }));
+  /* magnitud: un solo tono, el mas pesado en el paso mas oscuro */
+  V.vbars(document.getElementById('hor'), HOR.map(function(h){
+    var share = h.v/TOT*100;
+    return {x:h.x, v:h.v, label:V.n0(h.v),
+      color: h.v === max ? 'var(--seq-1)' : 'var(--seq-2)',
+      tip:[['Amortización',V.n0(h.v)],['% del total',V.pc(share)],
+           ['Acumulado hasta el año', V.n0(HOR.slice(0, HOR.indexOf(h)+1)
+              .reduce(function(s,x){ return s+x.v; },0))]]};
+  }), {max:max});
+  document.getElementById('horF').textContent =
+    'La suma de las cinco amortizaciones es ' + V.n0(TOT) + ', igual al total de la deuda. '
+    + '2027 concentra el 27.19 % en un solo año: es el vencimiento que hay que refinanciar.';
+})();
+
+/* ---------- SECCION 4 · lineas bancarias ---------- */
+(function(){
+  var tl = BANCOS.reduce(function(s,b){ return s+b.linea; },0);
+  var tu = BANCOS.reduce(function(s,b){ return s+b.usado; },0);
+  var td = BANCOS.reduce(function(s,b){ return s+b.disp; },0);
+  V.stack100(document.getElementById('lineas'), BANCOS.map(function(b){
+    var up = +(b.usado/b.linea*100).toFixed(2);
+    return {k:b.k+' · línea de '+V.n0(b.linea)+'  ·  utilización '+V.pc(up), segs:[
+      {k:'Usado', v:b.usado, pct:up, color:'var(--s2)', label:V.n0(b.usado),
+       tip:[['Usado',V.n0(b.usado)],['Línea aprobada',V.n0(b.linea)],['Utilización',V.pc(up)]]},
+      {k:'Disponible', v:b.disp, pct:+(100-up).toFixed(2), color:'var(--seq-1)', label:V.n0(b.disp),
+       tip:[['Disponible',V.n0(b.disp)],['Línea aprobada',V.n0(b.linea)],
+            ['Holgura',V.pc(100-up)]]}
+    ]};
+  }));
+  document.getElementById('lineasF').innerHTML =
+    'Total aprobado ' + V.n0(tl) + ' · usado ' + V.n0(tu) + ' · '
+    + '<strong>disponible ' + V.n0(td) + '</strong> (utilización 54.00 %). '
+    + 'Banco Andino concentra la mayor holgura con ' + V.n0(110000) + '.';
+})();
+
+/* ---------- SECCION 5 · tabla ---------- */
+(function(){
+  var tb = document.querySelector('#tbl tbody');
+
+  function row(name, imp, pct, plazo, vence, cls, tip){
+    var tr = V.el('tr', cls || 'lvl1');
+    var td = V.el('td','name');
+    td.style.paddingLeft = (cls === 'lvl0 sub' ? 20 : 36)+'px';
+    td.appendChild(V.el('span',null,name));
+    tr.appendChild(td);
+    tr.appendChild(V.el('td','num',V.n0(imp)));
+    var pt = V.el('td');
+    if(pct === null) pt.appendChild(V.el('span','rail-v','—'));
+    else pt.appendChild(V.railPct(pct,'var(--seq-1)'));
+    tr.appendChild(pt);
+    tr.appendChild(V.el('td','dim',plazo||'—'));
+    tr.appendChild(V.el('td','muted',vence||'—'));
+    if(tip) V.bindTip(tr, name, tip);
+    tb.appendChild(tr);
+  }
+
+  row('Deuda financiera total', TOT, 100, '—', '2026 – 2030', 'lvl0 sub',
+      [['Importe',V.n0(TOT)],['Caja',V.n0(CAJA)],['DFN',V.n0(DFN)],['Deuda / EBITDA','3.8 x']]);
+  INSTR.forEach(function(i){
+    row(i.k, i.v, i.pct, i.plazo, i.vence, 'lvl1',
+        [['Importe',V.n0(i.v)],['% del total',V.pc(i.pct)],['Plazo',i.plazo],['Vence',i.vence]]);
+  });
+
+  row('Líneas bancarias aprobadas', 550000, null, '—', 'revolvente', 'lvl0 sub',
+      [['Aprobado',V.n0(550000)],['Usado',V.n0(297000)],['Disponible',V.n0(253000)],
+       ['Utilización','54.00 %']]);
+  BANCOS.forEach(function(b){
+    var up = +(b.usado/b.linea*100).toFixed(2);
+    row(b.k, b.linea, +(b.linea/550000*100).toFixed(2), 'Revolvente',
+        'utilización '+V.pc(up), 'lvl1',
+        [['Línea aprobada',V.n0(b.linea)],['Usado',V.n0(b.usado)],
+         ['Disponible',V.n0(b.disp)],['Utilización',V.pc(up)]]);
+  });
+})();
+
+V.themeBtn();
+</script>
+</body>
+</html>

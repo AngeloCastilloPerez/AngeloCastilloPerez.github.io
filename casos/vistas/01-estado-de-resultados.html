@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FARMAVET · Estado de resultados · YTD Abril 2026</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="vista.css">
+</head>
+<body>
+<div class="shell">
+
+  <div class="top">
+    <div>
+      <div class="brand">FARMAVET</div>
+      <h1>Estado de resultados · YTD Abril 2026</h1>
+      <div class="sub">Comparativo contra YTD Abril 2025 &mdash; importes en PEN</div>
+    </div>
+    <div class="filters">
+      <label><span class="fk">Mes</span>
+        <select><option>Abr</option><option>Mar</option><option>Feb</option><option>Ene</option></select></label>
+      <label><span class="fk">Período</span>
+        <select><option>YTD</option><option>MTD</option></select></label>
+      <label><span class="fk">Año</span>
+        <select><option>2026</option><option>2025</option></select></label>
+      <button class="tbtn" id="themeBtn" type="button">Claro / Oscuro</button>
+    </div>
+  </div>
+
+  <!-- SECCION 1 · KPIs -->
+  <div class="kpis" id="kpis"></div>
+
+  <!-- SECCION 2 · de ventas a utilidad operativa | composicion de ventas -->
+  <div class="body w62">
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">De ventas netas a utilidad operativa</div>
+        <div class="card-s">Qué se queda cada bloque de costo en el camino. El acumulado avanza
+          paso a paso, así que la caída se lee sin restar nada a mano.</div>
+      </div>
+      <div class="card-b" id="wf"></div>
+      <div class="card-f">De cada 100 soles vendidos quedan 4.41 en utilidad operativa,
+        contra 3.75 el año anterior.</div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Composición de ventas</div>
+        <div class="card-s">Las dos líneas de negocio y su peso sobre las ventas netas.</div>
+      </div>
+      <div class="card-b" id="mix"></div>
+      <div class="card-f">Análisis crece 25.53 % y gana 140 pb de peso: la mezcla mejora,
+        porque es la línea de mayor margen.</div>
+    </section>
+  </div>
+
+  <!-- SECCION 3 · margenes -->
+  <div class="body eq">
+    <section class="card">
+      <div class="card-t" style="padding:15px 20px 0">Márgenes sobre ventas netas</div>
+      <div class="card-s" style="padding:3px 20px 0">Bruto y operativo, año contra año, en porcentaje
+        de ventas netas.</div>
+      <div class="card-b" id="marg"></div>
+      <div class="card-f">El margen bruto se sostiene plano; toda la mejora del operativo viene de
+        gastos de administración creciendo por debajo de las ventas.</div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Qué creció más rápido que las ventas</div>
+        <div class="card-s">Variación de cada línea contra el 13.15 % de crecimiento de las ventas
+          netas. A la derecha, lo que crece más rápido que la venta y por eso presiona el margen.</div>
+      </div>
+      <div class="card-b" id="tor"></div>
+      <div class="card-f">La mano de obra directa crece 11 puntos por encima de las ventas: el margen
+        se sostiene por volumen, no por eficiencia.</div>
+    </section>
+  </div>
+
+  <!-- SECCION 4 · tabla -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h" style="padding-bottom:12px">
+      <div class="card-t">Detalle · estado de resultados</div>
+      <div class="card-s">Var&nbsp;% mide el cambio de magnitud de la línea:
+        (|Actual| − |Anterior|) ÷ |Anterior|. Δ peso es el cambio de su peso sobre ventas netas.
+        El color del chip evalúa si eso es favorable.</div>
+    </div>
+    <div class="scroll">
+      <table id="tbl">
+        <caption>Estado de resultados YTD Abril 2026 vs YTD Abril 2025, en PEN. Los nodos padre se colapsan.</caption>
+        <thead><tr>
+          <th scope="col">P&amp;L</th>
+          <th scope="col">Actual</th>
+          <th scope="col">% vs ventas</th>
+          <th scope="col">Anterior</th>
+          <th scope="col">% vs ventas PY</th>
+          <th scope="col">Δ peso (pp)</th>
+          <th scope="col">ΔVar Abs</th>
+          <th scope="col">Var&nbsp;%</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="card-f">PEN &middot; datos de demostración</div>
+  </section>
+
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script src="vista.js"></script>
+<script>
+/* ============================================================
+   DATOS — verificados:
+   Ventas Netas = Maquila + Analisis
+   Costo Variable = MOD + Mat. directos + Servicios + Mat. indirectos
+   Costo Fijo = Deprec. + Gasto ind. fabricacion + MO indirecta
+   Costo de Maquila = Variable + Fijo
+   Costo de Servicio = Maquila + Control de calidad
+   Utilidad Bruta = Ventas Netas + Costo de Servicio
+   Utilidad Operativa = Utilidad Bruta + Gastos de Administracion
+   ============================================================ */
+var VN = 2546000, VN_PY = 2250200;
+
+/* lvl, kind, nombre, actual, %VN, anterior, %VN PY, ΔAbs, Var% */
+var ROWS = [
+  [0,'ing' ,'Ventas Netas'                   , 2546000, 100.00, 2250200, 100.00,  295800,  13.15],
+  [1,'ing' ,'Ventas Maquila'                  , 2184600,  85.81, 1962300,  87.21,  222300,  11.33],
+  [1,'ing' ,'Ventas Análisis'                 ,  361400,  14.19,  287900,  12.79,   73500,  25.53],
+  [0,'cost','Costo de Servicio'               ,-2242700, -88.09,-1982600, -88.11, -260100,  13.12],
+  [1,'cost','Costo de Maquila'                ,-1948000, -76.51,-1701200, -75.60, -246800,  14.51],
+  [2,'cost','Costo Variable'                  ,-1355100, -53.22,-1118500, -49.71, -236600,  21.15],
+  [3,'cost','Mano de obra directa'            ,-1058200, -41.56, -852100, -37.87, -206100,  24.19],
+  [3,'cost','Servicios'                       , -206500,  -8.11, -196800,  -8.75,   -9700,   4.93],
+  [3,'cost','Materiales e insumos directos'   ,  -84300,  -3.31,  -61700,  -2.74,  -22600,  36.63],
+  [3,'cost','Materiales indirectos'           ,   -6100,  -0.24,   -7900,  -0.35,    1800, -22.78],
+  [2,'cost','Costo Fijo'                      , -592900, -23.29, -582700, -25.89,  -10200,   1.75],
+  [3,'cost','Mano de obra indirecta'          , -228900,  -8.99, -239500, -10.64,   10600,  -4.43],
+  [3,'cost','Gasto indirecto de fabricación'  , -191600,  -7.53, -178300,  -7.92,  -13300,   7.46],
+  [3,'cost','Deprec. de inm, maq. y equipo'   , -172400,  -6.77, -164900,  -7.33,   -7500,   4.55],
+  [1,'cost','Costo control de calidad'        , -294700, -11.58, -281400, -12.51,  -13300,   4.73],
+  [0,'sub' ,'Utilidad Bruta'                  ,  303300,  11.91,  267600,  11.89,   35700,  13.34],
+  [0,'cost','Gastos de Administración'        , -191000,  -7.50, -183200,  -8.14,   -7800,   4.26],
+  [0,'sub' ,'Utilidad Operativa'              ,  112300,   4.41,   84400,   3.75,   27900,  33.06]
+];
+
+var W = {}; ROWS.forEach(function(r){ W[r[2]] = {a:r[4], p:r[6]}; });
+
+/* ---------- SECCION 1 · KPIs ---------- */
+V.kpis(document.getElementById('kpis'), [
+  {k:'Ventas Netas', v:V.n0(2546000), m:'vs '+V.n0(VN_PY)+' PY',
+   chip:{t:'↑ +13.15 %', c:'g'},
+   tip:['Ventas Netas',[['YTD Abr 2026',V.n0(2546000)],['YTD Abr 2025',V.n0(VN_PY)],
+        ['Δ absoluto','+295,800'],['Var %','+13.15 %']]]},
+  {k:'Utilidad Bruta', v:V.n0(303300), m:'11.91 % de ventas · 11.89 % PY',
+   chip:{t:'↑ +13.34 %', c:'g'},
+   tip:['Utilidad Bruta',[['YTD Abr 2026',V.n0(303300)+'  (11.91 %)'],
+        ['YTD Abr 2025',V.n0(267600)+'  (11.89 %)'],['Δ absoluto','+35,700'],
+        ['Δ margen','+2 pb'],['Var %','+13.34 %']]]},
+  {k:'Utilidad Operativa', v:V.n0(112300), m:'vs '+V.n0(84400)+' PY',
+   chip:{t:'↑ +33.06 %', c:'g'},
+   tip:['Utilidad Operativa',[['YTD Abr 2026',V.n0(112300)],['YTD Abr 2025',V.n0(84400)],
+        ['Δ absoluto','+27,900'],['Var %','+33.06 %']]]},
+  {k:'Margen operativo', v:'4.41', u:'% de ventas', m:'3.75 % PY', mark:'leadg',
+   chip:{t:'↑ +66 pb', c:'g'},
+   tip:['Margen operativo',[['YTD Abr 2026','4.41 %'],['YTD Abr 2025','3.75 %'],
+        ['Δ','+0.66 pp (+66 pb)'],['Lectura','es el indicador que manda la vista']]]}
+]);
+
+/* ---------- SECCION 2 · cascada ---------- */
+V.waterfall(document.getElementById('wf'), [
+  {k:'Ventas Netas', v:2546000, kind:'base', label:V.n0(2546000),
+   tip:[['Peso','100.00 % de ventas'],['Anterior',V.n0(VN_PY)],['Var %','+13.15 %']]},
+  {k:'Costo de Servicio', v:-2242700, kind:'delta', label:V.n0(-2242700),
+   tip:[['Peso','88.09 % de ventas'],['Anterior',V.n0(-1982600)+'  (88.11 %)'],
+        ['Δ peso','−0.02 pp'],['Var %','+13.12 %']]},
+  {k:'Utilidad Bruta', v:303300, kind:'total', label:V.n0(303300),
+   tip:[['Margen bruto','11.91 %'],['Anterior','11.89 %'],['Δ','+2 pb']]},
+  {k:'Gastos de Administración', v:-191000, kind:'delta', label:V.n0(-191000),
+   tip:[['Peso','7.50 % de ventas'],['Anterior',V.n0(-183200)+'  (8.14 %)'],
+        ['Δ peso','−0.64 pp'],['Var %','+4.26 %']]},
+  {k:'Utilidad Operativa', v:112300, kind:'total', label:V.n0(112300),
+   tip:[['Margen operativo','4.41 %'],['Anterior','3.75 %'],['Δ','+66 pb']]}
+], {axisLabel:'PEN · el cero está en la línea vertical'});
+
+/* ---------- SECCION 2 · composicion de ventas ---------- */
+V.stack100(document.getElementById('mix'), [
+  {k:'YTD Abr 2026 · ' + V.n0(2546000), segs:[
+    {k:'Maquila', v:2184600, pct:85.81, color:'var(--seq-1)', label:V.n0(2184600),
+     tip:[['Importe',V.n0(2184600)],['Peso','85.81 %'],['Var %','+11.33 %']]},
+    {k:'Análisis', v:361400, pct:14.19, color:'var(--s3)', label:V.n0(361400),
+     tip:[['Importe',V.n0(361400)],['Peso','14.19 %'],['Var %','+25.53 %']]}
+  ]},
+  /* el color sigue a la linea de negocio, no al año: los dos segmentos del
+     mismo año tienen que distinguirse entre si, y la misma linea tiene que
+     ser el mismo color en los dos años. El año lo dice la etiqueta. */
+  {k:'YTD Abr 2025 · ' + V.n0(VN_PY), segs:[
+    {k:'Maquila', v:1962300, pct:87.21, color:'var(--seq-1)', label:V.n0(1962300),
+     tip:[['Importe',V.n0(1962300)],['Peso','87.21 %']]},
+    {k:'Análisis', v:287900, pct:12.79, color:'var(--s3)', label:V.n0(287900),
+     tip:[['Importe',V.n0(287900)],['Peso','12.79 %']]}
+  ]}
+]);
+
+/* ---------- SECCION 3 · margenes ---------- */
+V.grouped(document.getElementById('marg'), [
+  {k:'Margen bruto', chip:{t:'↑ +2 pb', c:'g'}, rows:[
+    {k:'2026', v:11.91, color:'var(--seq-1)', label:'11.91 %',
+     tip:[['Utilidad Bruta',V.n0(303300)],['Sobre ventas','11.91 %']]},
+    {k:'2025', v:11.89, color:'var(--seq-3)', label:'11.89 %',
+     tip:[['Utilidad Bruta',V.n0(267600)],['Sobre ventas','11.89 %']]}
+  ]},
+  {k:'Margen operativo', chip:{t:'↑ +66 pb', c:'g'}, rows:[
+    {k:'2026', v:4.41, color:'var(--seq-1)', label:'4.41 %',
+     tip:[['Utilidad Operativa',V.n0(112300)],['Sobre ventas','4.41 %']]},
+    {k:'2025', v:3.75, color:'var(--seq-3)', label:'3.75 %',
+     tip:[['Utilidad Operativa',V.n0(84400)],['Sobre ventas','3.75 %']]}
+  ]}
+], 15);
+(function(){
+  var lg = V.el('div','legend');
+  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
+               + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
+  document.getElementById('marg').appendChild(lg);
+})();
+
+/* ---------- SECCION 3 · crecimiento relativo a las ventas ----------
+   Var% de la linea menos el 13.15 % de crecimiento de las ventas netas:
+   a la derecha lo que crece mas rapido que la venta y presiona el margen. */
+(function(){
+  var VG = 13.15;
+  var items = [
+    ['Materiales e insumos directos', 36.63],
+    ['Mano de obra directa', 24.19],
+    ['Costo de Maquila', 14.51],
+    ['Costo de Servicio', 13.12],
+    ['Servicios', 4.93],
+    ['Gasto indirecto de fabricación', 7.46],
+    ['Gastos de Administración', 4.26],
+    ['Mano de obra indirecta', -4.43]
+  ].map(function(p){
+    var rel = +(p[1]-VG).toFixed(2);
+    return {name:p[0], v:rel, tip:[
+      ['Var % de la línea', (p[1]>0?'+':V.MIN)+Math.abs(p[1]).toFixed(2)+' %'],
+      ['Crecimiento ventas', '+13.15 %'],
+      ['Diferencia', V.spp(rel)+' pp'],
+      ['Lectura', rel > 0 ? 'crece más rápido que la venta: presiona margen'
+                          : 'crece menos que la venta: aporta margen']
+    ]};
+  }).sort(function(a,b){ return b.v - a.v; });
+
+  V.tornado(document.getElementById('tor'), {
+    items: items, lo:-20, hi:25, ticks:[-20,-15,-10,-5,0,5,10,15,20,25],
+    unit:'pp', axisLabel:'puntos por encima o debajo del crecimiento de ventas'
+  });
+})();
+
+/* ---------- SECCION 4 · tabla ---------- */
+(function(){
+  var tb = document.querySelector('#tbl tbody');
+  var SEQ = ['var(--seq-1)','var(--seq-1)','var(--seq-2)','var(--seq-3)'];
+  var MAXBAR = 2546000;
+
+  ROWS.forEach(function(r){
+    var lvl=r[0], kind=r[1], name=r[2], act=r[3], pv=r[4], prev=r[5], pvPY=r[6], d=r[7], vp=r[8];
+    var fav = kind==='cost' ? vp < 0 : vp > 0;
+    /* Δ de PESO en valor absoluto: un costo que gana peso da +pp, igual que
+       en los graficos de arriba. Con pv-pvPY daria el signo invertido, porque
+       los porcentajes de costo se guardan negativos. */
+    var dpp = Math.abs(pv) - Math.abs(pvPY);
+    var isBase = name === 'Ventas Netas';
+
+    var tr = V.el('tr','lvl'+lvl+(kind==='sub'?' sub':''));
+    tr.dataset.lvl = lvl;
+
+    var td = V.el('td','name');
+    td.style.paddingLeft = (20 + lvl*16)+'px';
+    var hasKids = (name==='Costo de Servicio'||name==='Costo de Maquila'
+                || name==='Costo Variable'||name==='Costo Fijo'||name==='Ventas Netas');
+    if(hasKids) td.appendChild(V.makeToggle(tr, name, lvl+1));
+    td.appendChild(V.el('span',null,name));
+    tr.appendChild(td);
+
+    var ct = V.el('td');
+    ct.appendChild(V.cellBar(act, MAXBAR, SEQ[Math.min(3,lvl)]));
+    tr.appendChild(ct);
+
+    var pt = V.el('td');
+    pt.appendChild(isBase ? V.el('span','rail-v',V.pc(pv))
+                          : V.railPct(pv, SEQ[Math.min(3,lvl)]));
+    tr.appendChild(pt);
+
+    tr.appendChild(V.el('td','num dim',V.n0(prev)));
+    tr.appendChild(V.el('td','num muted',V.pc(pvPY)));
+
+    var dp = V.el('td','num'+(isBase?' muted':''));
+    dp.textContent = isBase ? '—' : V.spp(dpp)+' pp';
+    tr.appendChild(dp);
+
+    tr.appendChild(V.el('td','num dim',V.sg(d)));
+
+    var vc = V.el('td');
+    vc.appendChild(V.varChip(vp, fav));
+    tr.appendChild(vc);
+
+    V.bindTip(tr, name, [
+      ['Actual', V.n0(act)+'  ('+V.pc(pv)+')'],
+      ['Anterior', V.n0(prev)+'  ('+V.pc(pvPY)+')'],
+      ['Δ absoluto', V.sg(d)],
+      ['Δ peso sobre ventas', isBase ? '—' : V.spp(dpp)+' pp'],
+      ['Var %', (vp>0?'+':V.MIN)+Math.abs(vp).toFixed(2)+' %'],
+      ['Evaluación', fav ? 'favorable' : 'desfavorable']
+    ]);
+    tb.appendChild(tr);
+  });
+})();
+
+V.themeBtn();
+</script>
+</body>
+</html>

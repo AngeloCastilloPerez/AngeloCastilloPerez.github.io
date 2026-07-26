@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FARMAVET · Ratios financieros · Abril 2026</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="vista.css">
+</head>
+<body>
+<div class="shell">
+
+  <div class="top">
+    <div>
+      <div class="brand">FARMAVET</div>
+      <h1>Ratios financieros · Abril 2026</h1>
+      <div class="sub">Ratios sobre resultado YTD &mdash; los objetivos vienen de tabla, no están fijos en el visual</div>
+    </div>
+    <div class="filters">
+      <label><span class="fk">Mes</span>
+        <select><option>Abr</option><option>Mar</option><option>Feb</option><option>Ene</option></select></label>
+      <label><span class="fk">Año</span>
+        <select><option>2026</option><option>2025</option></select></label>
+      <button class="tbtn" id="themeBtn" type="button">Claro / Oscuro</button>
+    </div>
+  </div>
+
+  <!-- SECCION 1 · las cuatro tarjetas de ratio -->
+  <div class="ratios" id="ratios"></div>
+
+  <!-- SECCION 2 · DuPont | metodo -->
+  <div class="body w62">
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Análisis DuPont</div>
+        <div class="card-s">El retorno sobre activos se descompone en margen por rotación:
+          ROA = ROS × Venta/Activo. Dos escalas distintas, así que van en dos gráficos y no en un
+          doble eje.</div>
+      </div>
+      <div class="card-b" id="dupont"></div>
+      <div class="card-f" id="dupontF"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div class="card-t">Cómo se llega a cada ratio</div>
+        <div class="card-s">Numerador y denominador de cada uno, para que el número no sea una caja
+          negra.</div>
+      </div>
+      <div class="card-b" id="metodo" style="padding-bottom:14px"></div>
+    </section>
+  </div>
+
+  <!-- SECCION 3 · desvio contra objetivo -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h">
+      <div class="card-t">Desvío contra objetivo</div>
+      <div class="card-s">Cuánto le falta o le sobra a cada ratio para cumplir, en porcentaje de su
+        objetivo. A la derecha, por encima del objetivo; a la izquierda, por debajo. Que esté a un
+        lado u otro no dice si es bueno: eso depende de la regla del ratio, y va en la etiqueta.</div>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--good)"></i>cumple</span>
+        <span><i class="sw" style="background:var(--crit)"></i>no cumple</span>
+      </div>
+    </div>
+    <div class="card-b" id="dev"></div>
+    <div class="card-f">El endeudamiento es el desvío más grande: 57 % por encima de su objetivo, y en
+      ese ratio menos es mejor.</div>
+  </section>
+
+  <!-- SECCION 4 · tabla -->
+  <section class="card" style="margin-top:13px">
+    <div class="card-h" style="padding-bottom:12px">
+      <div class="card-t">Detalle · ratios y objetivos</div>
+      <div class="card-s">La columna Regla es la que decide el semáforo. En el reporte original el
+        endeudamiento salía en verde estando 57 % por encima de su objetivo, porque comparaba sin
+        considerar que ahí menor es mejor.</div>
+    </div>
+    <div class="scroll">
+      <table id="tbl">
+        <caption>Ratios financieros a Abril 2026, base YTD.</caption>
+        <thead><tr>
+          <th scope="col">Ratio</th>
+          <th scope="col">Definición</th>
+          <th scope="col">Abr 2026</th>
+          <th scope="col">Objetivo</th>
+          <th scope="col">Desvío</th>
+          <th scope="col">Desvío&nbsp;%</th>
+          <th scope="col">Regla</th>
+          <th scope="col">Estado</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="card-f">Datos de demostración</div>
+  </section>
+
+</div>
+<div id="tip" role="tooltip"></div>
+
+<script src="vista.js"></script>
+<script>
+/* ============================================================
+   DATOS — todo derivado del EERR y del balance de las vistas 01 y 03:
+   Resultado YTD 112,300 · Ventas 2,546,000 · Activo 11,625,000
+   Pasivo 9,590,000 · Patrimonio 2,035,000
+   Deuda financiera 6,842,500 · Caja 285,000 · EBITDA 12M 1,815,000
+   Verificado: ROA = ROS x Rotacion  ->  0.044 x 0.219 = 0.010
+   ============================================================ */
+var RATIOS = [
+  {k:'Apalancamiento sobre Flujos', def:'Deuda financiera neta / EBITDA',
+   v:3.61, obj:4.00, dec:2, unit:' x', lower:true,
+   serie:[3.95,3.82,3.70,3.61],
+   num:'Deuda financiera neta 6,557,500', den:'EBITDA 12M 1,815,000'},
+  {k:'ROA', def:'Resultado YTD / Activo total',
+   v:0.010, obj:0.015, dec:3, unit:'', lower:false,
+   serie:[0.002,0.005,0.008,0.010],
+   num:'Resultado YTD 112,300', den:'Activo total 11,625,000'},
+  {k:'Índice de Endeudamiento', def:'Pasivo total / Patrimonio',
+   v:4.71, obj:3.00, dec:2, unit:' x', lower:true,
+   serie:[5.05,4.93,4.80,4.71],
+   num:'Pasivo total 9,590,000', den:'Patrimonio 2,035,000'},
+  {k:'ROE', def:'Resultado YTD / Patrimonio',
+   v:0.055, obj:0.050, dec:3, unit:'', lower:false,
+   serie:[0.013,0.028,0.042,0.055],
+   num:'Resultado YTD 112,300', den:'Patrimonio 2,035,000'}
+];
+
+/* cumple: si menor es mejor, v <= obj; si mayor es mejor, v >= obj */
+RATIOS.forEach(function(r){
+  r.dev  = +(r.v - r.obj).toFixed(r.dec);
+  r.devP = +((r.v - r.obj) / r.obj * 100).toFixed(2);
+  r.ok   = r.lower ? r.v <= r.obj : r.v >= r.obj;
+});
+
+var MESES = ['Ene','Feb','Mar','Abr'];
+
+/* ---------- SECCION 1 · tarjetas de ratio ---------- */
+(function(){
+  var host = document.getElementById('ratios');
+  host.style.setProperty('--n', RATIOS.length);
+  RATIOS.forEach(function(r){
+    var c = V.el('div','rc '+(r.ok?'ok':'no'));
+    c.appendChild(V.el('div','rc-k',r.k));
+    c.appendChild(V.el('div','rc-def',r.def));
+
+    var vr = V.el('div','rc-vr');
+    vr.appendChild(V.el('div','rc-v',r.v.toFixed(r.dec)+r.unit));
+    /* estado con icono y palabra: nunca color solo */
+    var st = V.el('span','chip '+(r.ok?'g':'b'), (r.ok?'✓ CUMPLE':'! NO CUMPLE'));
+    vr.appendChild(st);
+    c.appendChild(vr);
+
+    c.appendChild(V.el('div','rc-o','Objetivo '+r.obj.toFixed(r.dec)+r.unit
+      + '  ·  '+V.spp(r.dev,r.dec)+' ('+V.spp(r.devP)+' %)'));
+
+    var sp = V.el('div','rc-sp');
+    sp.innerHTML = V.spark(r.serie, r.obj, r.ok);
+    c.appendChild(sp);
+    var x = V.el('div','rc-x');
+    x.appendChild(V.el('span',null,MESES[0]));
+    x.appendChild(V.el('span',null,'objetivo '+r.obj.toFixed(r.dec)));
+    x.appendChild(V.el('span',null,MESES[MESES.length-1]));
+    c.appendChild(x);
+
+    V.bindTip(c, r.k, [
+      ['Definición', r.def],
+      ['Numerador', r.num],
+      ['Denominador', r.den],
+      ['Abr 2026', r.v.toFixed(r.dec)+r.unit],
+      ['Objetivo', r.obj.toFixed(r.dec)+r.unit],
+      ['Desvío', V.spp(r.dev,r.dec)+'  ('+V.spp(r.devP)+' %)'],
+      ['Regla', r.lower ? 'menor es mejor' : 'mayor es mejor'],
+      ['Estado', r.ok ? 'cumple' : 'no cumple']
+    ]);
+    host.appendChild(c);
+  });
+})();
+
+/* ---------- SECCION 2 · DuPont ----------
+   Dos componentes de escalas distintas: dos graficos, nunca doble eje. */
+(function(){
+  var D = [
+    {p:'YTD Abr 2026', ros:0.044, rot:0.219, roa:0.010, c:'var(--seq-1)'},
+    {p:'YTD Abr 2025', ros:0.038, rot:0.194, roa:0.007, c:'var(--seq-3)'}
+  ];
+  V.grouped(document.getElementById('dupont'), [
+    {k:'Margen de ventas · ROS', chip:{t:'↑ +0.006', c:'g'}, rows:D.map(function(d){
+      return {k:d.p.slice(-4), v:d.ros, color:d.c, label:d.ros.toFixed(3),
+        tip:[['ROS',d.ros.toFixed(3)],['Cálculo','resultado / ventas'],
+             ['Lectura','cuánto deja cada sol vendido']]};
+    })},
+    {k:'Rotación de activos · Venta / Activo', chip:{t:'↑ +0.025', c:'g'}, rows:D.map(function(d){
+      return {k:d.p.slice(-4), v:d.rot, color:d.c, label:d.rot.toFixed(3),
+        tip:[['Rotación',d.rot.toFixed(3)],['Cálculo','ventas / activo total'],
+             ['Lectura','cuántas veces el activo se convierte en venta']]};
+    })},
+    {k:'ROA resultante · ROS × Rotación', chip:{t:'↑ +0.003', c:'g'}, rows:D.map(function(d){
+      return {k:d.p.slice(-4), v:d.roa*10, color:d.c, label:d.roa.toFixed(3),
+        tip:[['ROA',d.roa.toFixed(3)],
+             ['Comprobación',d.ros.toFixed(3)+' × '+d.rot.toFixed(3)+' = '+(d.ros*d.rot).toFixed(4)],
+             ['Objetivo','0.015']]};
+    })}
+  ], 0.25);
+  var lg = V.el('div','legend');
+  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
+               + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
+  document.getElementById('dupont').appendChild(lg);
+  document.getElementById('dupontF').textContent =
+    'El retorno mejora por las dos vías a la vez, margen y rotación, pero 0.010 sigue por debajo '
+    + 'del objetivo de 0.015. La escala del ROA está amplificada 10x para que la barra se vea; '
+    + 'el número es el real.';
+})();
+
+/* ---------- SECCION 2 · metodo ---------- */
+(function(){
+  var host = document.getElementById('metodo');
+  RATIOS.forEach(function(r){
+    var box = V.el('div','grp');
+    var head = V.el('div','grp-k');
+    head.appendChild(V.el('span',null,r.k));
+    head.appendChild(V.el('span','chip '+(r.ok?'g':'b'), r.v.toFixed(r.dec)+r.unit));
+    box.appendChild(head);
+    var t = V.el('div','card-s');
+    t.style.margin = '4px 0 0';
+    t.innerHTML = r.num + '<br>÷ ' + r.den;
+    box.appendChild(t);
+    host.appendChild(box);
+  });
+})();
+
+/* ---------- SECCION 3 · desvio contra objetivo ----------
+   Es polaridad respecto al objetivo, asi que va divergente. El lado no dice
+   si es bueno: la regla del ratio lo dice, y va en la etiqueta y el color. */
+(function(){
+  V.tornado(document.getElementById('dev'), {
+    items: RATIOS.slice().sort(function(a,b){ return b.devP - a.devP; }).map(function(r){
+      return {name:r.k + (r.lower ? '  (menor es mejor)' : '  (mayor es mejor)'), v:r.devP,
+        tip:[['Valor',r.v.toFixed(r.dec)+r.unit],['Objetivo',r.obj.toFixed(r.dec)+r.unit],
+             ['Desvío',V.spp(r.dev,r.dec)],['Desvío %',V.spp(r.devP)+' %'],
+             ['Regla',r.lower?'menor es mejor':'mayor es mejor'],
+             ['Estado',r.ok?'cumple':'no cumple']]};
+    }),
+    lo:-60, hi:70, ticks:[-60,-40,-20,0,20,40,60],
+    unit:'%', axisLabel:'desvío respecto al objetivo, en porcentaje'
+  });
+  /* el color del brazo lo pinta tornado por signo; aqui se repinta por
+     cumplimiento, que es lo que importa en esta vista */
+  var rows = document.getElementById('dev').querySelectorAll('.tor-row');
+  var sorted = RATIOS.slice().sort(function(a,b){ return b.devP - a.devP; });
+  for(var i=0;i<sorted.length;i++){
+    var bar = rows[i].querySelector('.bar');
+    if(bar) bar.style.background = sorted[i].ok ? 'var(--good)' : 'var(--crit)';
+    var chip = V.el('span','chip '+(sorted[i].ok?'g':'b'), sorted[i].ok?'✓ cumple':'! no cumple');
+    chip.style.marginLeft = '10px';
+    rows[i].querySelector('.tor-val').appendChild(chip);
+  }
+})();
+
+/* ---------- SECCION 4 · tabla ---------- */
+(function(){
+  var tb = document.querySelector('#tbl tbody');
+  RATIOS.forEach(function(r){
+    var tr = V.el('tr','lvl0');
+    tr.appendChild(V.el('td','name',r.k));
+    var d = V.el('td','dim'); d.style.textAlign='left'; d.style.whiteSpace='normal';
+    d.textContent = r.def; tr.appendChild(d);
+    tr.appendChild(V.el('td','num',r.v.toFixed(r.dec)+r.unit));
+    tr.appendChild(V.el('td','num dim',r.obj.toFixed(r.dec)+r.unit));
+    tr.appendChild(V.el('td','num dim',V.spp(r.dev,r.dec)));
+    tr.appendChild(V.el('td','num dim',V.spp(r.devP)+' %'));
+    var rg = V.el('td','muted'); rg.style.textAlign='left';
+    rg.textContent = r.lower ? 'menor es mejor' : 'mayor es mejor';
+    tr.appendChild(rg);
+    var st = V.el('td');
+    st.appendChild(V.el('span','chip '+(r.ok?'g':'b'), r.ok?'✓ CUMPLE':'! NO CUMPLE'));
+    tr.appendChild(st);
+    V.bindTip(tr, r.k, [
+      ['Numerador', r.num], ['Denominador', r.den],
+      ['Valor', r.v.toFixed(r.dec)+r.unit], ['Objetivo', r.obj.toFixed(r.dec)+r.unit],
+      ['Desvío', V.spp(r.dev,r.dec)+'  ('+V.spp(r.devP)+' %)'],
+      ['Regla', r.lower?'menor es mejor':'mayor es mejor'],
+      ['Estado', r.ok?'cumple':'no cumple']
+    ]);
+    tb.appendChild(tr);
+  });
+})();
+
+V.themeBtn();
+</script>
+</body>
+</html>
