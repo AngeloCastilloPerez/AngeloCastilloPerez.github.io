@@ -4,6 +4,11 @@
 # Servidor local de preview
 .preview-server.ps1
 
+# Capturas del reporte productivo del cliente: cifras reales de gestion.
+# El repo es publico y sirve GitHub Pages, asi que no salen de local.
+# Las vistas del caso se publican reconstruidas con datos de demostracion.
+casos/_capturas-originales/
+
 # Sistema
 Thumbs.db
 .DS_Store
