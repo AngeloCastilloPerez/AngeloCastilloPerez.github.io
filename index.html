@@ -244,12 +244,13 @@ button{font:inherit}
   border-top:2px solid #FF8C42;border-right:2px solid #FF8C42}
 .coords{display:flex;align-items:center;gap:14px;flex:none;padding-top:10px}
 .coords span{font-size:10.5px;letter-spacing:.08em;color:#FF8C42}
-.exp-sub{font-size:13px;line-height:1.8;color:rgba(255,255,255,.46);margin:18px 0 34px;max-width:52ch}
 
 /* padding-left 66 = 44 del nodo + 6 del translateX de las etapas inactivas +
    14 del halo pulsante, si no el overflow:hidden se los come. El rail va por
    el centro del nodo: 66-44+11.5 = 33.5 */
-.timeline{position:relative;padding-left:66px;max-height:52vh;overflow:hidden;
+/* el margin-top lo heredamos de .exp-sub cuando existia: sin el, la primera
+   etapa nacia pegada al h2 */
+.timeline{position:relative;margin-top:26px;padding-left:66px;max-height:52vh;overflow:hidden;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 46px,#000 88%,transparent);
           mask-image:linear-gradient(180deg,transparent 0,#000 46px,#000 88%,transparent)}
 .timeline::before{content:"";position:absolute;left:33px;top:0;bottom:0;width:1px;z-index:1;
@@ -558,7 +559,6 @@ button{font:inherit}
             <span>// 8.1116&deg; S, 79.0288&deg; W</span>
           </div>
         </div>
-        <p class="exp-sub mono" data-t="expSub"></p>
         <div class="timeline"><div class="timeline-inner" id="timeline"></div></div>
       </div>
 
@@ -694,7 +694,10 @@ var PROJECTS = [
    notes:{es:'Pipeline ETL financiero on-premise en Jenkins, sin escalabilidad ni gobernanza en la nube, migrado a Azure con ADF, Databricks PySpark y ADLS Gen2 en arquitectura Medallion para 4 dominios financieros.',en:'On-prem Jenkins financial ETL pipeline, lacking cloud scalability and governance, migrated to Azure with ADF, Databricks PySpark and ADLS Gen2 in a Medallion architecture across 4 financial domains.'},
    impact:{es:'ETL automatizado SAP + SharePoint → Landing → Staging → Curated, con consumo directo en Power BI.',en:'Automated ETL SAP + SharePoint → Landing → Staging → Curated, consumed directly in Power BI.'}},
 
+  /* el reporte vive en el tenant del cliente: no hay demo publica, asi que
+     caseUrl manda al caso de estudio en vez de a hero.com.pe */
   {id:'03', name:'Agrovet BI', cat:'data', img:'agrovet-bi', year:'2025', url:HERO_URL,
+   caseUrl:'casos/agrovet-bi.html',
    es:'Analítica financiera y de negocio: arquitectura Medallion en Microsoft Fabric conectada a SAP.',
    en:'Financial & business analytics: Medallion architecture on Microsoft Fabric connected to SAP.',
    stack:'Microsoft Fabric · SAP · Power BI',
@@ -892,10 +895,10 @@ var T = {
   es:{role:'Fundador & CEO de HERO', all:'Todos', talk:'Hablemos', view:'Ver proyectos', projects:'Proyectos',
       shelfHint:'PASA EL CURSOR SOBRE UNA PORTADA · CLIC PARA ABRIR',
       clientsLabel:'Soluciones entregadas para',
-      expEyebrow:'[ EXPERIENCIA / SIMBIOSIS ]', expTitle:'De analista a fundador', symbiosis:'Simbiosis',
-      expSub:'Cinco años transformando datos en decisiones. Scrollea: cada etapa suma una capa más de autónomo.',
+      expEyebrow:'[ EXPERIENCIA ]', expTitle:'De analista a fundador', symbiosis:'Simbiosis',
       stYears:'Años', stProjects:'Proyectos',
       back:'Volver al catálogo', stackL:'Stack principal', demo:'Ver proyecto', tracklist:'Tracklist',
+      viewCase:'Ver el caso', caseLink:'Caso de estudio',
       liner:'Liner notes', impactL:'Resultado', credits:'Créditos', coverArt:'Cover art',
       devRole:'Desarrollador & Arquitecto', availOn:'Disponible en', repo:'Enlace', lastUpd:'Última actualización',
       contactEyebrow:'[ CONTACTO ]', contactH:'¿Construimos algo juntos?',
@@ -904,10 +907,10 @@ var T = {
   en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
       shelfHint:'HOVER A COVER · CLICK TO OPEN',
       clientsLabel:'Solutions delivered for',
-      expEyebrow:'[ EXPERIENCE / SYMBIOSIS ]', expTitle:'From analyst to founder', symbiosis:'Symbiosis',
-      expSub:'Five years turning data into decisions. Scroll: each stage adds one more layer of autonomous.',
+      expEyebrow:'[ EXPERIENCE ]', expTitle:'From analyst to founder', symbiosis:'Symbiosis',
       stYears:'Years', stProjects:'Projects',
       back:'Back to catalog', stackL:'Main stack', demo:'View project', tracklist:'Tracklist',
+      viewCase:'View case study', caseLink:'Case study',
       liner:'Liner notes', impactL:'Outcome', credits:'Credits', coverArt:'Cover art',
       devRole:'Developer & Architect', availOn:'Available on', repo:'Link', lastUpd:'Last update',
       contactEyebrow:'[ CONTACT ]', contactH:'Shall we build something together?',
@@ -1091,10 +1094,13 @@ function fillModal(){
   $('mStatus').innerHTML = '<span class="dot-live"></span>'+p.status[L];
   $('mUpd').textContent = p.updated[L];
   $('mNotes').textContent = p.notes[L];
-  $('mDemo').href = p.url;
-  $('mExt').href = p.url;
-  $('mRepo').href = p.url;
-  $('mRepo').textContent = p.url.replace(/^https?:\/\//,'').replace(/\/$/,'');
+  /* si el proyecto no tiene demo publica, los tres enlaces van al caso de
+     estudio; el pie muestra "caso de estudio" en vez de un dominio */
+  var link = p.caseUrl ? (p.caseUrl + (L==='en' ? '?lang=en' : '')) : p.url;
+  $('mDemo').href = link;
+  $('mExt').href = link;
+  $('mRepo').href = link;
+  $('mRepo').textContent = p.caseUrl ? t.caseLink : p.url.replace(/^https?:\/\//,'').replace(/\/$/,'');
   $('mSku').textContent = 'AC-'+p.id+'26';
 
   $('mTags').innerHTML = p.tags.map(function(g){ return '<span class="tag">'+g+'</span>'; }).join('');
@@ -1111,6 +1117,11 @@ function fillModal(){
   $('mBarcode').innerHTML = bc;
 
   applyStrings();
+
+  /* despues de applyStrings: el boton lleva data-t="demo" y se sobreescribiria
+     solo si lo pusieramos antes */
+  var demoLbl = $('mDemo').querySelector('span');
+  if(demoLbl) demoLbl.textContent = p.caseUrl ? t.viewCase : t.demo;
 }
 
 function openModal(id){

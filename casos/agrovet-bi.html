@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agrovet BI — Caso de estudio · Angelo Castillo</title>
+<meta name="description" content="Caso de estudio: analítica financiera sobre Microsoft Fabric para Agrovet Market. Arquitectura Medallion, integración SAP vía SOAP, modelo semántico y reportes de EERR, balance, ratios y deuda en Power BI.">
+<meta name="author" content="Angelo Castillo">
+<meta name="theme-color" content="#080810">
+<link rel="canonical" href="https://acp.hero.com.pe/casos/agrovet-bi.html">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Angelo Castillo">
+<meta property="og:locale" content="es_PE">
+<meta property="og:url" content="https://acp.hero.com.pe/casos/agrovet-bi.html">
+<meta property="og:title" content="Agrovet BI — Caso de estudio">
+<meta property="og:description" content="Arquitectura Medallion en Microsoft Fabric conectada a SAP: del cierre en Excel a EERR, balance, ratios y deuda sobre un solo modelo semántico.">
+<meta property="og:image" content="https://acp.hero.com.pe/assets/v2/cards/agrovet-bi.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agrovet BI — Caso de estudio">
+<meta name="twitter:description" content="Arquitectura Medallion en Microsoft Fabric conectada a SAP, con EERR, balance, ratios y deuda en Power BI.">
+<meta name="twitter:image" content="https://acp.hero.com.pe/assets/v2/cards/agrovet-bi.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+/* mismos tokens que index.html: #080810 de fondo, Inter + JetBrains Mono,
+   degradado #FF3D5A -> #FF8C42 como unico acento. */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#080810;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden}
+a{color:#FF8C42;text-decoration:none}
+a:hover{color:#FF3D5A}
+h1,h2,h3,p{margin:0}
+button{font:inherit}
+img{max-width:100%;display:block}
+::selection{background:rgba(255,61,90,.35)}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+.wrap{position:relative;max-width:1180px;margin:0 auto;padding:0 34px}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.46)}
+.block-t{font-size:10.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#FF8C42}
+.meta-k{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:7px}
+.meta-v{font-size:13px;color:#fff;line-height:1.5}
+.tag{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.66);
+  border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:6px 12px}
+
+/* ---------- TOPBAR ---------- */
+.topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:16px 34px;background:rgba(8,8,16,.82);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06)}
+.brand{font-size:12px;letter-spacing:.2em;color:rgba(255,255,255,.72)}
+.topnav{display:flex;align-items:center;gap:20px}
+.back-btn{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,255,255,.62)}
+.back-btn:hover{color:#FF8C42}
+.langbox{display:flex;gap:6px;border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:3px;
+  background:rgba(13,13,24,.6)}
+.langbtn{font-size:10.5px;letter-spacing:.14em;padding:5px 12px;border-radius:999px;border:none;cursor:pointer;
+  background:transparent;color:rgba(255,255,255,.46);transition:all .25s ease;font-family:'JetBrains Mono',monospace}
+.langbtn.on{background:#fff;color:#080810}
+
+/* ---------- HEAD DEL CASO ---------- */
+.case-head{position:relative;padding:72px 0 54px;overflow:hidden}
+.case-head::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 900px 520px at 18% 25%,rgba(255,61,90,.13),transparent 70%),
+             radial-gradient(ellipse 720px 480px at 88% 70%,rgba(123,47,255,.10),transparent 70%)}
+.case-head .wrap{z-index:1}
+.case-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:52px;align-items:start}
+.case-head h1{font-weight:300;font-size:clamp(38px,6.4vw,72px);letter-spacing:-.03em;line-height:1;margin:14px 0 18px}
+.case-head h1 i{font-style:normal;background:linear-gradient(135deg,#FF3D5A,#FF8C42);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:14.5px;line-height:1.75;color:rgba(255,255,255,.66);max-width:52ch;margin-bottom:24px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px}
+.factsheet{border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:26px 28px;
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.012))}
+.factsheet .grid{display:grid;grid-template-columns:1fr 1fr;gap:22px 26px}
+.dot-live{display:inline-block;width:6px;height:6px;border-radius:50%;background:#FF8C42;margin-right:8px;vertical-align:2px}
+.notice{margin-top:22px;border-left:2px solid #FF8C42;padding:2px 0 2px 16px}
+.notice b{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+  color:rgba(255,255,255,.42);margin-bottom:6px;font-family:'JetBrains Mono',monospace}
+.notice p{font-size:12.5px;line-height:1.7;color:rgba(255,255,255,.78)}
+
+/* ---------- SECCIONES ---------- */
+section.blk{padding:64px 0;border-top:1px solid rgba(255,255,255,.07)}
+.sec-head{max-width:62ch;margin-bottom:38px}
+.sec-head h2{font-weight:300;font-size:clamp(26px,3.6vw,38px);letter-spacing:-.024em;line-height:1.1;margin:14px 0 16px}
+.sec-head p{font-size:13.5px;line-height:1.8;color:rgba(255,255,255,.6)}
+
+.cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(258px,1fr));gap:18px}
+.card{border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:24px 24px 26px;
+  background:rgba(255,255,255,.02)}
+.card h3{font-size:14px;font-weight:500;letter-spacing:-.01em;margin-bottom:10px}
+.card p{font-size:12.5px;line-height:1.75;color:rgba(255,255,255,.58)}
+.card i{display:block;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;
+  color:#FF8C42;margin-bottom:14px}
+
+/* ---------- FLUJO DE ARQUITECTURA ---------- */
+/* el flujo se dibuja con grid + flechas en ::after para no depender de ninguna
+   libreria: en movil el auto-fit lo apila y las flechas se apagan. */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:26px;margin-bottom:40px}
+.node{position:relative;border:1px solid rgba(255,255,255,.11);border-radius:12px;padding:18px 16px;
+  background:rgba(255,255,255,.025);text-align:center}
+.node:not(:last-child)::after{content:"\2192";position:absolute;right:-19px;top:50%;transform:translateY(-50%);
+  font-size:14px;color:rgba(255,140,66,.65)}
+.node em{display:block;font-style:normal;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;
+  color:rgba(255,255,255,.35);margin-bottom:9px}
+.node b{display:block;font-size:12.5px;font-weight:500;letter-spacing:.04em}
+.node span{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6;
+  color:rgba(255,255,255,.5);margin-top:8px}
+.node.src{border-color:rgba(255,255,255,.2)}
+.node.out{border-color:rgba(255,140,66,.45);background:linear-gradient(160deg,rgba(255,61,90,.10),rgba(255,140,66,.04))}
+.layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.layer-i{border-left:2px solid rgba(255,140,66,.5);padding-left:16px}
+.layer-i h4{margin:0 0 8px;font-size:12px;font-weight:500;letter-spacing:.06em;
+  font-family:'JetBrains Mono',monospace;color:#fff}
+.layer-i p{font-size:12.5px;line-height:1.75;color:rgba(255,255,255,.56)}
+
+/* ---------- VISTAS / GALERIA ---------- */
+.view{border-top:1px solid rgba(255,255,255,.07);padding-top:38px;margin-top:44px}
+.view:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.view-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:start;margin-bottom:26px}
+.view-n{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;color:#FF8C42;margin-bottom:12px}
+.view-head h3{font-weight:300;font-size:clamp(21px,2.6vw,28px);letter-spacing:-.02em;line-height:1.2}
+.view-head p{font-size:13px;line-height:1.8;color:rgba(255,255,255,.6)}
+.bullets{list-style:none;margin:0;padding:0;display:grid;gap:11px}
+.bullets li{position:relative;padding-left:20px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+  line-height:1.7;color:rgba(255,255,255,.68)}
+.bullets li::before{content:"\25B8";position:absolute;left:0;top:0;color:#FF8C42}
+figure.shot{margin:0;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;
+  background:#0d0d16;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+figure.shot button{display:block;width:100%;padding:0;border:none;background:none;cursor:zoom-in}
+figure.shot img{width:100%}
+figure.shot figcaption{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;
+  color:rgba(255,255,255,.42);padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
+/* la vista reconstruida se embute viva en vez de como captura: el hover, el
+   colapso de la jerarquia y el cambio de tema son parte de lo entregado. */
+figure.shot .live{position:relative;height:760px;background:#080810}
+figure.shot .live iframe{width:100%;height:100%;border:0;display:block}
+figure.shot .cap-row{display:flex;justify-content:space-between;align-items:center;gap:16px;
+  flex-wrap:wrap;padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
+figure.shot .cap-row figcaption{padding:0;border:0}
+figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;white-space:nowrap}
+.pending{margin-top:22px;border:1px dashed rgba(255,255,255,.16);border-radius:12px;padding:16px 18px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7;color:rgba(255,255,255,.42)}
+@media(max-width:700px){ figure.shot .live{height:560px} }
+
+/* ---------- DECISIONES ---------- */
+.dec{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:26px 34px}
+.dec>div{border-top:1px solid rgba(255,255,255,.1);padding-top:16px}
+.dec h4{margin:0 0 9px;font-size:13px;font-weight:500;letter-spacing:-.005em}
+.dec p{font-size:12.5px;line-height:1.75;color:rgba(255,255,255,.56)}
+.dec span{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.18em;
+  color:rgba(255,255,255,.32);margin-bottom:10px}
+
+/* ---------- RESULTADO ---------- */
+.result{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.result>div{border:1px solid rgba(255,140,66,.28);border-radius:12px;padding:24px;
+  background:linear-gradient(160deg,rgba(255,61,90,.09),rgba(255,140,66,.02))}
+.result b{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:#FF8C42;font-weight:500;margin-bottom:12px}
+.result p{font-size:13px;line-height:1.75;color:rgba(255,255,255,.8)}
+
+/* ---------- CIERRE ---------- */
+.foot{padding:72px 0 56px;border-top:1px solid rgba(255,255,255,.07);text-align:center}
+.foot h2{font-weight:300;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.024em;margin-bottom:14px}
+.foot p{font-size:13px;line-height:1.7;color:rgba(255,255,255,.55);margin-bottom:28px}
+.cta{display:inline-flex;align-items:center;gap:14px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.cta i{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,#FF3D5A,#FF8C42);color:#fff;font-size:18px;font-style:normal;
+  box-shadow:0 8px 26px rgba(255,61,90,.4)}
+.cta:hover{color:#FF8C42}
+.foot-back{display:block;margin-top:34px;font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.foot-back:hover{color:#FF8C42}
+.copyright{margin-top:40px;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;
+  color:rgba(255,255,255,.28)}
+.disclaimer{margin-top:26px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.8;
+  color:rgba(255,255,255,.34);max-width:74ch}
+
+/* ---------- LIGHTBOX ---------- */
+.lb{position:fixed;inset:0;z-index:90;display:none;background:rgba(4,4,9,.94);padding:28px;
+  align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb img{max-width:100%;max-height:90vh;object-fit:contain;border-radius:8px;
+  border:1px solid rgba(255,255,255,.12)}
+.lb-x{position:absolute;top:20px;right:24px;width:40px;height:40px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);background:none;color:#fff;font-size:18px;cursor:pointer}
+.lb-x:hover{border-color:#FF8C42;color:#FF8C42}
+
+@media(max-width:900px){
+  .case-grid,.view-head{grid-template-columns:1fr;gap:32px}
+  .flow{grid-template-columns:1fr;gap:12px}
+  .node:not(:last-child)::after{content:"\2193";right:auto;left:50%;top:auto;bottom:-13px;transform:translateX(-50%)}
+  .wrap{padding:0 22px}
+  .topbar{padding:14px 22px}
+  .case-head{padding:48px 0 40px}
+  section.blk{padding:48px 0}
+}
+@media(max-width:560px){
+  .factsheet .grid{grid-template-columns:1fr}
+  .topnav{gap:12px}
+  .back-btn span:last-child{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand mono">[ AC ]</div>
+  <nav class="topnav">
+    <a class="back-btn mono" href="../index.html#proyectos"><span style="font-size:14px">&larr;</span><span data-t="back"></span></a>
+    <div class="langbox">
+      <button class="langbtn mono on" data-lang="es">ES</button>
+      <button class="langbtn mono" data-lang="en">EN</button>
+    </div>
+  </nav>
+</div>
+
+<!-- ============ HEAD DEL CASO ============ -->
+<header class="case-head">
+  <div class="wrap">
+    <div class="case-grid">
+      <div>
+        <div class="eyebrow mono" data-t="eyebrow"></div>
+        <h1>Agrovet <i>BI</i></h1>
+        <p class="lead mono" data-t="lead"></p>
+        <div class="tags mono">
+          <span class="tag">Microsoft Fabric</span>
+          <span class="tag">SAP</span>
+          <span class="tag">PySpark</span>
+          <span class="tag">Power BI</span>
+          <span class="tag">DAX</span>
+        </div>
+      </div>
+
+      <div class="factsheet">
+        <div class="grid mono">
+          <div><div class="meta-k" data-t="kClient"></div><div class="meta-v" data-t="vClient"></div></div>
+          <div><div class="meta-k" data-t="kSector"></div><div class="meta-v" data-t="vSector"></div></div>
+          <div><div class="meta-k" data-t="kRole"></div><div class="meta-v" data-t="vRole"></div></div>
+          <div><div class="meta-k" data-t="kYear"></div><div class="meta-v">2025</div></div>
+          <div><div class="meta-k" data-t="kStatus"></div><div class="meta-v"><span class="dot-live"></span><span data-t="vStatus"></span></div></div>
+          <div><div class="meta-k" data-t="kScope"></div><div class="meta-v" data-t="vScope"></div></div>
+        </div>
+        <div class="notice">
+          <b data-t="noticeK"></b>
+          <p data-t="noticeV"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ PUNTO DE PARTIDA ============ -->
+<section class="blk">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="block-t mono" data-t="s1K"></div>
+      <h2 data-t="s1H"></h2>
+      <p data-t="s1P"></p>
+    </div>
+    <div class="cards3">
+      <div class="card"><i>01</i><h3 data-t="p1H"></h3><p data-t="p1P"></p></div>
+      <div class="card"><i>02</i><h3 data-t="p2H"></h3><p data-t="p2P"></p></div>
+      <div class="card"><i>03</i><h3 data-t="p3H"></h3><p data-t="p3P"></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARQUITECTURA ============ -->
+<section class="blk">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="block-t mono" data-t="s2K"></div>
+      <h2 data-t="s2H"></h2>
+      <p data-t="s2P"></p>
+    </div>
+
+    <div class="flow">
+      <div class="node src"><em data-t="n0E"></em><b>SAP</b><span data-t="n0S"></span></div>
+      <div class="node"><em>01</em><b>Landing</b><span data-t="n1S"></span></div>
+      <div class="node"><em>02</em><b>Work</b><span data-t="n2S"></span></div>
+      <div class="node"><em>03</em><b>Work Live</b><span data-t="n3S"></span></div>
+      <div class="node out"><em data-t="n4E"></em><b>Power BI</b><span data-t="n4S"></span></div>
+    </div>
+
+    <div class="layers">
+      <div class="layer-i"><h4>LANDING</h4><p data-t="l1"></p></div>
+      <div class="layer-i"><h4>WORK</h4><p data-t="l2"></p></div>
+      <div class="layer-i"><h4>WORK LIVE</h4><p data-t="l3"></p></div>
+      <div class="layer-i"><h4>SEMANTIC MODEL</h4><p data-t="l4"></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VISTAS ENTREGADAS ============ -->
+<section class="blk">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="block-t mono" data-t="s3K"></div>
+      <h2 data-t="s3H"></h2>
+      <p data-t="s3P"></p>
+    </div>
+
+    <!-- 01 EERR -->
+    <article class="view">
+      <div class="view-head">
+        <div>
+          <div class="view-n" data-t="vn01"></div>
+          <h3 data-t="v1H"></h3>
+        </div>
+        <div>
+          <p data-t="v1P" style="margin-bottom:18px"></p>
+          <ul class="bullets">
+            <li data-t="v1b1"></li><li data-t="v1b2"></li><li data-t="v1b3"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pending" data-t="pending"></div>
+    </article>
+
+    <!-- 02 MAQUILA -->
+    <article class="view">
+      <div class="view-head">
+        <div>
+          <div class="view-n" data-t="vn02"></div>
+          <h3 data-t="v2H"></h3>
+        </div>
+        <div>
+          <p data-t="v2P" style="margin-bottom:18px"></p>
+          <ul class="bullets">
+            <li data-t="v2b1"></li><li data-t="v2b2"></li><li data-t="v2b3"></li>
+          </ul>
+        </div>
+      </div>
+      <figure class="shot">
+        <div class="live">
+          <iframe src="vistas/02-rentabilidad-maquila.html" loading="lazy"
+                  title="Rentabilidad de la línea de maquila — vista interactiva"></iframe>
+        </div>
+        <div class="cap-row">
+          <figcaption class="mono" data-t="v2C"></figcaption>
+          <a href="vistas/02-rentabilidad-maquila.html" target="_blank" rel="noopener" data-t="openView"></a>
+        </div>
+      </figure>
+    </article>
+
+    <!-- 03 BALANCE -->
+    <article class="view">
+      <div class="view-head">
+        <div>
+          <div class="view-n" data-t="vn03"></div>
+          <h3 data-t="v3H"></h3>
+        </div>
+        <div>
+          <p data-t="v3P" style="margin-bottom:18px"></p>
+          <ul class="bullets">
+            <li data-t="v3b1"></li><li data-t="v3b2"></li><li data-t="v3b3"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pending" data-t="pending"></div>
+    </article>
+
+    <!-- 04 RATIOS -->
+    <article class="view">
+      <div class="view-head">
+        <div>
+          <div class="view-n" data-t="vn04"></div>
+          <h3 data-t="v4H"></h3>
+        </div>
+        <div>
+          <p data-t="v4P" style="margin-bottom:18px"></p>
+          <ul class="bullets">
+            <li data-t="v4b1"></li><li data-t="v4b2"></li><li data-t="v4b3"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pending" data-t="pending"></div>
+    </article>
+
+    <!-- 05 DEUDA -->
+    <article class="view">
+      <div class="view-head">
+        <div>
+          <div class="view-n" data-t="vn05"></div>
+          <h3 data-t="v5H"></h3>
+        </div>
+        <div>
+          <p data-t="v5P" style="margin-bottom:18px"></p>
+          <ul class="bullets">
+            <li data-t="v5b1"></li><li data-t="v5b2"></li><li data-t="v5b3"></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pending" data-t="pending"></div>
+    </article>
+
+    <p class="disclaimer" data-t="shotNote"></p>
+  </div>
+</section>
+
+<!-- ============ DECISIONES TECNICAS ============ -->
+<section class="blk">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="block-t mono" data-t="s4K"></div>
+      <h2 data-t="s4H"></h2>
+      <p data-t="s4P"></p>
+    </div>
+    <div class="dec">
+      <div><span class="mono">01</span><h4 data-t="d1H"></h4><p data-t="d1P"></p></div>
+      <div><span class="mono">02</span><h4 data-t="d2H"></h4><p data-t="d2P"></p></div>
+      <div><span class="mono">03</span><h4 data-t="d3H"></h4><p data-t="d3P"></p></div>
+      <div><span class="mono">04</span><h4 data-t="d4H"></h4><p data-t="d4P"></p></div>
+      <div><span class="mono">05</span><h4 data-t="d5H"></h4><p data-t="d5P"></p></div>
+      <div><span class="mono">06</span><h4 data-t="d6H"></h4><p data-t="d6P"></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTADO ============ -->
+<section class="blk">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="block-t mono" data-t="s5K"></div>
+      <h2 data-t="s5H"></h2>
+    </div>
+    <div class="result">
+      <div><b data-t="r1K"></b><p data-t="r1P"></p></div>
+      <div><b data-t="r2K"></b><p data-t="r2P"></p></div>
+      <div><b data-t="r3K"></b><p data-t="r3P"></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CIERRE ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <h2 data-t="fH"></h2>
+    <p class="mono" data-t="fP"></p>
+    <a class="cta" href="mailto:acastillo@hero.com.pe"><i>+</i><span data-t="fCta"></span></a>
+    <a class="foot-back" href="../index.html#proyectos" data-t="fBack"></a>
+    <div class="copyright">&copy; 2026 ANGELO CASTILLO &middot; HERO</div>
+  </div>
+</footer>
+
+<div class="lb" id="lb">
+  <button class="lb-x" id="lbX" aria-label="Cerrar">&times;</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<script>
+/* ============================================================
+   CASO DE ESTUDIO — AGROVET BI
+   Textos ES/EN en un solo diccionario, igual que index.html.
+   applyStrings usa innerHTML porque algunos strings llevan <b>.
+   ============================================================ */
+var T = {
+  es:{
+    back:'Volver al portafolio',
+    eyebrow:'[ CASO DE ESTUDIO / 03 ]',
+    lead:'Analítica financiera y de negocio sobre Microsoft Fabric: SAP como fuente, arquitectura Medallion como columna vertebral y Power BI como capa de decisión.',
+
+    kClient:'Cliente', vClient:'Agrovet Market &middot; Pharmadix',
+    kSector:'Sector', vSector:'Salud animal y farmacéutico',
+    kRole:'Rol', vRole:'Arquitecto de datos y desarrollador BI',
+    kYear:'Año',
+    kStatus:'Estado', vStatus:'En producción',
+    kScope:'Alcance', vScope:'EERR, balance, ratios y deuda',
+    noticeK:'Reporte privado',
+    noticeV:'El informe vive dentro del tenant del cliente, así que no hay demo pública. Esta página documenta la arquitectura, el modelo y las vistas entregadas, con capturas del reporte en producción.',
+
+    s1K:'El punto de partida',
+    s1H:'Todo el cierre financiero vivía en Excel',
+    s1P:'Cada mes significaba exportar de SAP a mano, pegar en plantillas y cuadrar cifras en paralelo. La información llegaba tarde, sin trazabilidad y sin ninguna visibilidad de los KPIs de costos y producción.',
+    p1H:'Cierre manual', p1P:'Exportaciones de SAP consolidadas a mano: días de trabajo para armar un solo estado de resultados.',
+    p2H:'Sin fuente única', p2P:'EERR, balance, ratios y deuda vivían en archivos distintos, con criterios y versiones que no coincidían.',
+    p3H:'Sin comparativo', p3P:'Ningún YTD contra el año anterior ni seguimiento de objetivos: explicar una variación obligaba a rearmarla desde cero.',
+
+    s2K:'Arquitectura',
+    s2H:'Un lakehouse en Fabric, tres capas y un solo contrato',
+    s2P:'SAP entra por servicios SOAP y SharePoint aporta los maestros y presupuestos que el negocio mantiene a mano. Cada capa tiene una responsabilidad y nadie salta capas: el reporte solo conoce la última.',
+    n0E:'Fuentes', n0S:'SOAP<br>+ SharePoint',
+    n1S:'Ingesta cruda', n2S:'PySpark<br>+ modelado', n3S:'Tablas servidas',
+    n4E:'Consumo', n4S:'Modelo semántico<br>DirectQuery',
+    l1:'Ingesta cruda, sin transformar. El dato se guarda tal como llega para poder reprocesar cualquier periodo sin volver a golpear SAP.',
+    l2:'Notebooks PySpark: tipado, limpieza, deduplicado y modelado dimensional &mdash; hechos de movimientos contables contra dimensiones de cuenta, centro, compañía y tiempo.',
+    l3:'Las tablas finales que consume el reporte. Es la única capa que Power BI ve, así que un cambio de lógica aguas arriba no rompe un visual.',
+    l4:'Jerarquía de P&amp;L, medidas DAX de tiempo (MTD, YTD, año anterior, variaciones) y objetivos por ratio como tabla, no como constante en el visual.',
+
+    s3K:'Las vistas entregadas',
+    s3H:'Cinco vistas sobre el mismo modelo',
+    s3P:'EERR, rentabilidad de maquila, balance, ratios y deuda: cada una responde una pregunta distinta, pero todas leen la misma capa y las mismas medidas.',
+
+    vn01:'VISTA 01', vn02:'VISTA 02', vn03:'VISTA 03', vn04:'VISTA 04', vn05:'VISTA 05',
+
+    v1H:'Estado de resultados comparativo',
+    v1P:'El P&amp;L completo en una tabla: importe del periodo, peso sobre ventas, mismo periodo del año anterior y variación absoluta y porcentual. Los segmentadores de mes, periodo (MTD / YTD) y año recalculan todo el bloque.',
+    v1b1:'Ventas netas abiertas por línea de negocio: maquila y análisis.',
+    v1b2:'Barras dentro de la celda para leer la magnitud sin buscar el número.',
+    v1b3:'De la utilidad bruta a la operativa en la misma jerarquía, sin cambiar de hoja.',
+    v1C:'EERR comparativo &mdash; Power BI sobre el modelo semántico en Fabric',
+
+    v2H:'Rentabilidad de la línea de maquila',
+    v2P:'La misma estructura de costos, pero medida contra las ventas de maquila en lugar del total. Aísla el margen del negocio de maquila y muestra qué componente se lo está comiendo.',
+    v2b1:'Cada costo como porcentaje de ventas maquila, año actual y anterior.',
+    v2b2:'Orden por peso: el problema aparece arriba, no hay que buscarlo.',
+    v2b3:'Utilidad bruta de maquila como cierre de la vista.',
+    v2C:'Costos de maquila &mdash; misma jerarquía, otra base de comparación',
+
+    v3H:'Estado de situación con comparativo',
+    v3P:'Activo, pasivo y patrimonio con la fecha actual contra la anterior en la misma barra. Los botones alternan entre resumen y detalle y filtran por bloque, sin duplicar reportes.',
+    v3b1:'Cuadre automático de activo contra pasivo más patrimonio.',
+    v3b2:'Resumen y detalle sobre el mismo modelo, no dos archivos.',
+    v3b3:'Apertura del patrimonio: capital, resultado del periodo y acumulados.',
+    v3C:'Estado de situación &mdash; comparativo y apertura de patrimonio neto',
+
+    v4H:'Ratios financieros con objetivo',
+    v4P:'Cuatro ratios con su objetivo, su desvío y su semáforo: apalancamiento sobre flujos, ROA, índice de endeudamiento y ROE. Debajo, el análisis DuPont descompone el retorno en margen y rotación contra el mismo mes del año anterior.',
+    v4b1:'Objetivo, desvío absoluto y porcentual calculados en DAX.',
+    v4b2:'Semáforo por ratio: verde si cumple, alerta si no.',
+    v4b3:'DuPont: margen de ventas por rotación de activos, año contra año.',
+    v4C:'Ratios financieros &mdash; objetivos como dato, no como constante',
+
+    v5H:'Variación de deuda y líneas bancarias',
+    v5P:'Toda la deuda por tipo de financiamiento y plazo, con Deuda / EBITDA por año, el horizonte de pago y cuánto queda disponible en cada línea bancaria.',
+    v5b1:'Composición back to back contra préstamos, largo y mediano plazo.',
+    v5b2:'Deuda / EBITDA como serie anual, no como número suelto.',
+    v5b3:'Líneas por banco: usado contra disponible, para decidir con qué se financia el siguiente movimiento.',
+    v5C:'Variación de deuda &mdash; composición, horizonte de pago y disponibilidad',
+
+    openView:'Abrir la vista ↗',
+    pending:'Vista en reconstrucción. El reporte productivo es privado, así que cada vista se rehace con datos de demostración antes de publicarse.',
+    shotNote:'Las vistas publicadas son reconstrucciones con datos de demostración: la estructura, las medidas y la lógica son las del reporte entregado, las cifras no. El informe original vive en el tenant del cliente.',
+
+    s4K:'Decisiones técnicas',
+    s4H:'Lo que sostiene el reporte',
+    s4P:'Un dashboard aguanta mientras aguante lo que hay debajo. Estas son las decisiones que evitan que el modelo se rompa al mes siguiente.',
+    d1H:'SAP vía SOAP, no exportaciones', d1P:'La extracción consume los servicios SOAP del ERP: el mismo dato que ve SAP, sin archivos intermedios ni copiado manual.',
+    d2H:'Landing inmutable', d2P:'Nada se sobreescribe. Cualquier cierre se puede reprocesar y auditar hacia atrás sin depender de una nueva extracción.',
+    d3H:'Una capa de contrato', d3P:'El reporte solo lee Work Live. La lógica puede cambiar aguas arriba sin que se caiga un visual.',
+    d4H:'Medidas, no columnas', d4P:'Comparativos, YTD y variaciones son medidas DAX sobre una dimensión de tiempo: agregar un mes no exige tocar el modelo.',
+    d5H:'DirectQuery donde importa', d5P:'La capa servida se consulta en vivo: finanzas no espera un refresh programado para ver el cierre.',
+    d6H:'Objetivos como dato', d6P:'Los targets de cada ratio viven en tabla. Los ajusta finanzas cuando cambian, no el desarrollador.',
+
+    s5K:'Resultado',
+    s5H:'De días de Excel a un reporte que ya llega cuadrado',
+    r1K:'Una sola verdad', r1P:'EERR, balance, ratios y deuda sobre el mismo modelo y las mismas definiciones.',
+    r2K:'Pipeline automatizado', r2P:'SAP y SharePoint hacia Landing, Work y Work Live, con consumo en DirectQuery al cierre.',
+    r3K:'Contexto siempre presente', r3P:'Comparativo contra año anterior y contra objetivo en todas las vistas, sin rearmar nada.',
+
+    fH:'&iquest;Construimos algo juntos?',
+    fP:'Disponible para proyectos de data, producto y consultoría técnica.',
+    fCta:'Empezar ahora',
+    fBack:'&larr; Volver al portafolio'
+  },
+  en:{
+    back:'Back to portfolio',
+    eyebrow:'[ CASE STUDY / 03 ]',
+    lead:'Financial and business analytics on Microsoft Fabric: SAP as the source, a Medallion architecture as the backbone and Power BI as the decision layer.',
+
+    kClient:'Client', vClient:'Agrovet Market &middot; Pharmadix',
+    kSector:'Industry', vSector:'Animal health &amp; pharmaceutical',
+    kRole:'Role', vRole:'Data architect &amp; BI developer',
+    kYear:'Year',
+    kStatus:'Status', vStatus:'In production',
+    kScope:'Scope', vScope:'P&amp;L, balance sheet, ratios &amp; debt',
+    noticeK:'Private report',
+    noticeV:'The report lives inside the client tenant, so there is no public demo. This page documents the architecture, the model and the delivered views, with screenshots of the production report.',
+
+    s1K:'The starting point',
+    s1H:'The whole financial close lived in Excel',
+    s1P:'Every month meant exporting from SAP by hand, pasting into templates and reconciling figures in parallel. Information arrived late, with no traceability and no visibility into cost and production KPIs.',
+    p1H:'Manual close', p1P:'SAP exports consolidated by hand: days of work to assemble a single income statement.',
+    p2H:'No single source', p2P:'P&amp;L, balance sheet, ratios and debt lived in separate files, with criteria and versions that did not match.',
+    p3H:'No comparison', p3P:'No YTD against last year and no target tracking: explaining a variance meant rebuilding it from scratch.',
+
+    s2K:'Architecture',
+    s2H:'One Fabric lakehouse, three layers, a single contract',
+    s2P:'SAP comes in through SOAP services and SharePoint carries the masters and budgets the business maintains by hand. Each layer owns one responsibility and nobody skips layers: the report only knows the last one.',
+    n0E:'Sources', n0S:'SOAP<br>+ SharePoint',
+    n1S:'Raw ingestion', n2S:'PySpark<br>+ modeling', n3S:'Served tables',
+    n4E:'Consumption', n4S:'Semantic model<br>DirectQuery',
+    l1:'Raw ingestion, untransformed. Data is stored exactly as it arrives so any period can be reprocessed without hitting SAP again.',
+    l2:'PySpark notebooks: typing, cleaning, deduplication and dimensional modeling &mdash; accounting movement facts against account, cost center, company and time dimensions.',
+    l3:'The final tables the report consumes. It is the only layer Power BI sees, so a logic change upstream never breaks a visual.',
+    l4:'P&amp;L hierarchy, DAX time measures (MTD, YTD, prior year, variances) and per-ratio targets stored as a table rather than hardcoded in the visual.',
+
+    s3K:'The delivered views',
+    s3H:'Five views on the same model',
+    s3P:'P&amp;L, tolling profitability, balance sheet, ratios and debt: each answers a different question, but all read the same layer and the same measures.',
+
+    vn01:'VIEW 01', vn02:'VIEW 02', vn03:'VIEW 03', vn04:'VIEW 04', vn05:'VIEW 05',
+
+    v1H:'Comparative income statement',
+    v1P:'The full P&amp;L in one table: current amount, weight over sales, same period last year and both absolute and percentage variance. Month, period (MTD / YTD) and year slicers recalculate the whole block.',
+    v1b1:'Net sales broken down by business line: tolling and analysis.',
+    v1b2:'In-cell bars to read magnitude without hunting for the number.',
+    v1b3:'From gross to operating profit in the same hierarchy, no sheet switching.',
+    v1C:'Comparative P&amp;L &mdash; Power BI over the Fabric semantic model',
+
+    v2H:'Tolling line profitability',
+    v2P:'The same cost structure, but measured against tolling sales instead of the total. It isolates the tolling margin and shows which component is eating it.',
+    v2b1:'Every cost as a share of tolling sales, current and prior year.',
+    v2b2:'Sorted by weight: the problem shows up at the top.',
+    v2b3:'Tolling gross profit closing the view.',
+    v2C:'Tolling costs &mdash; same hierarchy, different comparison base',
+
+    v3H:'Balance sheet with comparison',
+    v3P:'Assets, liabilities and equity with the current date against the previous one on the same bar. Buttons switch between summary and detail and filter by block, without duplicating reports.',
+    v3b1:'Automatic tie-out of assets against liabilities plus equity.',
+    v3b2:'Summary and detail on the same model, not two files.',
+    v3b3:'Equity breakdown: capital, period result and retained earnings.',
+    v3C:'Balance sheet &mdash; comparison and equity breakdown',
+
+    v4H:'Financial ratios against target',
+    v4P:'Four ratios with their target, deviation and status light: leverage over cash flows, ROA, debt ratio and ROE. Below, a DuPont analysis splits return into margin and turnover against the same month last year.',
+    v4b1:'Target, absolute and percentage deviation computed in DAX.',
+    v4b2:'Status light per ratio: green when met, alert when not.',
+    v4b3:'DuPont: return on sales times asset turnover, year over year.',
+    v4C:'Financial ratios &mdash; targets as data, not as constants',
+
+    v5H:'Debt movement and bank lines',
+    v5P:'All debt by financing type and tenor, with Debt / EBITDA per year, the repayment horizon and how much headroom is left on each bank line.',
+    v5b1:'Back to back versus loans, long and medium term.',
+    v5b2:'Debt / EBITDA as a yearly series, not a loose number.',
+    v5b3:'Lines per bank: used versus available, to decide how to fund the next move.',
+    v5C:'Debt movement &mdash; composition, repayment horizon and headroom',
+
+    openView:'Open the view ↗',
+    pending:'View being rebuilt. The production report is private, so each view is reconstructed with demonstration data before it is published.',
+    shotNote:'The published views are reconstructions with demonstration data: the structure, the measures and the logic are those of the delivered report, the figures are not. The original report lives in the client tenant.',
+
+    s4K:'Technical decisions',
+    s4H:'What holds the report up',
+    s4P:'A dashboard lasts as long as what sits underneath it. These are the decisions that keep the model from breaking the following month.',
+    d1H:'SAP over SOAP, not exports', d1P:'Extraction consumes the ERP SOAP services: the same data SAP sees, with no intermediate files or manual copying.',
+    d2H:'Immutable landing', d2P:'Nothing is overwritten. Any close can be reprocessed and audited backwards without a new extraction.',
+    d3H:'One contract layer', d3P:'The report only reads Work Live. Logic can change upstream without a visual falling over.',
+    d4H:'Measures, not columns', d4P:'Comparisons, YTD and variances are DAX measures over a time dimension: adding a month requires no model change.',
+    d5H:'DirectQuery where it matters', d5P:'The served layer is queried live: finance does not wait for a scheduled refresh to see the close.',
+    d6H:'Targets as data', d6P:'Each ratio target lives in a table. Finance adjusts them when they change, not the developer.',
+
+    s5K:'Outcome',
+    s5H:'From days of Excel to a report that arrives already reconciled',
+    r1K:'A single truth', r1P:'P&amp;L, balance sheet, ratios and debt on the same model and the same definitions.',
+    r2K:'Automated pipeline', r2P:'SAP and SharePoint into Landing, Work and Work Live, consumed over DirectQuery at close.',
+    r3K:'Context always there', r3P:'Comparison against prior year and against target in every view, with nothing to rebuild.',
+
+    fH:'Shall we build something together?',
+    fP:'Available for data, product and technical consulting work.',
+    fCta:'Start now',
+    fBack:'&larr; Back to portfolio'
+  }
+};
+
+var lang = 'es';
+
+function applyStrings(){
+  var t = T[lang];
+  document.documentElement.lang = lang;
+  var nodes = document.querySelectorAll('[data-t]');
+  for(var i=0;i<nodes.length;i++){
+    var k = nodes[i].getAttribute('data-t');
+    if(t[k] !== undefined) nodes[i].innerHTML = t[k];
+  }
+  var btns = document.querySelectorAll('.langbtn');
+  for(var j=0;j<btns.length;j++){
+    btns[j].classList.toggle('on', btns[j].getAttribute('data-lang')===lang);
+  }
+}
+
+document.querySelectorAll('.langbtn').forEach(function(b){
+  b.onclick = function(){ lang = b.getAttribute('data-lang'); applyStrings(); };
+});
+
+/* lightbox: cada captura se puede abrir a pantalla completa. Sin alert ni
+   dialog, solo un overlay que se cierra con click fuera o Escape. */
+var lb = document.getElementById('lb'), lbImg = document.getElementById('lbImg');
+document.querySelectorAll('[data-zoom]').forEach(function(b){
+  b.onclick = function(){
+    lbImg.src = b.getAttribute('data-zoom');
+    lbImg.alt = b.querySelector('img') ? b.querySelector('img').alt : '';
+    lb.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+});
+function closeLb(){ lb.classList.remove('open'); document.body.style.overflow=''; lbImg.src=''; }
+document.getElementById('lbX').onclick = closeLb;
+lb.onclick = function(e){ if(e.target === lb) closeLb(); };
+document.addEventListener('keydown', function(e){ if(e.key==='Escape' && lb.classList.contains('open')) closeLb(); });
+
+/* ?lang=en para poder linkear la version en ingles desde el portafolio */
+var qs = new URLSearchParams(location.search);
+if(qs.get('lang') === 'en') lang = 'en';
+applyStrings();
+</script>
+</body>
+</html>
