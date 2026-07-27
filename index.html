@@ -49,6 +49,9 @@ button{font:inherit}
 @keyframes floatY{from{transform:translateY(-9px)}to{transform:translateY(11px)}}
 @keyframes heroPulse{0%,100%{box-shadow:0 0 14px rgba(255,61,90,.45)}50%{box-shadow:0 0 26px rgba(255,61,90,.75)}}
 @keyframes heroBlink{0%,100%{opacity:1}50%{opacity:.25}}
+/* en clase y no en el style del <rect>: asi el bloque de reduced-motion la
+   puede apagar sin pelear con la especificidad de un estilo en linea */
+.blink{animation:heroBlink 2.2s infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ---------- HERO ---------- */
@@ -141,7 +144,7 @@ button{font:inherit}
   justify-content:space-between;gap:20px;flex-wrap:wrap}
 .section-head h2{font-weight:300;font-size:clamp(28px,4vw,38px);letter-spacing:-.025em}
 .section-head .eyebrow{margin-bottom:14px}
-.counter{font-size:11px;color:rgba(255,255,255,.30)}
+.counter{font-size:11px;color:rgba(255,255,255,.46)}
 
 /* ---------- VINYL SHELF ----------
    La seccion mide una pantalla + lo que haya que recorrer en horizontal (el
@@ -195,7 +198,7 @@ button{font:inherit}
   background:rgba(255,255,255,.10);overflow:hidden}
 .shelf-prog i{display:block;height:100%;width:0;border-radius:2px;
   background:linear-gradient(90deg,#FF3D5A,#FF8C42)}
-.shelf-hint{text-align:center;margin-top:18px;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.3)}
+.shelf-hint{text-align:center;margin-top:18px;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.46)}
 /* mismo caso que .section-head: sin width:100% los margenes auto lo encogen */
 .shelf-chips{width:100%;margin:22px auto 0;max-width:660px}
 
@@ -268,7 +271,7 @@ button{font:inherit}
 .gauge-projects .gauge-txt span{font-size:9.5px;letter-spacing:.2em}
 
 .sys-labels{position:absolute;left:0;top:46%;z-index:3;display:flex;flex-direction:column;gap:18px}
-.sys-labels span{font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.30)}
+.sys-labels span{font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.46)}
 .hud-circuit{position:absolute;left:52px;top:44%;z-index:3;opacity:.5}
 
 .symb{margin-top:auto;padding-top:18px}
@@ -350,7 +353,7 @@ button{font:inherit}
 .foot-links{display:flex;justify-content:center;flex-wrap:wrap;gap:22px;margin-top:44px;font-size:11px;letter-spacing:.12em}
 .foot-links a{color:rgba(255,255,255,.5)}
 .foot-links a:hover{color:#FF8C42}
-.copyright{margin-top:44px;font-size:10.5px;letter-spacing:.12em;color:rgba(255,255,255,.30)}
+.copyright{margin-top:44px;font-size:10.5px;letter-spacing:.12em;color:rgba(255,255,255,.46)}
 
 /* ---------- MODAL ---------- */
 .modal{position:fixed;inset:0;z-index:100;background:#0A0A12;overflow-y:auto;overflow-x:hidden;display:none}
@@ -466,7 +469,11 @@ button{font:inherit}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .fcard-inner,.disc{animation:none !important}
+  /* Todo lo que se mueve por su cuenta, sin que el usuario lo pida.
+     Faltaban tres: la cinta de logos —movimiento continuo, el peor caso para
+     sensibilidad vestibular—, el pulso del punto de etapa y el parpadeo del
+     indicador del HUD. */
+  .fcard-inner,.disc,.clients-track,.stage.on .stage-dot i,.blink{animation:none !important}
 }
 </style>
 </head>
@@ -607,7 +614,7 @@ button{font:inherit}
           <div class="coords mono">
             <svg width="70" height="8" viewBox="0 0 70 8" aria-hidden="true">
               <rect x="0" y="3" width="44" height="2" fill="rgba(255,255,255,.18)"/>
-              <rect x="30" y="0" width="8" height="8" fill="#FF8C42" style="animation:heroBlink 2.2s infinite"/>
+              <rect x="30" y="0" width="8" height="8" fill="#FF8C42" class="blink"/>
               <rect x="48" y="3" width="22" height="2" fill="rgba(255,255,255,.10)"/>
             </svg>
             <span>// 8.1116&deg; S, 79.0288&deg; W</span>
