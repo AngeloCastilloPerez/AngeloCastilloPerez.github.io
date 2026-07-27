@@ -18,3 +18,8 @@ casos/_capturas-originales/
 # Sistema
 Thumbs.db
 .DS_Store
+
+# Notas de trabajo: los prompts con los que se reconstruyeron las vistas.
+# Fuera del repo porque GitHub Pages publica todo lo versionado, y esto queda
+# legible en la URL publica. Sigue en local como referencia.
+casos/PROMPTS-vistas.md
