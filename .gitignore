@@ -3,6 +3,10 @@
 # Export de preview de donde salieron los proyectos de cliente
 portfoliopreview.zip
 
+# PNG originales de las portadas (1254px, ~2 MB cada uno). Al repo va el JPG
+# derivado: cards a 900 y hero a 520, que es la convencion del sitio.
+assets/v2/_originales-png/
+
 # Servidor local de preview
 .preview-server.ps1
 

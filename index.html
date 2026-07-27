@@ -139,18 +139,30 @@ button{font:inherit}
 .section-head .eyebrow{margin-bottom:14px}
 .counter{font-size:11px;color:rgba(255,255,255,.30)}
 
-/* ---------- VINYL SHELF ---------- */
-.shelf-scroll{perspective:2200px;perspective-origin:50% 46%;width:100%;overflow-x:auto;overflow-y:hidden;
-  padding:80px 0 30px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;
-  scrollbar-color:rgba(255,255,255,.18) transparent}
-.shelf-scroll::-webkit-scrollbar{height:6px}
-.shelf-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px}
-.shelf{display:flex;justify-content:center;align-items:center;transform-style:preserve-3d;min-width:min-content;padding:0 90px}
-.vinyl{position:relative;flex:0 0 auto;width:196px;height:262px;margin-left:-104px;
+/* ---------- VINYL SHELF ----------
+   La seccion mide una pantalla + lo que haya que recorrer en horizontal (el
+   alto lo pone measureShelf). El scroll vertical traduce la estanteria de
+   izquierda a derecha; al llegar al final, el scroll sigue a la siguiente
+   seccion. En movil y con reduced-motion se cae a scroll horizontal nativo. */
+#proyectos{padding:0}
+/* El sticky ocupa la pantalla, pero el contenido se ancla ABAJO con un padding
+   fijo en vez de centrarse. Centrado dejaba media pantalla vacia debajo al
+   desengancharse; anclado, ese hueco es el padding y se lee como el aire normal
+   entre secciones. Lo que sobra queda arriba, donde ya iba el titulo. */
+.proj-stick{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:64px 38px 84px;overflow:hidden}
+.shelf-scroll{perspective:2200px;perspective-origin:50% 46%;width:100%;overflow:hidden;padding:74px 0 26px}
+/* width:max-content + margin auto: centra cuando la lista es corta y arranca a
+   la izquierda cuando desborda, que es cuando entra el desplazamiento */
+.shelf{display:flex;align-items:center;transform-style:preserve-3d;
+  width:max-content;margin:0 auto;padding:0 90px;will-change:transform}
+.vinyl{position:relative;flex:0 0 auto;width:236px;height:236px;margin-left:-125px;
   transform:rotateY(-42deg);transform-origin:50% 50%;transform-style:preserve-3d;cursor:pointer;
-  transition:transform .55s cubic-bezier(.22,1,.36,1),margin .55s cubic-bezier(.22,1,.36,1),filter .45s ease}
-.vinyl:hover{transform:rotateY(0deg) translateZ(120px) translateY(-16px) scale(1.04);
-  margin-left:-40px;margin-right:64px;filter:none;z-index:99 !important}
+  transition:transform .55s cubic-bezier(.22,1,.36,1),filter .45s ease}
+/* el hover mueve solo transform y no los margenes: tocar el margen cambia el
+   ancho del riel y eso hacia temblar el desplazamiento */
+.vinyl:hover{transform:rotateY(0deg) translateZ(130px) translateY(-14px) scale(1.06);
+  filter:none;z-index:99 !important}
 .vinyl-sleeve{position:absolute;inset:0;border-radius:12px;background-size:cover;background-position:center;
   box-shadow:-22px 26px 46px rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.10);overflow:hidden}
 .vinyl-sleeve::after{content:"";position:absolute;inset:0;
@@ -161,8 +173,25 @@ button{font:inherit}
   color:rgba(255,255,255,.72);white-space:nowrap;opacity:0;transition:opacity .4s ease}
 .vinyl:hover .vinyl-cap{opacity:1}
 .vinyl-cap b{color:#FF8C42;font-weight:500}
-.shelf-hint{text-align:center;margin-top:22px;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.3)}
-.shelf-chips{margin:26px auto 0;max-width:660px}
+/* sustituye a la barra de scroll nativa que se perdio al pasar a overflow:hidden */
+.shelf-prog{width:min(560px,60%);height:2px;margin:2px auto 0;border-radius:2px;
+  background:rgba(255,255,255,.10);overflow:hidden}
+.shelf-prog i{display:block;height:100%;width:0;border-radius:2px;
+  background:linear-gradient(90deg,#FF3D5A,#FF8C42)}
+.shelf-hint{text-align:center;margin-top:18px;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.3)}
+.shelf-chips{margin:22px auto 0;max-width:660px}
+
+@media(max-width:900px),(prefers-reduced-motion:reduce){
+  /* sin secuestro del scroll: la estanteria vuelve a desplazarse a mano */
+  #proyectos{height:auto !important;padding:110px 0 70px}
+  .proj-stick{position:static;min-height:0;padding:0 38px;overflow:visible}
+  .shelf-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
+  .shelf-scroll::-webkit-scrollbar{height:6px}
+  .shelf-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px}
+  .shelf{transform:none !important}
+  .shelf-prog{display:none}
+}
 /* ---------- EXPERIENCIA ---------- */
 #experiencia{position:relative;height:520vh;padding:0}
 .exp-stick{position:sticky;top:0;min-height:100vh;display:flex;align-items:center;padding:40px 32px}
@@ -469,21 +498,24 @@ button{font:inherit}
 </section>
 
 <!-- ============ PROYECTOS ============ -->
-<section class="section" id="proyectos">
-  <div class="section-head">
-    <div>
-      <div class="eyebrow mono" id="gridEyebrow"></div>
-      <h2 data-t="projects"></h2>
+<section id="proyectos">
+  <div class="proj-stick">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow mono" id="gridEyebrow"></div>
+        <h2 data-t="projects"></h2>
+      </div>
+      <div class="counter mono" id="gridCount"></div>
     </div>
-    <div class="counter mono" id="gridCount"></div>
-  </div>
 
-  <div class="shelf-scroll">
-    <div class="shelf" id="shelf"></div>
-  </div>
+    <div class="shelf-scroll" id="shelfVp">
+      <div class="shelf" id="shelf"></div>
+    </div>
+    <div class="shelf-prog" id="shelfProg" aria-hidden="true"><i></i></div>
 
-  <div class="chips shelf-chips mono" id="shelfChips"></div>
-  <div class="shelf-hint mono" data-t="shelfHint"></div>
+    <div class="chips shelf-chips mono" id="shelfChips"></div>
+    <div class="shelf-hint mono" data-t="shelfHint"></div>
+  </div>
 </section>
 
 <!-- ============ EXPERIENCIA ============ -->
@@ -982,7 +1014,7 @@ var STAGES = [
 
 var T = {
   es:{role:'Fundador & CEO de HERO', all:'Todos', talk:'Hablemos', view:'Ver proyectos', projects:'Proyectos',
-      shelfHint:'PASA EL CURSOR SOBRE UNA PORTADA · CLIC PARA ABRIR',
+      shelfHint:'BAJA PARA RECORRER LAS PORTADAS · CLIC PARA ABRIR',
       clientsLabel:'Soluciones entregadas para',
       expEyebrow:'[ EXPERIENCIA ]', expTitle:'De analista a fundador', symbiosis:'Simbiosis',
       stYears:'Años', stProjects:'Proyectos',
@@ -994,7 +1026,7 @@ var T = {
       contactSub:'Disponible para proyectos, producto y consultoría técnica.',
       start:'Empezar ahora', cat:'Categoría', status:'Estado', yearL:'Año'},
   en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
-      shelfHint:'HOVER A COVER · CLICK TO OPEN',
+      shelfHint:'SCROLL DOWN TO BROWSE THE COVERS · CLICK TO OPEN',
       clientsLabel:'Solutions delivered for',
       expEyebrow:'[ EXPERIENCE ]', expTitle:'From analyst to founder', symbiosis:'Symbiosis',
       stYears:'Years', stProjects:'Projects',
@@ -1267,15 +1299,26 @@ function cacheNodes(){
   N.morph = $('morphVideo');
   N.timeline = $('timeline');
   N.stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
+  N.proj = $('proyectos'); N.shelf = $('shelf'); N.shelfVp = $('shelfVp');
+  N.stick = N.proj && N.proj.querySelector('.proj-stick');
+  N.shelfProg = $('shelfProg') && $('shelfProg').firstElementChild;
+}
+
+/* la misma condicion que el media query: en movil y con reduced-motion el
+   desplazamiento es nativo y el JS no toca nada */
+function shelfNative(){
+  return window.matchMedia('(max-width:900px)').matches
+      || window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 }
 
 /* --- medidas de layout -----------------------------------------------
    scrollHeight/clientHeight/offsetTop no cambian al hacer scroll, pero
    leerlos dentro del handler forzaba un reflow sincrono por evento.
    Se miden una vez por render y por resize.                             */
-var M = {stageTop:[], over:0, trackH:0};
+var M = {stageTop:[], over:0, trackH:0, shelfOver:0};
 
 function measure(){
+  measureShelf();
   if(!N.timeline) return;
   var wrap = N.timeline.parentNode;
   M.trackH = wrap.clientHeight;
@@ -1283,11 +1326,57 @@ function measure(){
   M.stageTop = N.stages.map(function(s){ return s.offsetTop; });
 }
 
+/* El alto de la seccion se calcula: una pantalla para verla quieta, mas
+   exactamente lo que la estanteria tiene que recorrer en horizontal. Asi un
+   pixel de scroll vertical equivale a uno horizontal y el paso se siente 1:1.
+   Se remide en cada render, porque filtrar por categoria cambia el ancho. */
+function measureShelf(){
+  if(!N.proj || !N.shelf || !N.shelfVp || !N.stick) return;
+  if(shelfNative()){
+    M.shelfOver = 0;
+    N.proj.style.height = '';
+    N.shelf.style.transform = '';
+    last.shelfX = null;
+    return;
+  }
+  M.shelfOver = Math.max(0, N.shelf.scrollWidth - N.shelfVp.clientWidth);
+  /* Una pantalla mas el recorrido horizontal. Tiene que ser una pantalla
+     completa: con menos, el rango de scroll de la seccion queda por debajo de lo
+     que la estanteria necesita recorrer y termina cuando la siguiente seccion ya
+     entro en pantalla. El aire final lo controla el padding del sticky. */
+  N.proj.style.height = M.shelfOver > 0
+    ? (window.innerHeight + M.shelfOver) + 'px'
+    : '';
+  /* si al filtrar la lista deja de desbordar, hay que devolver el riel a cero:
+     si no se queda con el desplazamiento del filtro anterior */
+  if(M.shelfOver === 0){
+    N.shelf.style.transform = '';
+    if(N.shelfProg) N.shelfProg.style.width = '0';
+    last.shelfX = null; last.shelfW = null;
+  }
+}
+
 /* ultimos valores escritos: si no cambian, no se toca el DOM */
-var last = {pct:-1, tlShift:null, stageOn:[]};
+var last = {pct:-1, tlShift:null, stageOn:[], shelfX:null, shelfW:null};
 
 function updateScroll(){
   var wh = window.innerHeight;
+
+  /* ---- PROYECTOS: el scroll vertical recorre la estanteria ---- */
+  if(N.proj && N.shelf && M.shelfOver > 0){
+    var pr = N.proj.getBoundingClientRect();
+    /* el progreso se mide contra el recorrido horizontal, no contra el alto
+       total de la seccion: el tramo final es el que despega el bloque, y ahi la
+       estanteria ya tiene que estar al final */
+    var pp = Math.max(0, Math.min(1, (-pr.top)/M.shelfOver));
+    /* un decimal: redondear a entero cuantiza el movimiento y se nota */
+    var tx = 'translate3d(-'+(pp*M.shelfOver).toFixed(1)+'px,0,0)';
+    if(tx !== last.shelfX){ N.shelf.style.transform = tx; last.shelfX = tx; }
+    if(N.shelfProg){
+      var w = (pp*100).toFixed(2)+'%';
+      if(w !== last.shelfW){ N.shelfProg.style.width = w; last.shelfW = w; }
+    }
+  }
 
   /* ---- HERO ---- */
   if(N.track && N.v){
@@ -1425,6 +1514,7 @@ function frame(){
 function refresh(){
   cacheNodes(); measure();
   last.pct = -1; last.tlShift = null; last.stageOn = [];
+  last.shelfX = null; last.shelfW = null;
   requestTick();
 }
 
