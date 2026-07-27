@@ -145,8 +145,12 @@ button{font:inherit}
    izquierda a derecha; al llegar al final, el scroll sigue a la siguiente
    seccion. En movil y con reduced-motion se cae a scroll horizontal nativo. */
 #proyectos{padding:0}
-.proj-stick{position:sticky;top:0;min-height:100vh;display:flex;flex-direction:column;
-  justify-content:center;padding:70px 38px 46px;overflow:hidden}
+/* El sticky ocupa la pantalla, pero el contenido se ancla ABAJO con un padding
+   fijo en vez de centrarse. Centrado dejaba media pantalla vacia debajo al
+   desengancharse; anclado, ese hueco es el padding y se lee como el aire normal
+   entre secciones. Lo que sobra queda arriba, donde ya iba el titulo. */
+.proj-stick{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:64px 38px 84px;overflow:hidden}
 .shelf-scroll{perspective:2200px;perspective-origin:50% 46%;width:100%;overflow:hidden;padding:74px 0 26px}
 /* width:max-content + margin auto: centra cuando la lista es corta y arranca a
    la izquierda cuando desborda, que es cuando entra el desplazamiento */
@@ -1296,6 +1300,7 @@ function cacheNodes(){
   N.timeline = $('timeline');
   N.stages = Array.prototype.slice.call(document.querySelectorAll('.stage'));
   N.proj = $('proyectos'); N.shelf = $('shelf'); N.shelfVp = $('shelfVp');
+  N.stick = N.proj && N.proj.querySelector('.proj-stick');
   N.shelfProg = $('shelfProg') && $('shelfProg').firstElementChild;
 }
 
@@ -1326,7 +1331,7 @@ function measure(){
    pixel de scroll vertical equivale a uno horizontal y el paso se siente 1:1.
    Se remide en cada render, porque filtrar por categoria cambia el ancho. */
 function measureShelf(){
-  if(!N.proj || !N.shelf || !N.shelfVp) return;
+  if(!N.proj || !N.shelf || !N.shelfVp || !N.stick) return;
   if(shelfNative()){
     M.shelfOver = 0;
     N.proj.style.height = '';
@@ -1335,6 +1340,10 @@ function measureShelf(){
     return;
   }
   M.shelfOver = Math.max(0, N.shelf.scrollWidth - N.shelfVp.clientWidth);
+  /* Una pantalla mas el recorrido horizontal. Tiene que ser una pantalla
+     completa: con menos, el rango de scroll de la seccion queda por debajo de lo
+     que la estanteria necesita recorrer y termina cuando la siguiente seccion ya
+     entro en pantalla. El aire final lo controla el padding del sticky. */
   N.proj.style.height = M.shelfOver > 0
     ? (window.innerHeight + M.shelfOver) + 'px'
     : '';
@@ -1356,8 +1365,10 @@ function updateScroll(){
   /* ---- PROYECTOS: el scroll vertical recorre la estanteria ---- */
   if(N.proj && N.shelf && M.shelfOver > 0){
     var pr = N.proj.getBoundingClientRect();
-    var ptot = pr.height - wh;
-    var pp = ptot > 0 ? Math.max(0, Math.min(1, (-pr.top)/ptot)) : 0;
+    /* el progreso se mide contra el recorrido horizontal, no contra el alto
+       total de la seccion: el tramo final es el que despega el bloque, y ahi la
+       estanteria ya tiene que estar al final */
+    var pp = Math.max(0, Math.min(1, (-pr.top)/M.shelfOver));
     /* un decimal: redondear a entero cuantiza el movimiento y se nota */
     var tx = 'translate3d(-'+(pp*M.shelfOver).toFixed(1)+'px,0,0)';
     if(tx !== last.shelfX){ N.shelf.style.transform = tx; last.shelfX = tx; }
