@@ -145,18 +145,26 @@ button{font:inherit}
    izquierda a derecha; al llegar al final, el scroll sigue a la siguiente
    seccion. En movil y con reduced-motion se cae a scroll horizontal nativo. */
 #proyectos{padding:0}
-/* El sticky ocupa la pantalla, pero el contenido se ancla ABAJO con un padding
-   fijo en vez de centrarse. Centrado dejaba media pantalla vacia debajo al
-   desengancharse; anclado, ese hueco es el padding y se lee como el aire normal
-   entre secciones. Lo que sobra queda arriba, donde ya iba el titulo. */
+/* El sticky ocupa la pantalla y el sobrante NO se acumula en un extremo: lo
+   absorbe la estanteria con flex:1, que centra las portadas en el espacio que
+   quede. Asi el titulo queda arriba, los filtros abajo y no hay zona muerta ni
+   antes ni despues, con cualquier alto de ventana. Centrar el bloque dejaba el
+   hueco abajo; anclarlo abajo lo movia arriba. */
 .proj-stick{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
-  justify-content:flex-end;padding:64px 38px 84px;overflow:hidden}
-.shelf-scroll{perspective:2200px;perspective-origin:50% 46%;width:100%;overflow:hidden;padding:74px 0 26px}
+  padding:52px 38px 40px;overflow:hidden}
+.shelf-scroll{flex:1 1 auto;display:flex;align-items:center;
+  perspective:2200px;perspective-origin:50% 46%;width:100%;overflow:hidden}
 /* width:max-content + margin auto: centra cuando la lista es corta y arranca a
    la izquierda cuando desborda, que es cuando entra el desplazamiento */
-.shelf{display:flex;align-items:center;transform-style:preserve-3d;
+/* La portada se escala con el alto de la ventana en vez de ser fija: asi llena
+   el espacio que le deja el flex:1 en pantallas altas, en vez de dejar aire, y
+   el arte se lee. El solape se calcula sobre la misma variable para que la
+   baraja mantenga su proporcion en cualquier medida. */
+.shelf{--vw:clamp(240px,38vh,360px);
+  display:flex;align-items:center;transform-style:preserve-3d;
   width:max-content;margin:0 auto;padding:0 90px;will-change:transform}
-.vinyl{position:relative;flex:0 0 auto;width:236px;height:236px;margin-left:-125px;
+.vinyl{position:relative;flex:0 0 auto;width:var(--vw);height:var(--vw);
+  margin-left:calc(var(--vw) * -0.53);
   transform:rotateY(-42deg);transform-origin:50% 50%;transform-style:preserve-3d;cursor:pointer;
   transition:transform .55s cubic-bezier(.22,1,.36,1),filter .45s ease}
 /* el hover mueve solo transform y no los margenes: tocar el margen cambia el
@@ -184,8 +192,10 @@ button{font:inherit}
 @media(max-width:900px),(prefers-reduced-motion:reduce){
   /* sin secuestro del scroll: la estanteria vuelve a desplazarse a mano */
   #proyectos{height:auto !important;padding:110px 0 70px}
-  .proj-stick{position:static;min-height:0;padding:0 38px;overflow:visible}
-  .shelf-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
+  .proj-stick{position:static;height:auto;display:block;padding:0 38px;overflow:visible}
+  /* sin flex:1 aqui: el contenedor ya no tiene un alto que repartir */
+  .shelf-scroll{display:block;flex:none;padding:64px 0 24px;
+    overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
     scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
   .shelf-scroll::-webkit-scrollbar{height:6px}
   .shelf-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px}
