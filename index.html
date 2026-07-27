@@ -556,7 +556,9 @@ button{font:inherit}
         <!-- el morfismo humano->androide ya viene animado en el video; el scroll
              solo lo scrubea (ver morphTime en la seccion de SCROLL) -->
         <div class="morph-stage">
-          <video id="morphVideo" src="assets/v2/morph.mp4" muted playsinline preload="auto" aria-hidden="true"></video>
+          <!-- preload="none": pesa 2.8 MB y vive bajo el pliegue. Lo despierta
+               despertarMorph() cuando la seccion se acerca. -->
+          <video id="morphVideo" src="assets/v2/morph.mp4" muted playsinline preload="none" aria-hidden="true"></video>
 
           <div class="gauge gauge-years">
             <svg viewBox="0 0 150 150" aria-hidden="true">
@@ -1147,6 +1149,57 @@ function renderFloating(){
   });
 }
 
+/* ============================================================
+   CARGA DIFERIDA
+   Medido sobre la portada: de los ~10 MB iniciales, 2.9 MB son las portadas del
+   estante y 2.8 MB el video del morfismo, y ninguna de las dos secciones esta
+   visible al cargar. Se piden cuando el usuario se acerca.
+   El video del hero NO se difiere: se ve de entrada.
+   ============================================================ */
+var estanteRevelado = false;
+
+function pintarPortadas(){
+  var n = document.querySelectorAll('#shelf .vinyl-sleeve[data-bg]');
+  for(var i=0;i<n.length;i++){
+    var u = n[i].getAttribute('data-bg');
+    if(u && !n[i].style.backgroundImage) n[i].style.backgroundImage = "url('"+u+"')";
+  }
+}
+
+function revelarEstante(){
+  if(estanteRevelado) return;
+  estanteRevelado = true;
+  pintarPortadas();
+}
+
+function despertarMorph(){
+  var v = $('morphVideo');
+  if(!v || v.dataset.despierto) return;
+  v.dataset.despierto = '1';
+  /* el scrub escribe currentTime; hay que tener el video listo ANTES de que la
+     seccion entre, no cuando ya se esta scrolleando dentro */
+  v.preload = 'auto';
+  v.load();
+}
+
+function cargaDiferida(){
+  var proj = $('proyectos'), exp = $('experiencia');
+  /* 150% de margen: empieza a pedir cuando falta una pantalla y media, que con
+     el hero de 280vh da tiempo de sobra a que llegue antes de verse */
+  if(!('IntersectionObserver' in window)){
+    revelarEstante(); despertarMorph(); return;
+  }
+  var obs = new IntersectionObserver(function(entradas){
+    entradas.forEach(function(e){
+      if(!e.isIntersecting) return;
+      if(e.target === proj){ revelarEstante(); obs.unobserve(proj); }
+      if(e.target === exp){ despertarMorph(); obs.unobserve(exp); }
+    });
+  }, {rootMargin:'150% 0px'});
+  if(proj) obs.observe(proj);
+  if(exp)  obs.observe(exp);
+}
+
 function renderShelf(){
   var list = filtered(), shelf = $('shelf');
   shelf.innerHTML = '';
@@ -1157,7 +1210,13 @@ function renderShelf(){
     c.setAttribute('role','button');
     c.setAttribute('tabindex','0');
     c.setAttribute('aria-label', p.name);
-    c.innerHTML = '<div class="vinyl-sleeve" style="background-image:url(\''+cardImg(p)+'\')"></div>'
+    /* La portada va en data-bg y no en el style: las 21 pesan 2.9 MB y el
+       estante nace bajo el pliegue, asi que se piden cuando la seccion se
+       acerca (ver revelarEstante). Si ya se revelo — por ejemplo al filtrar por
+       categoria — se pinta de una. */
+    c.innerHTML = '<div class="vinyl-sleeve" data-bg="'+cardImg(p)+'"'
+                +   (estanteRevelado ? ' style="background-image:url(\''+cardImg(p)+'\')"' : '')
+                + '></div>'
                 + '<div class="vinyl-cap mono"><b>'+p.id+'</b> · '+p.name+'</div>';
     c.onclick = function(){ openModal(p.id); };
     c.onkeydown = function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openModal(p.id); } };
@@ -1383,8 +1442,15 @@ function updateScroll(){
   var wh = window.innerHeight;
 
   /* ---- PROYECTOS: el scroll vertical recorre la estanteria ---- */
-  if(N.proj && N.shelf && M.shelfOver > 0){
+  if(N.proj && (!estanteRevelado || (N.shelf && M.shelfOver > 0))){
     var pr = N.proj.getBoundingClientRect();
+    /* La revelacion tambien cuelga de aqui, no solo del IntersectionObserver:
+       las medidas ya estan hechas y asi funciona aunque el observador no
+       entregue callbacks. Se dispara dos pantallas y media antes. */
+    if(!estanteRevelado && pr.top < wh*2.5) revelarEstante();
+  }
+  if(N.proj && N.shelf && M.shelfOver > 0){
+    pr = N.proj.getBoundingClientRect();
     /* el progreso se mide contra el recorrido horizontal, no contra el alto
        total de la seccion: el tramo final es el que despega el bloque, y ahi la
        estanteria ya tiene que estar al final */
@@ -1421,6 +1487,10 @@ function updateScroll(){
   var sp = stotal > 0 ? (-sr.top)/stotal : (sr.top < wh*0.5 ? 1 : 0);
   sp = Math.max(0, Math.min(1, sp));
   expInView = sr.bottom > 0 && sr.top < wh;
+
+  /* el video del morfismo se pide dos pantallas antes: el scrub escribe
+     currentTime y tiene que estar listo cuando la seccion entre */
+  if(sr.top < wh*2) despertarMorph();
 
   /* dos decimales: con toFixed(0) la barra avanzaba en escalones de 1%, que
      sobre 520vh de scroll son saltos visibles */
@@ -1574,6 +1644,8 @@ function paintMouse(){
   window.addEventListener('scroll', requestTick, {passive:true});
   window.addEventListener('resize', function(){ measure(); requestTick(); });
   window.addEventListener('mousemove', onMouseMove, {passive:true});
+
+  cargaDiferida();
 
   /* un play()+pause() inicial deja al decodificador listo para buscar; sin eso
      el primer seek de cada video llega tarde. Aplica a los dos por igual. */

@@ -144,11 +144,17 @@ jobs:
             echo "No hubo cambios que subir." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
+          # OJO con la sangria: estas lineas van dentro del bloque `run: |`, que
+          # esta indentado a 10 espacios. Una linea en columna 0 cierra el
+          # escalar y deja el YAML invalido — GitHub entonces falla el workflow
+          # en CADA push, con un run de 0s y sin logs. Paso 12 veces.
+          # Indentadas a 10, el bloque les quita esos 10 y el cuerpo del mensaje
+          # de commit queda igual, sin sangria.
           git commit -m "perf: videos re-encodeados all-intra para que el scrub sea fluido
 
-Cada frame pasa a ser keyframe (-g 1), asi que un seek ya no tiene que
-decodificar desde el inicio del archivo. Generado por el workflow
-reencode-videos.yml (CRF=$CRF, escala='${ESCALA:-sin cambio}', fps='${FPS:-24}')."
+          Cada frame pasa a ser keyframe (-g 1), asi que un seek ya no tiene que
+          decodificar desde el inicio del archivo. Generado por el workflow
+          reencode-videos.yml (CRF=$CRF, escala='${ESCALA:-sin cambio}', fps='${FPS:-24}')."
           git push -u origin "$rama"
 
           repo_url="${{ github.server_url }}/${{ github.repository }}"
