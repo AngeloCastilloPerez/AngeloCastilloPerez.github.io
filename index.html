@@ -160,13 +160,18 @@ button{font:inherit}
    el espacio que le deja el flex:1 en pantallas altas, en vez de dejar aire, y
    el arte se lee. El solape se calcula sobre la misma variable para que la
    baraja mantenga su proporcion en cualquier medida. */
-.shelf{--vw:clamp(240px,38vh,360px);
+/* --vw es la perilla del tamaño de portada: minimo, proporcion del alto de la
+   ventana, y tope. El tope evita que en pantallas muy altas se vean enormes. */
+.shelf{--vw:clamp(210px,30vh,320px);
   display:flex;align-items:center;transform-style:preserve-3d;
   width:max-content;margin:0 auto;padding:0 90px;will-change:transform}
 .vinyl{position:relative;flex:0 0 auto;width:var(--vw);height:var(--vw);
   margin-left:calc(var(--vw) * -0.53);
   transform:rotateY(-42deg);transform-origin:50% 50%;transform-style:preserve-3d;cursor:pointer;
   transition:transform .55s cubic-bezier(.22,1,.36,1),filter .45s ease}
+/* la primera no lleva solape: el margen negativo la sacaba del contenedor por la
+   izquierda y overflow:hidden le cortaba media portada */
+.vinyl:first-child{margin-left:0}
 /* el hover mueve solo transform y no los margenes: tocar el margen cambia el
    ancho del riel y eso hacia temblar el desplazamiento */
 .vinyl:hover{transform:rotateY(0deg) translateZ(130px) translateY(-14px) scale(1.06);
