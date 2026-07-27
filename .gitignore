@@ -23,3 +23,29 @@ Thumbs.db
 # Fuera del repo porque GitHub Pages publica todo lo versionado, y esto queda
 # legible en la URL publica. Sigue en local como referencia.
 casos/PROMPTS-vistas.md
+
+# ---------------------------------------------------------------------------
+# Legado de la plantilla original. Ningun archivo del sitio actual los
+# referencia, y GitHub Pages publicaba todo: eran ~292 MB de los 308 del repo.
+# Quedan en local por si hace falta rescatar algo; para volver a versionarlos
+# basta revertir el commit de limpieza.
+# ---------------------------------------------------------------------------
+assets/img/portfolio/
+assets/img/posts/
+assets/img/skills/
+assets/img/testimonials/
+assets/vendor/
+assets/js/
+assets/css/
+forms/
+portfolio-data/
+index-legacy.html
+portfolio-details.html
+test_posts.html
+MEDIUM_INTEGRATION.md
+SKILLS_GUIDE.md
+assets/img/angelo.png
+assets/img/hero-logo.png
+assets/img/profile-img.png
+assets/img/hero-bg.gif
+assets/img/Linkedin.png
