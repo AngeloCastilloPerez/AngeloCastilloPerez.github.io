@@ -133,8 +133,12 @@ button{font:inherit}
 
 /* ---------- SECTIONS ---------- */
 .section{position:relative;padding:110px 38px 70px;overflow:hidden}
-.section-head{max-width:1180px;margin:0 auto 20px;display:flex;align-items:baseline;justify-content:space-between;
-  gap:20px;flex-wrap:wrap}
+/* width:100% es necesario: dentro de un contenedor flex en columna (la seccion
+   de proyectos) los margenes auto anulan el estirado, y el bloque se encogia al
+   ancho de su contenido. El contador terminaba pegado al eyebrow en vez de irse
+   al extremo derecho. */
+.section-head{width:100%;max-width:1180px;margin:0 auto 20px;display:flex;align-items:baseline;
+  justify-content:space-between;gap:20px;flex-wrap:wrap}
 .section-head h2{font-weight:300;font-size:clamp(28px,4vw,38px);letter-spacing:-.025em}
 .section-head .eyebrow{margin-bottom:14px}
 .counter{font-size:11px;color:rgba(255,255,255,.30)}
@@ -192,7 +196,8 @@ button{font:inherit}
 .shelf-prog i{display:block;height:100%;width:0;border-radius:2px;
   background:linear-gradient(90deg,#FF3D5A,#FF8C42)}
 .shelf-hint{text-align:center;margin-top:18px;font-size:10.5px;letter-spacing:.14em;color:rgba(255,255,255,.3)}
-.shelf-chips{margin:22px auto 0;max-width:660px}
+/* mismo caso que .section-head: sin width:100% los margenes auto lo encogen */
+.shelf-chips{width:100%;margin:22px auto 0;max-width:660px}
 
 @media(max-width:900px),(prefers-reduced-motion:reduce){
   /* sin secuestro del scroll: la estanteria vuelve a desplazarse a mano */
