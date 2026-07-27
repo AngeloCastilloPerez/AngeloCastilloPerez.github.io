@@ -18,19 +18,40 @@ línea de tiempo profesional con morfismo humano → máquina. Bilingüe ES/EN.
 ## 📂 Estructura del Proyecto
 
 ```
-AngeloCastilloPerez.github.io/
-├── index.html               # El sitio completo (markup + estilos + lógica)
-├── index-legacy.html        # Versión anterior (Bootstrap, Medium, testimonios)
+portfolio-template/
+├── index.html                    # El sitio completo (markup + estilos + lógica)
 ├── assets/
-│   ├── v2/                  # Assets del diseño actual
-│   │   ├── hero-bg.mp4      # Video del hero (faststart)
-│   │   ├── hero-bg.jpg      # Póster del video
-│   │   ├── cards/           # Portadas grandes (modal y estantería)
-│   │   └── hero/            # Portadas pequeñas (tarjetas flotantes)
-│   └── img/clients/         # Logos de clientes
-├── portfolio-data/data.json # Datos de origen del portafolio
-└── portfolio-details.html
+│   ├── v2/                       # Assets del diseño actual
+│   │   ├── hero-bg.mp4           # Video del hero (faststart)
+│   │   ├── hero-bg.jpg           # Póster del video
+│   │   ├── morph.mp4             # Video del morfismo de Experiencia
+│   │   ├── og-image.jpg          # Tarjeta de vista previa para redes
+│   │   ├── cards/                # Portadas 900×900 (estantería y modal)
+│   │   └── hero/                 # Portadas 520×520 (tarjetas flotantes)
+│   └── img/
+│       ├── clients/              # Logos de clientes
+│       └── apple-touch-icon.png
+├── casos/
+│   ├── agrovet-bi.html           # Caso de estudio, ES/EN
+│   └── vistas/                   # Las cinco vistas del reporte, reconstruidas
+│       ├── vista.css             # Tokens y primitivas compartidas
+│       ├── vista.js              # Formas de gráfico compartidas
+│       └── 0[1-5]-*.html
+└── .github/workflows/
+    └── reencode-videos.yml       # Re-encode de los videos, manual
 ```
+
+### Convención de portadas
+
+Cada proyecto necesita **dos** archivos con el mismo nombre, que debe coincidir con el campo
+`img` del proyecto en `index.html`:
+
+| Ruta | Medida | Dónde se usa |
+|---|---|---|
+| `assets/v2/cards/<slug>.jpg` | 900×900 | estantería, funda del modal, etiqueta del disco, chip |
+| `assets/v2/hero/<slug>.jpg` | 520×520 | tarjeta flotante sobre el video del hero |
+
+Ambas cuadradas y en **JPG**: el código resuelve la ruta con `.jpg` fijo, así que un PNG da 404.
 
 Los datos de proyectos, experiencia, clientes y traducciones viven en los arrays
 `PROJECTS`, `STAGES`, `CLIENTS` y `T` dentro de `index.html`.
