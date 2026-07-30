@@ -690,7 +690,7 @@ button{font:inherit}
         <div class="credits">
           <div>
             <div class="block-t mono" style="font-size:10px;margin-bottom:12px" data-t="credits"></div>
-            <div class="who"><em class="mono">AC</em><div><div class="n">Angelo Castillo</div><div class="r mono" data-t="devRole"></div></div></div>
+            <div class="who"><em class="mono">AC</em><div><div class="n">Angelo Castillo</div><div class="r mono" id="mRole" data-t="devRole"></div></div></div>
           </div>
           <div>
             <div class="block-t mono" style="font-size:10px;margin-bottom:12px" data-t="coverArt"></div>
@@ -728,6 +728,12 @@ button{font:inherit}
 var HERO_URL = 'https://www.hero.com.pe';
 var GH = 'https://github.com/AngeloCastilloPerez/';
 
+/* Rol de Angelo en cada proyecto. Solo lo llevan los de cliente: en los propios
+   de HERO el credito por defecto (T.devRole) ya es el correcto. */
+var R_LEAD    = {es:'Líder de Proyectos',                          en:'Project Lead'};
+var R_CONS    = {es:'Consultor de Proyectos',                      en:'Project Consultant'};
+var R_CONS_BI = {es:'Consultor de Proyectos · Desarrollador BI',   en:'Project Consultant · BI Developer'};
+
 var CATS = [
   {k:'ia',       es:'IA / ML',  en:'AI / ML'},
   {k:'producto', es:'Productos',en:'Products'},
@@ -751,6 +757,7 @@ var PROJECTS = [
    en:'Migration of Minsur’s financial ETL from on-prem Jenkins to Azure — Medallion architecture across 4 domains.',
    stack:'Azure Data Factory · Databricks · PySpark',
    tags:['DATA','Azure Data Factory','Databricks','PySpark'],
+   role:R_CONS_BI,
    status:{es:'En producción',en:'In production'},
    updated:{es:'8 de Octubre, 2025',en:'October 8, 2025'},
    tracks:[{es:'Auditoría de pipelines legacy',en:'Legacy Pipeline Audit'},{es:'Migración a Azure (ADF)',en:'Azure Migration (ADF)'},{es:'Capas Landing / Staging / Curated',en:'Landing / Staging / Curated Layers'},{es:'Validación de calidad',en:'Quality Validation'},{es:'Consumo directo en Power BI',en:'Direct Power BI Consumption'}],
@@ -765,6 +772,7 @@ var PROJECTS = [
    en:'Financial & business analytics: Medallion architecture on Microsoft Fabric connected to SAP.',
    stack:'Microsoft Fabric · SAP · Power BI',
    tags:['DATA','Microsoft Fabric','SAP','Power BI'],
+   role:R_CONS_BI,
    status:{es:'En producción',en:'In production'},
    updated:{es:'20 de Julio, 2025',en:'July 20, 2025'},
    tracks:[{es:'Integración SAP vía SOAP',en:'SAP Integration via SOAP'},{es:'Modelado dimensional',en:'Dimensional Modeling'},{es:'Capa semántica',en:'Semantic Layer'},{es:'Dashboards financieros',en:'Financial Dashboards'},{es:'Automatización de reportes',en:'Report Automation'}],
@@ -787,6 +795,7 @@ var PROJECTS = [
    en:'Front-end development of the ENAPU corporate intranet: internal portal, directories and document management.',
    stack:'HTML · CSS · JavaScript · SharePoint',
    tags:['PRODUCTOS','HTML','JavaScript','SharePoint'],
+   role:R_CONS,
    status:{es:'Entregado',en:'Delivered'},
    updated:{es:'15 de Junio, 2023',en:'June 15, 2023'},
    tracks:[{es:'Arquitectura front-end',en:'Front-end Architecture'},{es:'Sistema de componentes',en:'Component System'},{es:'Portal de noticias',en:'News Portal'},{es:'Directorio interno',en:'Internal Directory'},{es:'Workflows documentales',en:'Document Workflows'}],
@@ -818,6 +827,7 @@ var PROJECTS = [
    en:'Executive dashboards for AUNOR and ASTARA: unified semantic model with automatic refresh.',
    stack:'Power BI · DAX · SQL',
    tags:['DATA','Power BI','DAX','SQL'],
+   role:R_CONS_BI,
    status:{es:'Entregado',en:'Delivered'},
    updated:{es:'30 de Noviembre, 2024',en:'November 30, 2024'},
    tracks:[{es:'Modelo de datos',en:'Data Model'},{es:'Medidas DAX',en:'DAX Measures'},{es:'KPIs ejecutivos',en:'Executive KPIs'},{es:'Visualizaciones',en:'Visualizations'},{es:'Publicación y gobierno',en:'Publishing & Governance'}],
@@ -850,6 +860,7 @@ var PROJECTS = [
    en:'Real estate intelligence: market insights, performance reports and strategic decisions.',
    stack:'Python · Tableau · Pandas',
    tags:['DATA','Python','Tableau','Real Estate'],
+   role:R_CONS_BI,
    status:{es:'Entregado',en:'Delivered'},
    updated:{es:'18 de Septiembre, 2023',en:'September 18, 2023'},
    tracks:[{es:'Recolección de datos',en:'Data Collection'},{es:'Análisis de mercado',en:'Market Analysis'},{es:'Modelos de valoración',en:'Valuation Models'},{es:'Reportes de performance',en:'Performance Reports'},{es:'Dashboards estratégicos',en:'Strategic Dashboards'}],
@@ -895,6 +906,7 @@ var PROJECTS = [
    en:'A 50-KPI system for plant operations: manufacturing, costs, waste and sustainability in a single indicator model.',
    stack:'BI · Modelado de KPIs · ETL',
    tags:['DATA','KPIs','Manufactura','BI'],
+   role:R_CONS_BI,
    status:{es:'Entregado',en:'Delivered'},
    updated:{es:'2025',en:'2025'},
    tracks:[{es:'Levantamiento con áreas de planta',en:'Discovery with Plant Areas'},{es:'Definición de 50 KPIs',en:'Definition of 50 KPIs'},{es:'Modelado de datos',en:'Data Modeling'},{es:'Dashboards por dominio',en:'Dashboards per Domain'},{es:'Despliegue y adopción',en:'Rollout & Adoption'}],
@@ -906,6 +918,7 @@ var PROJECTS = [
    en:'Data architecture on Azure Data Factory for Yamaha Motors Perú: Power BI reporting, advanced Azure setup and data governance.',
    stack:'Azure Data Factory · Power BI · Data Governance',
    tags:['DATA','Azure Data Factory','Power BI','Data Governance'],
+   role:R_CONS_BI,
    status:{es:'Entregado',en:'Delivered'},
    updated:{es:'2025',en:'2025'},
    tracks:[{es:'Diseño de la arquitectura de datos',en:'Data Architecture Design'},{es:'Pipelines en Azure Data Factory',en:'Azure Data Factory Pipelines'},{es:'Configuración avanzada de Azure',en:'Advanced Azure Setup'},{es:'Gobierno de datos',en:'Data Governance'},{es:'Reportería en Power BI',en:'Power BI Reporting'}],
@@ -917,6 +930,7 @@ var PROJECTS = [
    en:'Web platform for vehicle maintenance appointments connected to SAP C4C: customer booking integrated with workshop operations.',
    stack:'Web App · SAP C4C · APIs',
    tags:['PRODUCTOS','SAP C4C','Web App','Integraciones'],
+   role:R_LEAD,
    status:{es:'En producción',en:'In production'},
    updated:{es:'2025',en:'2025'},
    tracks:[{es:'Flujo de agendamiento en línea',en:'Online Booking Flow'},{es:'Integración con SAP C4C',en:'SAP C4C Integration'},{es:'Gestión de sedes y horarios',en:'Sites & Schedule Management'},{es:'Notificaciones al cliente',en:'Customer Notifications'},{es:'Puesta en producción',en:'Production Rollout'}],
@@ -928,6 +942,7 @@ var PROJECTS = [
    en:'Data architecture on Microsoft Fabric: notebooks, pipelines and dataflows to centralize business analytics.',
    stack:'Microsoft Fabric · PySpark · Dataflows',
    tags:['DATA','Microsoft Fabric','PySpark','Dataflows'],
+   role:R_CONS_BI,
    status:{es:'En producción',en:'In production'},
    updated:{es:'2025',en:'2025'},
    tracks:[{es:'Diseño de la arquitectura',en:'Architecture Design'},{es:'Notebooks PySpark',en:'PySpark Notebooks'},{es:'Pipelines de orquestación',en:'Orchestration Pipelines'},{es:'Dataflows de transformación',en:'Transformation Dataflows'},{es:'Capa de consumo BI',en:'BI Consumption Layer'}],
@@ -939,6 +954,7 @@ var PROJECTS = [
    en:'Workplace Health & Safety (SST) applications: transactional email with Resend and training video delivered with Mux.',
    stack:'Web Apps · Resend · Mux',
    tags:['PRODUCTOS','SST','Resend','Mux'],
+   role:R_LEAD,
    status:{es:'En producción',en:'In production'},
    updated:{es:'2025',en:'2025'},
    tracks:[{es:'Aplicaciones SST',en:'SST Applications'},{es:'Integración de correo (Resend)',en:'Email Integration (Resend)'},{es:'Video de capacitación (Mux)',en:'Training Video (Mux)'},{es:'Gestión de usuarios y roles',en:'Users & Roles Management'},{es:'Despliegue',en:'Deployment'}],
@@ -950,6 +966,7 @@ var PROJECTS = [
    en:'Platform for class management: online enrollment and per-program accounting tracking in a single system.',
    stack:'Web App · Inscripciones · Contabilidad',
    tags:['PRODUCTOS','Web App','Inscripciones','Contabilidad'],
+   role:R_LEAD,
    status:{es:'En producción',en:'In production'},
    updated:{es:'2025',en:'2025'},
    tracks:[{es:'Catálogo de clases',en:'Class Catalog'},{es:'Inscripciones en línea',en:'Online Enrollment'},{es:'Seguimiento contable',en:'Accounting Tracking'},{es:'Reportes de gestión',en:'Management Reports'},{es:'Despliegue',en:'Deployment'}],
@@ -961,6 +978,7 @@ var PROJECTS = [
    en:'Ongoing support for the BI operation: report maintenance and data refresh processes.',
    stack:'Power BI · ETL · Soporte',
    tags:['DATA','Power BI','ETL','Soporte'],
+   role:R_CONS_BI,
    status:{es:'En curso',en:'Ongoing'},
    updated:{es:'2025 — Presente',en:'2025 — Present'},
    tracks:[{es:'Monitoreo de actualizaciones',en:'Refresh Monitoring'},{es:'Mantenimiento de reportes',en:'Report Maintenance'},{es:'Optimización de modelos',en:'Model Optimization'},{es:'Atención de incidencias',en:'Incident Response'}],
@@ -1340,10 +1358,11 @@ function fillModal(){
 
   applyStrings();
 
-  /* despues de applyStrings: el boton lleva data-t="demo" y se sobreescribiria
-     solo si lo pusieramos antes */
+  /* despues de applyStrings: el boton y el credito llevan data-t y se
+     sobreescribirian solos si los pusieramos antes */
   var demoLbl = $('mDemo').querySelector('span');
   if(demoLbl) demoLbl.textContent = p.caseUrl ? t.viewCase : t.demo;
+  $('mRole').textContent = p.role ? p.role[L] : t.devRole;
 }
 
 function openModal(id){
