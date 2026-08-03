@@ -57,9 +57,14 @@
   <!-- SECCION 3 · margenes -->
   <div class="body eq">
     <section class="card">
-      <div class="card-t" style="padding:15px 20px 0">Márgenes sobre ventas netas</div>
-      <div class="card-s" style="padding:3px 20px 0">Bruto y operativo, año contra año, en porcentaje
-        de ventas netas.</div>
+      <div class="card-h">
+        <div class="card-t">Márgenes sobre ventas netas</div>
+        <div class="card-s">Bruto y operativo, año contra año, en porcentaje de ventas netas.</div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s1)"></i>YTD Abr 2026</span>
+          <span><i class="sw" style="background:var(--prev)"></i>YTD Abr 2025</span>
+        </div>
+      </div>
       <div class="card-b" id="marg"></div>
       <div class="card-f">El margen bruto se sostiene plano; toda la mejora del operativo viene de
         gastos de administración creciendo por debajo de las ventas.</div>
@@ -185,43 +190,39 @@ V.waterfall(document.getElementById('wf'), [
 /* ---------- SECCION 2 · composicion de ventas ---------- */
 V.stack100(document.getElementById('mix'), [
   {k:'YTD Abr 2026 · ' + V.n0(2546000), segs:[
-    {k:'Maquila', v:2184600, pct:85.81, color:'var(--seq-1)', label:V.n0(2184600),
+    {k:'Maquila', v:2184600, pct:85.81, color:'var(--s1)', label:V.n0(2184600),
      tip:[['Importe',V.n0(2184600)],['Peso','85.81 %'],['Var %','+11.33 %']]},
-    {k:'Análisis', v:361400, pct:14.19, color:'var(--s3)', label:V.n0(361400),
+    {k:'Análisis', v:361400, pct:14.19, color:'var(--s2)', label:V.n0(361400),
      tip:[['Importe',V.n0(361400)],['Peso','14.19 %'],['Var %','+25.53 %']]}
   ]},
   /* el color sigue a la linea de negocio, no al año: los dos segmentos del
      mismo año tienen que distinguirse entre si, y la misma linea tiene que
      ser el mismo color en los dos años. El año lo dice la etiqueta. */
   {k:'YTD Abr 2025 · ' + V.n0(VN_PY), segs:[
-    {k:'Maquila', v:1962300, pct:87.21, color:'var(--seq-1)', label:V.n0(1962300),
+    {k:'Maquila', v:1962300, pct:87.21, color:'var(--s1)', label:V.n0(1962300),
      tip:[['Importe',V.n0(1962300)],['Peso','87.21 %']]},
-    {k:'Análisis', v:287900, pct:12.79, color:'var(--s3)', label:V.n0(287900),
+    {k:'Análisis', v:287900, pct:12.79, color:'var(--s2)', label:V.n0(287900),
      tip:[['Importe',V.n0(287900)],['Peso','12.79 %']]}
   ]}
 ]);
 
-/* ---------- SECCION 3 · margenes ---------- */
+/* ---------- SECCION 3 · margenes ----------
+   El año anterior va en gris y no en un segundo azul: en la leyenda los dos
+   azules se veian iguales y habia que adivinar cual barra era cual. */
 V.grouped(document.getElementById('marg'), [
   {k:'Margen bruto', chip:{t:'↑ +2 pb', c:'g'}, rows:[
-    {k:'2026', v:11.91, color:'var(--seq-1)', label:'11.91 %',
+    {k:'2026', v:11.91, color:'var(--s1)', label:'11.91 %',
      tip:[['Utilidad Bruta',V.n0(303300)],['Sobre ventas','11.91 %']]},
-    {k:'2025', v:11.89, color:'var(--seq-3)', label:'11.89 %',
+    {k:'2025', v:11.89, color:'var(--prev)', label:'11.89 %',
      tip:[['Utilidad Bruta',V.n0(267600)],['Sobre ventas','11.89 %']]}
   ]},
   {k:'Margen operativo', chip:{t:'↑ +66 pb', c:'g'}, rows:[
-    {k:'2026', v:4.41, color:'var(--seq-1)', label:'4.41 %',
+    {k:'2026', v:4.41, color:'var(--s1)', label:'4.41 %',
      tip:[['Utilidad Operativa',V.n0(112300)],['Sobre ventas','4.41 %']]},
-    {k:'2025', v:3.75, color:'var(--seq-3)', label:'3.75 %',
+    {k:'2025', v:3.75, color:'var(--prev)', label:'3.75 %',
      tip:[['Utilidad Operativa',V.n0(84400)],['Sobre ventas','3.75 %']]}
   ]}
 ], 15);
-(function(){
-  var lg = V.el('div','legend');
-  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
-               + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
-  document.getElementById('marg').appendChild(lg);
-})();
 
 /* ---------- SECCION 3 · crecimiento relativo a las ventas ----------
    Var% de la linea menos el 13.15 % de crecimiento de las ventas netas:

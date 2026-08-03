@@ -51,6 +51,10 @@
         <div class="card-t">¿Variable o fijo?</div>
         <div class="card-s">Peso de cada bloque de costo sobre ventas maquila. Dice si el daño es
           estructural o de absorción.</div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s1)"></i>YTD Abr 2026</span>
+          <span><i class="sw" style="background:var(--prev)"></i>YTD Abr 2025</span>
+        </div>
       </div>
       <div class="card-b" id="struct"></div>
       <div class="card-f">El costo fijo mejoró por dilución: más ventas sobre la misma base.
@@ -64,6 +68,10 @@
       <div class="card-h">
         <div class="card-t">Margen bruto de maquila</div>
         <div class="card-s">De dónde a dónde se movió, en porcentaje de ventas maquila.</div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s1)"></i>YTD Abr 2026</span>
+          <span><i class="sw" style="background:var(--prev)"></i>YTD Abr 2025</span>
+        </div>
       </div>
       <div class="card-b" id="bridge"></div>
       <div class="card-f">248 puntos base perdidos en un año, con las ventas creciendo 11.33 %.</div>
@@ -202,43 +210,33 @@ V.kpis(document.getElementById('kpis'), [
   host.appendChild(net);
 })();
 
-/* ---------- SECCION 2 · variable vs fijo ---------- */
-(function(){
-  V.grouped(document.getElementById('struct'), [
-    {k:'Costo Variable', chip:{t:'↑ +5.03 pp', c:'b'}, rows:[
-      {k:'2026', v:62.03, color:'var(--seq-1)', label:'62.03 %',
-       tip:[['Importe',V.n0(-1355100)],['Peso sobre VM','62.03 %'],['Δ','+5.03 pp']]},
-      {k:'2025', v:57.00, color:'var(--seq-3)', label:'57.00 %',
-       tip:[['Importe',V.n0(-1118500)],['Peso sobre VM','57.00 %']]}
-    ]},
-    {k:'Costo Fijo', chip:{t:'↓ '+V.MIN+'2.55 pp', c:'g'}, rows:[
-      {k:'2026', v:27.14, color:'var(--seq-1)', label:'27.14 %',
-       tip:[['Importe',V.n0(-592900)],['Peso sobre VM','27.14 %'],['Δ',V.MIN+'2.55 pp']]},
-      {k:'2025', v:29.69, color:'var(--seq-3)', label:'29.69 %',
-       tip:[['Importe',V.n0(-582700)],['Peso sobre VM','29.69 %']]}
-    ]}
-  ], 70);
-  var lg = V.el('div','legend');
-  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
-               + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
-  document.getElementById('struct').appendChild(lg);
-})();
+/* ---------- SECCION 2 · variable vs fijo ----------
+   Año actual en azul y año anterior en gris: la comparacion se lee de un
+   vistazo y la leyenda distingue de verdad las dos barras. */
+V.grouped(document.getElementById('struct'), [
+  {k:'Costo Variable', chip:{t:'↑ +5.03 pp', c:'b'}, rows:[
+    {k:'2026', v:62.03, color:'var(--s1)', label:'62.03 %',
+     tip:[['Importe',V.n0(-1355100)],['Peso sobre VM','62.03 %'],['Δ','+5.03 pp']]},
+    {k:'2025', v:57.00, color:'var(--prev)', label:'57.00 %',
+     tip:[['Importe',V.n0(-1118500)],['Peso sobre VM','57.00 %']]}
+  ]},
+  {k:'Costo Fijo', chip:{t:'↓ '+V.MIN+'2.55 pp', c:'g'}, rows:[
+    {k:'2026', v:27.14, color:'var(--s1)', label:'27.14 %',
+     tip:[['Importe',V.n0(-592900)],['Peso sobre VM','27.14 %'],['Δ',V.MIN+'2.55 pp']]},
+    {k:'2025', v:29.69, color:'var(--prev)', label:'29.69 %',
+     tip:[['Importe',V.n0(-582700)],['Peso sobre VM','29.69 %']]}
+  ]}
+], 70);
 
 /* ---------- SECCION 3 · margen ---------- */
-(function(){
-  V.grouped(document.getElementById('bridge'), [
-    {k:'Margen bruto sobre ventas maquila', chip:{t:'↓ '+V.MIN+'248 pb', c:'b'}, rows:[
-      {k:'2026', v:MG, color:'var(--seq-1)', label:V.pc(MG),
-       tip:[['Utilidad Bruta Maquila',V.n0(236600)],['Sobre ventas maquila',V.pc(MG)]]},
-      {k:'2025', v:MG_PY, color:'var(--seq-3)', label:V.pc(MG_PY),
-       tip:[['Utilidad Bruta Maquila',V.n0(261100)],['Sobre ventas maquila',V.pc(MG_PY)]]}
-    ]}
-  ], 15);
-  var lg = V.el('div','legend');
-  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
-               + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
-  document.getElementById('bridge').appendChild(lg);
-})();
+V.grouped(document.getElementById('bridge'), [
+  {k:'Margen bruto sobre ventas maquila', chip:{t:'↓ '+V.MIN+'248 pb', c:'b'}, rows:[
+    {k:'2026', v:MG, color:'var(--s1)', label:V.pc(MG),
+     tip:[['Utilidad Bruta Maquila',V.n0(236600)],['Sobre ventas maquila',V.pc(MG)]]},
+    {k:'2025', v:MG_PY, color:'var(--prev)', label:V.pc(MG_PY),
+     tip:[['Utilidad Bruta Maquila',V.n0(261100)],['Sobre ventas maquila',V.pc(MG_PY)]]}
+  ]}
+], 15);
 
 /* ---------- SECCION 3 · mezcla del costo ----------
    Variable y fijo como porcentaje del costo de maquila, no de las ventas:
@@ -248,13 +246,13 @@ V.stack100(document.getElementById('mix'), [
   {k:'YTD Abr 2026 · costo de '+V.n0(1948000), segs:[
     {k:'Variable', v:1355100, pct:69.56, color:'var(--s2)', label:V.n0(1355100),
      tip:[['Importe',V.n0(1355100)],['% del costo','69.56 %'],['Abr 2025','65.75 %']]},
-    {k:'Fijo', v:592900, pct:30.44, color:'var(--seq-1)', label:V.n0(592900),
+    {k:'Fijo', v:592900, pct:30.44, color:'var(--s1)', label:V.n0(592900),
      tip:[['Importe',V.n0(592900)],['% del costo','30.44 %'],['Abr 2025','34.25 %']]}
   ]},
   {k:'YTD Abr 2025 · costo de '+V.n0(1701200), segs:[
     {k:'Variable', v:1118500, pct:65.75, color:'var(--s2)', label:V.n0(1118500),
      tip:[['Importe',V.n0(1118500)],['% del costo','65.75 %']]},
-    {k:'Fijo', v:582700, pct:34.25, color:'var(--seq-1)', label:V.n0(582700),
+    {k:'Fijo', v:582700, pct:34.25, color:'var(--s1)', label:V.n0(582700),
      tip:[['Importe',V.n0(582700)],['% del costo','34.25 %']]}
   ]}
 ]);

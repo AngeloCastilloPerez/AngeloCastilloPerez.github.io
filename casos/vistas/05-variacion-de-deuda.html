@@ -44,8 +44,12 @@
     <section class="card">
       <div class="card-h">
         <div class="card-t">Deuda / EBITDA por año</div>
-        <div class="card-s">Serie única, así que no lleva leyenda: el título la nombra. La línea
-          punteada es el covenant de 4.0x.</div>
+        <div class="card-s">Una sola serie contra la línea punteada del covenant de 4.0x. El color no
+          nombra otra categoría: solo marca los años que cerraron por encima.</div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s1)"></i>dentro del covenant</span>
+          <span><i class="sw" style="background:var(--crit)"></i>por encima del covenant</span>
+        </div>
       </div>
       <div class="card-b" id="ebitda"></div>
       <div class="card-f" id="ebitdaF"></div>
@@ -71,7 +75,7 @@
         ordenado por disponible y no por usado.</div>
       <div class="legend">
         <span><i class="sw" style="background:var(--s2)"></i>usado</span>
-        <span><i class="sw" style="background:var(--seq-1)"></i>disponible</span>
+        <span><i class="sw" style="background:var(--s1)"></i>disponible</span>
       </div>
     </div>
     <div class="card-b" id="lineas"></div>
@@ -159,14 +163,17 @@ V.kpis(document.getElementById('kpis'), [
         ['Ratio','3.77 x → 3.8 x'],['Covenant','4.0 x'],['Holgura','0.2 x']]]}
 ]);
 
-/* ---------- SECCION 2 · composicion ---------- */
+/* ---------- SECCION 2 · composicion ----------
+   Los dos cortes usan el mismo par de colores: cada barra es un corte
+   cerrado y su leyenda nombra los segmentos. Con paletas distintas parecian
+   cuatro categorias de un mismo conjunto, que es justo lo que no son. */
 V.stack100(document.getElementById('comp'), [
   {k:'Por instrumento · '+V.n0(TOT), segs:INSTR.map(function(i,n){
-    return {k:i.k, v:i.v, pct:i.pct, color:n?'var(--s2)':'var(--seq-1)', label:V.n0(i.v),
+    return {k:i.k, v:i.v, pct:i.pct, color:n?'var(--s2)':'var(--s1)', label:V.n0(i.v),
       tip:[['Importe',V.n0(i.v)],['% del total',V.pc(i.pct)],['Plazo',i.plazo],['Vence',i.vence]]};
   })},
   {k:'Por plazo · '+V.n0(TOT), segs:PLAZO.map(function(i,n){
-    return {k:i.k, v:i.v, pct:i.pct, color:n?'var(--s3)':'var(--seq-2)', label:V.n0(i.v),
+    return {k:i.k, v:i.v, pct:i.pct, color:n?'var(--s2)':'var(--s1)', label:V.n0(i.v),
       tip:[['Importe',V.n0(i.v)],['% del total',V.pc(i.pct)]]};
   })}
 ]);
@@ -175,23 +182,38 @@ V.stack100(document.getElementById('comp'), [
 (function(){
   V.vbars(document.getElementById('ebitda'), DE.map(function(d){
     return {x:d.x, v:d.v, label:d.v.toFixed(1)+' x',
-      color: d.v > 4.0 ? 'var(--crit)' : 'var(--seq-1)',
+      color: d.v > 4.0 ? 'var(--crit)' : 'var(--s1)',
       tip:[['Deuda / EBITDA',d.v.toFixed(1)+' x'],['Covenant','4.0 x'],
            ['Estado', d.v > 4.0 ? 'por encima del covenant' : 'dentro del covenant']]};
   }), {max:5, ref:{v:4.0, label:'covenant 4.0 x'}});
+  /* La nota se calcula de la serie y no se escribe a mano: antes decia
+     "el unico año por encima" con dos años por encima en el grafico. */
+  var over = DE.filter(function(d){ return d.v > 4.0; });
+  var peak = DE.reduce(function(a,b){ return b.v > a.v ? b : a; });
+  var last = DE[DE.length-1];
   document.getElementById('ebitdaF').innerHTML =
-    '<span class="chip b">! 2024</span> El único año por encima del covenant, con 4.6x. '
-    + 'Desde entonces baja tres años seguidos hasta 3.8x.';
+    '<span class="chip b">! ' + over.map(function(d){ return d.x; }).join(' y ') + '</span> '
+    + 'Los ' + over.length + ' años que cerraron por encima del covenant, con el pico de '
+    + peak.v.toFixed(1) + 'x en ' + peak.x + '. Desde ahí baja '
+    + (+last.x - +peak.x) + ' años seguidos hasta ' + last.v.toFixed(1) + 'x, '
+    + 'con ' + (4.0 - last.v).toFixed(1) + 'x de holgura.';
 })();
 
 /* ---------- SECCION 3 · horizonte de pago ---------- */
 (function(){
-  var max = Math.max.apply(null, HOR.map(function(h){ return h.v; }));
-  /* magnitud: un solo tono, el mas pesado en el paso mas oscuro */
+  var ranked = HOR.map(function(h){ return h.v; }).sort(function(a,b){ return b-a; });
+  var max = ranked[0];
+  /* magnitud: un solo tono en tres pasos, del mas pesado al mas liviano.
+     Antes eran dos pasos, el mayor contra todo lo demas, y la rampa no se
+     leia como rampa. */
+  var step = function(v){
+    var r = ranked.indexOf(v);
+    return r === 0 ? 'var(--seq-1)' : r < 3 ? 'var(--seq-2)' : 'var(--seq-3)';
+  };
   V.vbars(document.getElementById('hor'), HOR.map(function(h){
     var share = h.v/TOT*100;
     return {x:h.x, v:h.v, label:V.n0(h.v),
-      color: h.v === max ? 'var(--seq-1)' : 'var(--seq-2)',
+      color: step(h.v),
       tip:[['Amortización',V.n0(h.v)],['% del total',V.pc(share)],
            ['Acumulado hasta el año', V.n0(HOR.slice(0, HOR.indexOf(h)+1)
               .reduce(function(s,x){ return s+x.v; },0))]]};
@@ -211,7 +233,7 @@ V.stack100(document.getElementById('comp'), [
     return {k:b.k+' · línea de '+V.n0(b.linea)+'  ·  utilización '+V.pc(up), segs:[
       {k:'Usado', v:b.usado, pct:up, color:'var(--s2)', label:V.n0(b.usado),
        tip:[['Usado',V.n0(b.usado)],['Línea aprobada',V.n0(b.linea)],['Utilización',V.pc(up)]]},
-      {k:'Disponible', v:b.disp, pct:+(100-up).toFixed(2), color:'var(--seq-1)', label:V.n0(b.disp),
+      {k:'Disponible', v:b.disp, pct:+(100-up).toFixed(2), color:'var(--s1)', label:V.n0(b.disp),
        tip:[['Disponible',V.n0(b.disp)],['Línea aprobada',V.n0(b.linea)],
             ['Holgura',V.pc(100-up)]]}
     ]};
