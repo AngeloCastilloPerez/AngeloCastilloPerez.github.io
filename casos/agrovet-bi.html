@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agrovet BI — Caso de estudio · Angelo Castillo</title>
-<meta name="description" content="Caso de estudio: analítica financiera sobre Microsoft Fabric para Agrovet Market. Arquitectura Medallion, integración SAP vía SOAP, modelo semántico y reportes de EERR, balance, ratios y deuda en Power BI.">
+<meta name="description" content="Caso de estudio: analítica financiera sobre Microsoft Fabric para Agrovet Market. Arquitectura Medallion, ingesta conectada a los libros de Excel del cierre, modelo semántico y reportes de EERR, balance, ratios y deuda en Power BI.">
 <meta name="author" content="Angelo Castillo">
 <meta name="theme-color" content="#080810">
 <link rel="canonical" href="https://acp.hero.com.pe/casos/agrovet-bi.html">
@@ -15,11 +15,11 @@
 <meta property="og:locale" content="es_PE">
 <meta property="og:url" content="https://acp.hero.com.pe/casos/agrovet-bi.html">
 <meta property="og:title" content="Agrovet BI — Caso de estudio">
-<meta property="og:description" content="Arquitectura Medallion en Microsoft Fabric conectada a SAP: del cierre en Excel a EERR, balance, ratios y deuda sobre un solo modelo semántico.">
+<meta property="og:description" content="Arquitectura Medallion en Microsoft Fabric conectada a los libros de Excel del cierre: de consolidar a mano a EERR, balance, ratios y deuda sobre un solo modelo semántico.">
 <meta property="og:image" content="https://acp.hero.com.pe/assets/v2/cards/agrovet-bi.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Agrovet BI — Caso de estudio">
-<meta name="twitter:description" content="Arquitectura Medallion en Microsoft Fabric conectada a SAP, con EERR, balance, ratios y deuda en Power BI.">
+<meta name="twitter:description" content="Arquitectura Medallion en Microsoft Fabric sobre libros de Excel y SharePoint, con EERR, balance, ratios y deuda en Power BI.">
 <meta name="twitter:image" content="https://acp.hero.com.pe/assets/v2/cards/agrovet-bi.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -235,7 +235,7 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
         <p class="lead mono" data-t="lead"></p>
         <div class="tags mono">
           <span class="tag">Microsoft Fabric</span>
-          <span class="tag">SAP</span>
+          <span class="tag">Excel</span>
           <span class="tag">PySpark</span>
           <span class="tag">Power BI</span>
           <span class="tag">DAX</span>
@@ -286,7 +286,7 @@ figure.shot .cap-row a{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
     </div>
 
     <div class="flow">
-      <div class="node src"><em data-t="n0E"></em><b>SAP</b><span data-t="n0S"></span></div>
+      <div class="node src"><em data-t="n0E"></em><b>Excel</b><span data-t="n0S"></span></div>
       <div class="node"><em>01</em><b>Landing</b><span data-t="n1S"></span></div>
       <div class="node"><em>02</em><b>Work</b><span data-t="n2S"></span></div>
       <div class="node"><em>03</em><b>Work Live</b><span data-t="n3S"></span></div>
@@ -490,7 +490,7 @@ var T = {
   es:{
     back:'Volver al portafolio',
     eyebrow:'[ CASO DE ESTUDIO / 03 ]',
-    lead:'Analítica financiera y de negocio sobre Microsoft Fabric: SAP como fuente, arquitectura Medallion como columna vertebral y Power BI como capa de decisión.',
+    lead:'Analítica financiera y de negocio sobre Microsoft Fabric: los libros de Excel del cierre como fuente, arquitectura Medallion como columna vertebral y Power BI como capa de decisión.',
 
     kClient:'Cliente', vClient:'Agrovet Market &middot; Pharmadix',
     kSector:'Sector', vSector:'Salud animal y farmacéutico',
@@ -503,18 +503,18 @@ var T = {
 
     s1K:'El punto de partida',
     s1H:'Todo el cierre financiero vivía en Excel',
-    s1P:'Cada mes significaba exportar de SAP a mano, pegar en plantillas y cuadrar cifras en paralelo. La información llegaba tarde, sin trazabilidad y sin ninguna visibilidad de los KPIs de costos y producción.',
-    p1H:'Cierre manual', p1P:'Exportaciones de SAP consolidadas a mano: días de trabajo para armar un solo estado de resultados.',
+    s1P:'Cada mes significaba consolidar libros de Excel a mano, pegarlos en plantillas y cuadrar cifras en paralelo. La información llegaba tarde, sin trazabilidad y sin ninguna visibilidad de los KPIs de costos y producción.',
+    p1H:'Cierre manual', p1P:'Libros de Excel consolidados a mano, hoja por hoja: días de trabajo para armar un solo estado de resultados.',
     p2H:'Sin fuente única', p2P:'EERR, balance, ratios y deuda vivían en archivos distintos, con criterios y versiones que no coincidían.',
     p3H:'Sin comparativo', p3P:'Ningún YTD contra el año anterior ni seguimiento de objetivos: explicar una variación obligaba a rearmarla desde cero.',
 
     s2K:'Arquitectura',
     s2H:'Un lakehouse en Fabric, tres capas y un solo contrato',
-    s2P:'SAP entra por servicios SOAP y SharePoint aporta los maestros y presupuestos que el negocio mantiene a mano. Cada capa tiene una responsabilidad y nadie salta capas: el reporte solo conoce la última.',
-    n0E:'Fuentes', n0S:'SOAP<br>+ SharePoint',
+    s2P:'La ingesta se conecta a los libros de Excel del cierre y a SharePoint, que aporta los maestros y presupuestos que el negocio mantiene a mano. Cada capa tiene una responsabilidad y nadie salta capas: el reporte solo conoce la última.',
+    n0E:'Fuentes', n0S:'Libros de Excel<br>+ SharePoint',
     n1S:'Ingesta cruda', n2S:'PySpark<br>+ modelado', n3S:'Tablas servidas',
     n4E:'Consumo', n4S:'Modelo semántico<br>DirectQuery',
-    l1:'Ingesta cruda, sin transformar. El dato se guarda tal como llega para poder reprocesar cualquier periodo sin volver a golpear SAP.',
+    l1:'Ingesta cruda, sin transformar. El dato se guarda tal como llega para poder reprocesar cualquier periodo sin volver a leer los libros de origen.',
     l2:'Notebooks PySpark: tipado, limpieza, deduplicado y modelado dimensional &mdash; hechos de movimientos contables contra dimensiones de cuenta, centro, compañía y tiempo.',
     l3:'Las tablas finales que consume el reporte. Es la única capa que Power BI ve, así que un cambio de lógica aguas arriba no rompe un visual.',
     l4:'Jerarquía de P&amp;L, medidas DAX de tiempo (MTD, YTD, año anterior, variaciones) y objetivos por ratio como tabla, no como constante en el visual.',
@@ -566,7 +566,7 @@ var T = {
     s4K:'Decisiones técnicas',
     s4H:'Lo que sostiene el reporte',
     s4P:'Un dashboard aguanta mientras aguante lo que hay debajo. Estas son las decisiones que evitan que el modelo se rompa al mes siguiente.',
-    d1H:'SAP vía SOAP, no exportaciones', d1P:'La extracción consume los servicios SOAP del ERP: el mismo dato que ve SAP, sin archivos intermedios ni copiado manual.',
+    d1H:'Conexión al libro, no copiar y pegar', d1P:'La ingesta se conecta a los libros de Excel donde el negocio ya trabaja, con el esquema declarado: sin archivos intermedios ni copiado manual, y un cambio de formato falla en la ingesta y no en el reporte.',
     d2H:'Landing inmutable', d2P:'Nada se sobreescribe. Cualquier cierre se puede reprocesar y auditar hacia atrás sin depender de una nueva extracción.',
     d3H:'Una capa de contrato', d3P:'El reporte solo lee Work Live. La lógica puede cambiar aguas arriba sin que se caiga un visual.',
     d4H:'Medidas, no columnas', d4P:'Comparativos, YTD y variaciones son medidas DAX sobre una dimensión de tiempo: agregar un mes no exige tocar el modelo.',
@@ -576,7 +576,7 @@ var T = {
     s5K:'Resultado',
     s5H:'De días de Excel a un reporte que ya llega cuadrado',
     r1K:'Una sola verdad', r1P:'EERR, balance, ratios y deuda sobre el mismo modelo y las mismas definiciones.',
-    r2K:'Pipeline automatizado', r2P:'SAP y SharePoint hacia Landing, Work y Work Live, con consumo en DirectQuery al cierre.',
+    r2K:'Pipeline automatizado', r2P:'Excel y SharePoint hacia Landing, Work y Work Live, con consumo en DirectQuery al cierre.',
     r3K:'Contexto siempre presente', r3P:'Comparativo contra año anterior y contra objetivo en todas las vistas, sin rearmar nada.',
 
     fH:'&iquest;Construimos algo juntos?',
@@ -587,7 +587,7 @@ var T = {
   en:{
     back:'Back to portfolio',
     eyebrow:'[ CASE STUDY / 03 ]',
-    lead:'Financial and business analytics on Microsoft Fabric: SAP as the source, a Medallion architecture as the backbone and Power BI as the decision layer.',
+    lead:'Financial and business analytics on Microsoft Fabric: the close workbooks as the source, a Medallion architecture as the backbone and Power BI as the decision layer.',
 
     kClient:'Client', vClient:'Agrovet Market &middot; Pharmadix',
     kSector:'Industry', vSector:'Animal health &amp; pharmaceutical',
@@ -600,18 +600,18 @@ var T = {
 
     s1K:'The starting point',
     s1H:'The whole financial close lived in Excel',
-    s1P:'Every month meant exporting from SAP by hand, pasting into templates and reconciling figures in parallel. Information arrived late, with no traceability and no visibility into cost and production KPIs.',
-    p1H:'Manual close', p1P:'SAP exports consolidated by hand: days of work to assemble a single income statement.',
+    s1P:'Every month meant consolidating Excel workbooks by hand, pasting into templates and reconciling figures in parallel. Information arrived late, with no traceability and no visibility into cost and production KPIs.',
+    p1H:'Manual close', p1P:'Excel workbooks consolidated by hand, sheet by sheet: days of work to assemble a single income statement.',
     p2H:'No single source', p2P:'P&amp;L, balance sheet, ratios and debt lived in separate files, with criteria and versions that did not match.',
     p3H:'No comparison', p3P:'No YTD against last year and no target tracking: explaining a variance meant rebuilding it from scratch.',
 
     s2K:'Architecture',
     s2H:'One Fabric lakehouse, three layers, a single contract',
-    s2P:'SAP comes in through SOAP services and SharePoint carries the masters and budgets the business maintains by hand. Each layer owns one responsibility and nobody skips layers: the report only knows the last one.',
-    n0E:'Sources', n0S:'SOAP<br>+ SharePoint',
+    s2P:'Ingestion connects to the Excel close workbooks and to SharePoint, which carries the masters and budgets the business maintains by hand. Each layer owns one responsibility and nobody skips layers: the report only knows the last one.',
+    n0E:'Sources', n0S:'Excel workbooks<br>+ SharePoint',
     n1S:'Raw ingestion', n2S:'PySpark<br>+ modeling', n3S:'Served tables',
     n4E:'Consumption', n4S:'Semantic model<br>DirectQuery',
-    l1:'Raw ingestion, untransformed. Data is stored exactly as it arrives so any period can be reprocessed without hitting SAP again.',
+    l1:'Raw ingestion, untransformed. Data is stored exactly as it arrives so any period can be reprocessed without reading the source workbooks again.',
     l2:'PySpark notebooks: typing, cleaning, deduplication and dimensional modeling &mdash; accounting movement facts against account, cost center, company and time dimensions.',
     l3:'The final tables the report consumes. It is the only layer Power BI sees, so a logic change upstream never breaks a visual.',
     l4:'P&amp;L hierarchy, DAX time measures (MTD, YTD, prior year, variances) and per-ratio targets stored as a table rather than hardcoded in the visual.',
@@ -663,7 +663,7 @@ var T = {
     s4K:'Technical decisions',
     s4H:'What holds the report up',
     s4P:'A dashboard lasts as long as what sits underneath it. These are the decisions that keep the model from breaking the following month.',
-    d1H:'SAP over SOAP, not exports', d1P:'Extraction consumes the ERP SOAP services: the same data SAP sees, with no intermediate files or manual copying.',
+    d1H:'Connect to the workbook, no copy-paste', d1P:'Ingestion connects to the Excel workbooks the business already works in, with a declared schema: no intermediate files or manual copying, and a format change fails at ingestion rather than in the report.',
     d2H:'Immutable landing', d2P:'Nothing is overwritten. Any close can be reprocessed and audited backwards without a new extraction.',
     d3H:'One contract layer', d3P:'The report only reads Work Live. Logic can change upstream without a visual falling over.',
     d4H:'Measures, not columns', d4P:'Comparisons, YTD and variances are DAX measures over a time dimension: adding a month requires no model change.',
@@ -673,7 +673,7 @@ var T = {
     s5K:'Outcome',
     s5H:'From days of Excel to a report that arrives already reconciled',
     r1K:'A single truth', r1P:'P&amp;L, balance sheet, ratios and debt on the same model and the same definitions.',
-    r2K:'Automated pipeline', r2P:'SAP and SharePoint into Landing, Work and Work Live, consumed over DirectQuery at close.',
+    r2K:'Automated pipeline', r2P:'Excel and SharePoint into Landing, Work and Work Live, consumed over DirectQuery at close.',
     r3K:'Context always there', r3P:'Comparison against prior year and against target in every view, with nothing to rebuild.',
 
     fH:'Shall we build something together?',
@@ -716,7 +716,7 @@ document.querySelectorAll('.live iframe').forEach(function(fr){
       fr.style.height = Math.max(700, d.documentElement.scrollHeight) + 'px';
     }catch(e){ /* si algun dia se sirve cross-origin, se queda el alto del CSS */ }
   };
-  fr.addEventListener('load', function(){
+  var wire = function(){
     fit();
     try{
       var d = fr.contentDocument;
@@ -724,7 +724,16 @@ document.querySelectorAll('.live iframe').forEach(function(fr){
       d.addEventListener('click', function(){ setTimeout(fit, 0); });
       if(window.ResizeObserver) new ResizeObserver(fit).observe(d.documentElement);
     }catch(e){}
-  });
+  };
+  fr.addEventListener('load', wire);
+  /* Si el iframe termino de cargar antes de que corriera este script, su
+     evento load ya paso y no vuelve: hay que cablearlo a mano. Sin esto las
+     cinco vistas se quedaban con el alto de arranque del CSS, recortadas y
+     con su propio scroll dentro del scroll de la pagina. */
+  try{
+    var d0 = fr.contentDocument;
+    if(d0 && d0.readyState === 'complete' && d0.body && d0.body.childElementCount) wire();
+  }catch(e){}
   addEventListener('resize', fit);
 });
 

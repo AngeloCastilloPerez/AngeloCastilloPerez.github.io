@@ -36,6 +36,10 @@
         <div class="card-s">El retorno sobre activos se descompone en margen por rotación:
           ROA = ROS × Venta/Activo. Dos escalas distintas, así que van en dos gráficos y no en un
           doble eje.</div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s1)"></i>YTD Abr 2026</span>
+          <span><i class="sw" style="background:var(--prev)"></i>YTD Abr 2025</span>
+        </div>
       </div>
       <div class="card-b" id="dupont"></div>
       <div class="card-f" id="dupontF"></div>
@@ -181,8 +185,8 @@ var MESES = ['Ene','Feb','Mar','Abr'];
    Dos componentes de escalas distintas: dos graficos, nunca doble eje. */
 (function(){
   var D = [
-    {p:'YTD Abr 2026', ros:0.044, rot:0.219, roa:0.010, c:'var(--seq-1)'},
-    {p:'YTD Abr 2025', ros:0.038, rot:0.194, roa:0.007, c:'var(--seq-3)'}
+    {p:'YTD Abr 2026', ros:0.044, rot:0.219, roa:0.010, c:'var(--s1)'},
+    {p:'YTD Abr 2025', ros:0.038, rot:0.194, roa:0.007, c:'var(--prev)'}
   ];
   V.grouped(document.getElementById('dupont'), [
     {k:'Margen de ventas · ROS', chip:{t:'↑ +0.006', c:'g'}, rows:D.map(function(d){
@@ -202,10 +206,6 @@ var MESES = ['Ene','Feb','Mar','Abr'];
              ['Objetivo','0.015']]};
     })}
   ], 0.25);
-  var lg = V.el('div','legend');
-  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>YTD Abr 2026</span>'
-               + '<span><i class="sw" style="background:var(--seq-3)"></i>YTD Abr 2025</span>';
-  document.getElementById('dupont').appendChild(lg);
   document.getElementById('dupontF').textContent =
     'El retorno mejora por las dos vías a la vez, margen y rotación, pero 0.010 sigue por debajo '
     + 'del objetivo de 0.015. La escala del ROA está amplificada 10x para que la barra se vea; '

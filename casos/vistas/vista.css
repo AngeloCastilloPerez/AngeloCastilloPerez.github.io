@@ -3,11 +3,26 @@
    Compartido por las cinco vistas del caso Agrovet BI.
    Un token cambiado aqui cambia en las cinco.
    ============================================================ */
+/* ------------------------------------------------------------
+   REGLA DE COLOR — una sola, y las cinco vistas la respetan.
+
+   --s1  azul      la referencia: periodo actual, primera categoria del
+                   corte, o el lado propio (patrimonio, disponible, fijo)
+   --s2  naranja   la otra: la que consume, compromete o presiona el margen
+   --prev gris     el periodo anterior. Siempre recesivo y nunca un
+                   segundo azul: dos azules no se separan en la leyenda.
+   --seq-1..3      rampa de un solo tono, solo para magnitud
+   good/warn/crit  solo estado: chips, semaforos y lineas de referencia.
+                   Verde y rojo nunca nombran una categoria.
+
+   Con dos colores categoricos alcanza: ningun corte de estas vistas tiene
+   mas de dos series, y el tercer color solo agregaba ruido.
+   ------------------------------------------------------------ */
 :root{
   --surface:#fcfcfb; --plane:#f9f9f7; --raised:#ffffff;
   --text-1:#0b0b0b; --text-2:#52514e; --muted:#898781;
   --grid:#e1e0d9; --baseline:#c3c2b7;
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --s1:#2a78d6; --s2:#eb6834; --prev:#9c9a92;
   /* rampa secuencial azul: la magnitud va en un solo tono */
   --seq-1:#2a78d6; --seq-2:#5598e7; --seq-3:#9ec5f4; --seq-track:#e8e7e1;
   --good:#0ca30c; --warn:#fab219; --crit:#d03b3b;
@@ -21,7 +36,7 @@
   --surface:#0d0d16; --plane:#080810; --raised:#13131f;
   --text-1:#ffffff; --text-2:#c3c2b7; --muted:#898781;
   --grid:#2c2c2a; --baseline:#383835;
-  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --s1:#3987e5; --s2:#d95926; --prev:#76746d;
   --seq-1:#3987e5; --seq-2:#2a78d6; --seq-3:#1c5cab; --seq-track:#22222c;
   --good-soft:rgba(12,163,12,.16); --crit-soft:rgba(208,59,59,.18); --warn-soft:rgba(250,178,25,.16);
   --div-pos:#3987e5; --div-neg:#d95926; --div-mid:#383835;
@@ -32,7 +47,7 @@
   --surface:#0d0d16; --plane:#080810; --raised:#13131f;
   --text-1:#ffffff; --text-2:#c3c2b7; --muted:#898781;
   --grid:#2c2c2a; --baseline:#383835;
-  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --s1:#3987e5; --s2:#d95926; --prev:#76746d;
   --seq-1:#3987e5; --seq-2:#2a78d6; --seq-3:#1c5cab; --seq-track:#22222c;
   --good-soft:rgba(12,163,12,.16); --crit-soft:rgba(208,59,59,.18); --warn-soft:rgba(250,178,25,.16);
   --div-pos:#3987e5; --div-neg:#d95926; --div-mid:#383835;
@@ -65,13 +80,18 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--s1);outline-of
 .tbtn.on{background:var(--text-1);color:var(--surface);border-color:var(--text-1)}
 .seg{display:inline-flex;gap:6px}
 
-/* ---------- tarjeta ---------- */
-.card{background:var(--surface);border:1px solid var(--grid);border-radius:10px}
+/* ---------- tarjeta ----------
+   Columna flexible: el cuerpo se estira y el pie queda pegado abajo, asi
+   dos tarjetas de la misma fila cierran a la misma altura aunque una
+   tenga cuatro barras y la otra diez. */
+.card{background:var(--surface);border:1px solid var(--grid);border-radius:10px;
+  display:flex;flex-direction:column;min-width:0}
 .card-h{padding:15px 20px 0}
 .card-t{font-size:14.5px;font-weight:600;letter-spacing:-.005em}
 .card-s{margin-top:3px;font-size:11.5px;line-height:1.5;color:var(--muted)}
-.card-b{padding:14px 20px 6px}
-.card-f{padding:11px 20px;border-top:1px solid var(--grid);font-size:11.5px;line-height:1.6;color:var(--muted)}
+.card-b{padding:14px 20px 6px;flex:1}
+.card-f{padding:11px 20px;border-top:1px solid var(--grid);font-size:11.5px;line-height:1.6;
+  color:var(--muted);margin-top:auto}
 
 /* ---------- KPIs ---------- */
 .kpis{margin-top:18px;display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:13px}
@@ -90,8 +110,10 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--s1);outline-of
 .chip.n{background:var(--hover);color:var(--text-2)}
 
 /* ---------- rejillas de seccion ---------- */
-/* cada grafico en su propia tarjeta y su propia seccion */
-.body{margin-top:13px;display:grid;gap:13px;align-items:start}
+/* cada grafico en su propia tarjeta y su propia seccion.
+   stretch y no start: las tarjetas de una fila arrancan y terminan a la
+   misma altura, que es lo que hace que la rejilla se lea cuadrada. */
+.body{margin-top:13px;display:grid;gap:13px;align-items:stretch}
 .body.w62{grid-template-columns:minmax(0,1.62fr) minmax(0,1fr)}
 .body.eq{grid-template-columns:repeat(2,minmax(0,1fr))}
 .body.w15{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}
@@ -137,7 +159,8 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--s1);outline-of
 .grow-v{width:64px;text-align:right;font-size:11.5px;color:var(--text-2);flex:none;
   font-variant-numeric:tabular-nums}
 .track{position:absolute;inset:0;border-radius:3px;background:var(--seq-track)}
-.fill{position:absolute;left:0;top:0;bottom:0;border-radius:3px;box-shadow:0 0 0 2px var(--surface)}
+/* sin halo: la barra apoya sobre su riel, no flota encima */
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
 
 /* ---------- cascada (waterfall) ---------- */
 .wf-row{display:grid;grid-template-columns:186px minmax(0,1fr) 108px;gap:12px;align-items:center;
@@ -149,7 +172,7 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--s1);outline-of
 .wf-v{font-size:12.5px;text-align:right;color:var(--text-2);font-variant-numeric:tabular-nums}
 .wf-row.tot .wf-v{color:var(--text-1);font-weight:700}
 .wf-p{position:relative;height:22px}
-.wf-b{position:absolute;top:4px;bottom:4px;border-radius:3px;box-shadow:0 0 0 2px var(--surface)}
+.wf-b{position:absolute;top:4px;bottom:4px;border-radius:3px}
 .wf-c{position:absolute;height:1px;background:var(--baseline);top:50%}
 
 /* ---------- barra apilada 100 % ---------- */
@@ -171,15 +194,19 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--s1);outline-of
    corresponde. Antes la barra media contra un alto y la referencia contra
    otro, y las barras por encima del covenant salian por debajo de la linea. */
 .vb{position:relative;display:flex;align-items:stretch;gap:10px;height:180px}
+/* Cuando hay linea de referencia, las columnas ceden un canal a la derecha
+   para su etiqueta: dibujada encima del area de barras se montaba con el
+   valor de la ultima columna y las dos quedaban ilegibles. */
+.vb.has-ref,.vb-x.has-ref{padding-right:84px}
 .vb-ref{position:absolute;left:0;right:0;border-top:1px dashed var(--warn);pointer-events:none;z-index:2}
-.vb-ref b{position:absolute;right:0;top:-15px;font-size:10px;font-weight:600;color:var(--warn);
-  background:var(--surface);padding:0 4px}
+.vb-ref b{position:absolute;right:0;top:-8px;font-size:10px;font-weight:600;color:var(--warn);
+  background:var(--surface);padding:0 0 0 7px;white-space:nowrap;line-height:1.4}
 .vb-col{flex:1;position:relative;border-radius:5px}
 .vb-col:hover{background:var(--hover)}
 .vb-v{position:absolute;left:0;right:0;text-align:center;font-size:11.5px;font-weight:600;
   font-variant-numeric:tabular-nums;white-space:nowrap}
 .vb-b{position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:74px;border-radius:4px 4px 0 0;box-shadow:0 0 0 2px var(--surface)}
+  width:100%;max-width:74px;border-radius:4px 4px 0 0}
 .vb-x{display:flex;gap:10px;margin-top:7px;border-top:1px solid var(--baseline);padding-top:7px}
 .vb-x span{flex:1;text-align:center;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
 

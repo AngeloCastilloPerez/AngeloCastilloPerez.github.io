@@ -238,7 +238,8 @@ function vbars(host, items, opt){
   var dom = top * 1.15;
   var pct = function(v){ return Math.abs(v)/dom*100; };
 
-  var plot = el('div','vb');
+  /* con referencia, el plot reserva un canal a la derecha para su etiqueta */
+  var plot = el('div','vb'+(opt.ref?' has-ref':''));
   if(opt.ref){
     var ref = el('div','vb-ref');
     ref.style.bottom = pct(opt.ref.v)+'%';
@@ -259,7 +260,8 @@ function vbars(host, items, opt){
     plot.appendChild(col);
   });
   host.appendChild(plot);
-  var ax = el('div','vb-x');
+  /* el eje copia el canal para que cada etiqueta siga centrada en su columna */
+  var ax = el('div','vb-x'+(opt.ref?' has-ref':''));
   items.forEach(function(it){ ax.appendChild(el('span',null,it.x)); });
   host.appendChild(ax);
 }

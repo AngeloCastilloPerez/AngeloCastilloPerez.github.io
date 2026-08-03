@@ -37,8 +37,8 @@
       <div class="card-s">Cada bloque en las dos fechas. Son el mismo concepto en dos momentos, así que
         van agrupados y no apilados, y el color distingue la fecha.</div>
       <div class="legend">
-        <span><i class="sw" style="background:var(--seq-1)"></i>Abr 2026</span>
-        <span><i class="sw" style="background:var(--seq-3)"></i>Abr 2025</span>
+        <span><i class="sw" style="background:var(--s1)"></i>Abr 2026</span>
+        <span><i class="sw" style="background:var(--prev)"></i>Abr 2025</span>
       </div>
     </div>
     <div class="card-b" id="agg"></div>
@@ -85,6 +85,11 @@
       <div class="card-h">
         <div class="card-t">Liquidez · corriente contra corriente</div>
         <div class="card-s">El activo corriente frente al pasivo que vence en menos de un año.</div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s1)"></i>activo corriente</span>
+          <span><i class="sw" style="background:var(--s2)"></i>pasivo corriente</span>
+          <span><i class="sw" style="background:var(--prev)"></i>Abr 2025</span>
+        </div>
       </div>
       <div class="card-b" id="liq"></div>
       <div class="card-f">Razón corriente de 0.38: por cada sol que vence en el año hay 38 céntimos
@@ -199,9 +204,9 @@ V.kpis(document.getElementById('kpis'), [
       k:a[0],
       chip:{t:(d>=0?'↑ +':'↓ '+V.MIN)+Math.abs(vp).toFixed(2)+' %', c:'n'},
       rows:[
-        {k:'2026', v:a[1], color:'var(--seq-1)', label:V.n0(a[1])+' mil',
+        {k:'2026', v:a[1], color:'var(--s1)', label:V.n0(a[1])+' mil',
          tip:[['Abr 2026',V.n0(a[1])+' mil'],['% del activo',V.pc(a[1]/TA*100)]]},
-        {k:'2025', v:a[2], color:'var(--seq-3)', label:V.n0(a[2])+' mil',
+        {k:'2025', v:a[2], color:'var(--prev)', label:V.n0(a[2])+' mil',
          tip:[['Abr 2025',V.n0(a[2])+' mil'],['% del activo',V.pc(a[2]/TA_PY*100)]]}
       ]
     };
@@ -232,13 +237,13 @@ V.stack100(document.getElementById('fin'), [
   {k:'Abr 2026 · activo de ' + V.n0(11625) + ' mil', segs:[
     {k:'Pasivo', v:9590, pct:82.49, color:'var(--s2)', label:V.n0(9590)+' mil',
      tip:[['Importe','9,590 mil'],['% del activo','82.49 %'],['Abr 2025','83.47 %']]},
-    {k:'Patrimonio', v:2035, pct:17.51, color:'var(--seq-1)', label:V.n0(2035)+' mil',
+    {k:'Patrimonio', v:2035, pct:17.51, color:'var(--s1)', label:V.n0(2035)+' mil',
      tip:[['Importe','2,035 mil'],['% del activo','17.51 %'],['Abr 2025','16.53 %']]}
   ]},
   {k:'Abr 2025 · activo de ' + V.n0(11615) + ' mil', segs:[
     {k:'Pasivo', v:9695, pct:83.47, color:'var(--s2)', label:V.n0(9695)+' mil',
      tip:[['Importe','9,695 mil'],['% del activo','83.47 %']]},
-    {k:'Patrimonio', v:1920, pct:16.53, color:'var(--seq-1)', label:V.n0(1920)+' mil',
+    {k:'Patrimonio', v:1920, pct:16.53, color:'var(--s1)', label:V.n0(1920)+' mil',
      tip:[['Importe','1,920 mil'],['% del activo','16.53 %']]}
   ]}
 ]);
@@ -246,41 +251,34 @@ V.stack100(document.getElementById('fin'), [
 /* ---------- SECCION 4 · composicion del activo ---------- */
 V.stack100(document.getElementById('act'), [
   {k:'Abr 2026', segs:[
-    {k:'No corriente', v:10340, pct:88.95, color:'var(--seq-1)', label:V.n0(10340)+' mil',
+    {k:'No corriente', v:10340, pct:88.95, color:'var(--s1)', label:V.n0(10340)+' mil',
      tip:[['Importe','10,340 mil'],['% del activo','88.95 %'],['Abr 2025','90.36 %']]},
-    {k:'Corriente', v:1285, pct:11.05, color:'var(--s3)', label:V.n0(1285)+' mil',
+    {k:'Corriente', v:1285, pct:11.05, color:'var(--s2)', label:V.n0(1285)+' mil',
      tip:[['Importe','1,285 mil'],['% del activo','11.05 %'],['Abr 2025','9.64 %']]}
   ]},
   {k:'Abr 2025', segs:[
-    {k:'No corriente', v:10495, pct:90.36, color:'var(--seq-1)', label:V.n0(10495)+' mil',
+    {k:'No corriente', v:10495, pct:90.36, color:'var(--s1)', label:V.n0(10495)+' mil',
      tip:[['Importe','10,495 mil'],['% del activo','90.36 %']]},
-    {k:'Corriente', v:1120, pct:9.64, color:'var(--s3)', label:V.n0(1120)+' mil',
+    {k:'Corriente', v:1120, pct:9.64, color:'var(--s2)', label:V.n0(1120)+' mil',
      tip:[['Importe','1,120 mil'],['% del activo','9.64 %']]}
   ]}
 ]);
 
 /* ---------- SECCION 4 · liquidez ---------- */
-(function(){
-  V.grouped(document.getElementById('liq'), [
-    {k:'Abr 2026 · razón corriente 0.38', chip:{t:'↑ +0.03 x', c:'g'}, rows:[
-      {k:'Activo cte', v:1285, color:'var(--seq-1)', label:V.n0(1285)+' mil',
-       tip:[['Importe','1,285 mil'],['Δ vs PY','+165 mil']]},
-      {k:'Pasivo cte', v:3410, color:'var(--s2)', label:V.n0(3410)+' mil',
-       tip:[['Importe','3,410 mil'],['Δ vs PY','+170 mil']]}
-    ]},
-    {k:'Abr 2025 · razón corriente 0.35', rows:[
-      {k:'Activo cte', v:1120, color:'var(--seq-3)', label:V.n0(1120)+' mil',
-       tip:[['Importe','1,120 mil']]},
-      {k:'Pasivo cte', v:3240, color:'var(--seq-3)', label:V.n0(3240)+' mil',
-       tip:[['Importe','3,240 mil']]}
-    ]}
-  ], 3410);
-  var lg = V.el('div','legend');
-  lg.innerHTML = '<span><i class="sw" style="background:var(--seq-1)"></i>activo corriente</span>'
-               + '<span><i class="sw" style="background:var(--s2)"></i>pasivo corriente</span>'
-               + '<span><i class="sw" style="background:var(--seq-3)"></i>Abr 2025</span>';
-  document.getElementById('liq').appendChild(lg);
-})();
+V.grouped(document.getElementById('liq'), [
+  {k:'Abr 2026 · razón corriente 0.38', chip:{t:'↑ +0.03 x', c:'g'}, rows:[
+    {k:'Activo cte', v:1285, color:'var(--s1)', label:V.n0(1285)+' mil',
+     tip:[['Importe','1,285 mil'],['Δ vs PY','+165 mil']]},
+    {k:'Pasivo cte', v:3410, color:'var(--s2)', label:V.n0(3410)+' mil',
+     tip:[['Importe','3,410 mil'],['Δ vs PY','+170 mil']]}
+  ]},
+  {k:'Abr 2025 · razón corriente 0.35', rows:[
+    {k:'Activo cte', v:1120, color:'var(--prev)', label:V.n0(1120)+' mil',
+     tip:[['Importe','1,120 mil']]},
+    {k:'Pasivo cte', v:3240, color:'var(--prev)', label:V.n0(3240)+' mil',
+     tip:[['Importe','3,240 mil']]}
+  ]}
+], 3410);
 
 /* ---------- SECCION 5 · tabla ---------- */
 (function(){
