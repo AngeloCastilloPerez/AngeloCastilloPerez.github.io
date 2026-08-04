@@ -6,7 +6,7 @@
 <title>Agrovet BI — Caso de estudio · Angelo Castillo</title>
 <meta name="description" content="Caso de estudio: analítica financiera sobre Microsoft Fabric para Agrovet Market. Arquitectura Medallion, ingesta conectada a los libros de Excel del cierre, modelo semántico y reportes de EERR, balance, ratios y deuda en Power BI.">
 <meta name="author" content="Angelo Castillo">
-<meta name="theme-color" content="#080810">
+<meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://acp.hero.com.pe/casos/agrovet-bi.html">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
 
@@ -26,11 +26,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
-/* mismos tokens que index.html: #080810 de fondo, Inter + JetBrains Mono,
+/* mismos tokens que index.html: #000000 de fondo, Inter + JetBrains Mono,
    degradado #FF3D5A -> #FF8C42 como unico acento. */
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:#080810;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden}
+body{margin:0;background:#000000;font-family:'Inter',system-ui,sans-serif;color:#fff;overflow-x:hidden}
 a{color:#FF8C42;text-decoration:none}
 a:hover{color:#FF3D5A}
 h1,h2,h3,p{margin:0}
@@ -49,7 +49,7 @@ img{max-width:100%;display:block}
 
 /* ---------- TOPBAR ---------- */
 .topbar{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
-  gap:16px;padding:16px 34px;background:rgba(8,8,16,.82);backdrop-filter:blur(12px);
+  gap:16px;padding:16px 34px;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);
   border-bottom:1px solid rgba(255,255,255,.06)}
 .brand{font-size:12px;letter-spacing:.2em;color:rgba(255,255,255,.72)}
 .topnav{display:flex;align-items:center;gap:20px}
@@ -60,7 +60,7 @@ img{max-width:100%;display:block}
   background:rgba(13,13,24,.6)}
 .langbtn{font-size:10.5px;letter-spacing:.14em;padding:5px 12px;border-radius:999px;border:none;cursor:pointer;
   background:transparent;color:rgba(255,255,255,.46);transition:all .25s ease;font-family:'JetBrains Mono',monospace}
-.langbtn.on{background:#fff;color:#080810}
+.langbtn.on{background:#fff;color:#000000}
 
 /* ---------- HEAD DEL CASO ---------- */
 .case-head{position:relative;padding:72px 0 54px;overflow:hidden}
@@ -137,7 +137,7 @@ section.blk{padding:64px 0;border-top:1px solid rgba(255,255,255,.07)}
   line-height:1.7;color:rgba(255,255,255,.68)}
 .bullets li::before{content:"\25B8";position:absolute;left:0;top:0;color:#FF8C42}
 figure.shot{margin:0;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;
-  background:#0d0d16;box-shadow:0 30px 70px rgba(0,0,0,.5)}
+  background:#0D0D0D;box-shadow:0 30px 70px rgba(0,0,0,.5)}
 figure.shot figcaption{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;
   color:rgba(255,255,255,.42);padding:12px 16px;border-top:1px solid rgba(255,255,255,.07)}
 /* la vista reconstruida se embute viva en vez de como captura: el hover, el
@@ -145,7 +145,7 @@ figure.shot figcaption{font-family:'JetBrains Mono',monospace;font-size:10.5px;l
    Ocupa el ancho del .wrap y nada mas: sacarla del contenedor con margenes
    negativos dependia del ancho del padre y se desbordaba. El dashboard ya se
    maqueta a dos columnas desde 980px, asi que a 1112px entra bien. */
-figure.shot .live{position:relative;background:#080810}
+figure.shot .live{position:relative;background:#000000}
 /* alto de arranque; el JS lo ajusta al contenido real para que no haya un
    scroll dentro de otro scroll */
 figure.shot .live iframe{width:100%;height:1180px;border:0;display:block}
