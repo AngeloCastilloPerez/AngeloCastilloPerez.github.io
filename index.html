@@ -565,9 +565,10 @@ button{font:inherit}
         <!-- el morfismo humano->androide ya viene animado en el video; el scroll
              solo lo scrubea (ver morphTime en la seccion de SCROLL) -->
         <div class="morph-stage">
-          <!-- preload="none": pesa 2.8 MB y vive bajo el pliegue. Lo despierta
-               despertarMorph() cuando la seccion se acerca. -->
-          <video id="morphVideo" src="assets/v2/morph.mp4" muted playsinline preload="none" aria-hidden="true"></video>
+          <!-- preload="none": pesa 1.4 MB y vive bajo el pliegue. Lo despierta
+               despertarMorph() cuando la seccion se acerca. El poster tapa ese
+               hueco con el primer frame, que ya es la figura sobre negro. -->
+          <video id="morphVideo" src="assets/v2/morph.mp4" poster="assets/v2/morph.jpg" muted playsinline preload="none" aria-hidden="true"></video>
 
           <div class="gauge gauge-years">
             <svg viewBox="0 0 150 150" aria-hidden="true">
