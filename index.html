@@ -351,6 +351,104 @@ button{font:inherit}
   color:rgba(255,255,255,.46);border:1px solid rgba(255,255,255,.08)}
 /* la primera de cada etapa va en flama, como en el diseno */
 .skill:first-child{color:#FF8C42;border-color:rgba(255,140,66,.34)}
+
+/* ---------- DETALLE DE EXPERIENCIA ----------
+   Solo la etapa que trae `detail` se vuelve clickeable. Las otras no llevan
+   .has-detail, asi que no tienen cursor, ni foco, ni el rotulo de VER DETALLE:
+   una tarjeta que invita a un click que no hace nada es peor que una quieta. */
+.stage-card.has-detail{cursor:pointer}
+.stage-card.has-detail:hover,.stage-card.has-detail:focus-visible{border-color:rgba(255,140,66,.55);
+  transform:translateX(5px);box-shadow:0 0 30px rgba(255,61,90,.10);outline:none}
+.stage-card.has-detail{transition:border-color .25s ease,transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s ease}
+.stage-more{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(255,140,66,.8)}
+.stage-more b{font-weight:400;display:inline-block;width:9px;height:9px;border-top:1.5px solid currentColor;
+  border-right:1.5px solid currentColor;transform:rotate(45deg);transition:transform .25s ease}
+.stage-card.has-detail:hover .stage-more b{transform:rotate(45deg) translate(2px,-2px)}
+
+.expmodal{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:36px}
+.expmodal.open{display:flex}
+.expmodal-scrim{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px)}
+.expmodal-panel{position:relative;width:100%;max-width:1360px;max-height:calc(100vh - 72px);overflow:auto;
+  background:#000;border:1px solid rgba(255,140,66,.32);border-radius:18px;
+  display:grid;grid-template-columns:minmax(340px,42%) 1fr;box-shadow:0 40px 120px rgba(0,0,0,.8)}
+
+/* --- columna izquierda: el encuadre de la foto --- */
+.expshot{position:relative;border-right:1px solid rgba(255,255,255,.08);padding:26px 30px 24px;
+  display:flex;flex-direction:column;gap:18px;min-height:600px}
+.expshot-head{display:flex;align-items:center;gap:14px}
+.expshot-head span{font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(255,255,255,.8)}
+.expshot-frame{position:relative;flex:1;background:#050505;border:1px solid rgba(255,255,255,.07);border-radius:10px}
+/* las cuatro escuadras del encuadre: solo bordes, cero imagenes */
+.expshot-frame i{position:absolute;width:22px;height:22px;z-index:2;pointer-events:none}
+.expshot-frame i:nth-child(1){left:6px;top:6px;border-left:2px solid #FF8C42;border-top:2px solid #FF8C42}
+.expshot-frame i:nth-child(2){right:6px;top:6px;border-right:2px solid #FF8C42;border-top:2px solid #FF8C42}
+.expshot-frame i:nth-child(3){left:6px;bottom:6px;border-left:2px solid #FF8C42;border-bottom:2px solid #FF8C42}
+.expshot-frame i:nth-child(4){right:6px;bottom:6px;border-right:2px solid #FF8C42;border-bottom:2px solid #FF8C42}
+.expshot-rail{position:absolute;left:-8px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;
+  font-size:9px;letter-spacing:.3em;color:#FF8C42;pointer-events:none}
+.expshot-inner{position:absolute;inset:18px;border-radius:8px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center}
+.expshot-inner img{width:100%;height:100%;object-fit:cover;display:block}
+.expshot-empty{border:1px dashed rgba(255,255,255,.14);border-radius:8px;width:100%;height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:20px}
+.expshot-empty svg{opacity:.32}
+.expshot-empty span{font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.34);max-width:26ch;line-height:1.7}
+.expshot-foot{font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.42)}
+
+/* --- columna derecha: el detalle --- */
+.expbody{padding:36px 44px 40px;display:flex;flex-direction:column;min-width:0}
+.expbody-top{display:flex;align-items:center;gap:20px}
+.expbody-period{font-size:13px;letter-spacing:.12em;color:#FF8C42}
+.expclose{margin-left:auto;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,140,66,.5);
+  background:transparent;color:#FF8C42;cursor:pointer;font-size:15px;line-height:1;flex:none;
+  transition:background .25s ease}
+.expclose:hover{background:rgba(255,140,66,.12)}
+.expbody-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px 24px;margin-top:6px}
+.expbody-head h2{margin:0;font-weight:500;font-size:clamp(24px,2.6vw,32px);letter-spacing:-.02em;text-wrap:balance}
+.expbody-co{font-size:14px;color:#FF8C42;margin-top:6px}
+.exptabs{display:flex;gap:10px;flex:none}
+.exptab{font-size:11px;letter-spacing:.18em;padding:9px 18px;border-radius:6px;cursor:pointer;background:transparent;
+  border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.5);transition:all .25s ease}
+.exptab:hover{color:rgba(255,255,255,.8)}
+.exptab.on{border-color:#FF8C42;color:#FF8C42;background:rgba(255,140,66,.08)}
+.exptext{font-size:14.5px;line-height:1.8;color:rgba(255,255,255,.72);margin:22px 0 0;max-width:64ch}
+.exprule{height:1px;background:rgba(255,255,255,.08);margin:26px 0}
+.expcols{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}
+.expcol{display:flex;flex-direction:column;gap:14px;min-width:0}
+.expcol:first-child{padding-right:24px;border-right:1px solid rgba(255,255,255,.08)}
+.expcol-h{display:flex;align-items:center;gap:10px}
+.expcol-h span{font-size:12px;font-weight:500;letter-spacing:.2em;color:#fff}
+.expcol li{display:flex;gap:10px;align-items:flex-start;list-style:none}
+.expcol li::before{content:"";width:5px;height:5px;border-radius:50%;background:#FF8C42;margin-top:7px;flex:none}
+.expcol ul{margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.expcol li em{font-style:normal;font-size:12px;line-height:1.65;color:rgba(255,255,255,.6)}
+.exptools{display:flex;flex-wrap:wrap;gap:10px}
+.exptool{font-size:12px;color:rgba(255,255,255,.82);border:1px solid rgba(255,255,255,.14);border-radius:8px;
+  padding:9px 16px;background:rgba(10,10,10,.85)}
+.expquote{margin-top:26px;border:1px solid rgba(255,140,66,.42);border-radius:10px;padding:18px 22px;
+  display:flex;align-items:flex-end;justify-content:space-between;gap:20px;background:rgba(255,140,66,.04)}
+.expquote q{font-size:13px;line-height:1.7;color:#FF8C42;max-width:52ch;quotes:none}
+.expquote small{font-size:10px;letter-spacing:.22em;color:rgba(255,140,66,.75);flex:none;white-space:nowrap}
+.expquote small b{font-weight:400;display:inline-block;width:9px;height:9px;border-right:1.6px solid #FF8C42;
+  border-bottom:1.6px solid #FF8C42;margin-left:4px}
+
+@media (max-width:900px){
+  .expmodal{padding:0}
+  .expmodal-panel{grid-template-columns:1fr;max-width:none;max-height:100vh;height:100vh;border:0;border-radius:0}
+  .expshot{border-right:0;border-bottom:1px solid rgba(255,255,255,.08);min-height:320px;padding:20px 20px 18px}
+  .expshot-rail{display:none}
+  .expbody{padding:26px 22px 34px}
+  .expcols{grid-template-columns:1fr;gap:26px}
+  .expcol:first-child{padding-right:0;border-right:0;padding-bottom:26px;
+    border-bottom:1px solid rgba(255,255,255,.08)}
+}
+@media (prefers-reduced-motion:reduce){
+  .stage-card.has-detail:hover,.stage-card.has-detail:focus-visible{transform:none}
+  .stage-card.has-detail,.stage-more b{transition:none}
+}
 /* ---------- CONTACTO ---------- */
 .contact{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:100px 24px 60px;position:relative}
 .contact h2{font-weight:300;font-size:clamp(30px,5vw,44px);letter-spacing:-.025em;text-wrap:balance;margin:0 0 14px}
@@ -729,6 +827,78 @@ button{font:inherit}
   </div>
 </div>
 
+<!-- ============ DETALLE DE EXPERIENCIA ============
+     El esqueleto vive en el HTML y lo rellena fillExpModal(); asi el panel no
+     se reconstruye entero en cada apertura ni en cada cambio de idioma. -->
+<div class="expmodal" id="expModal" role="dialog" aria-modal="true" aria-labelledby="xTitle">
+  <div class="expmodal-scrim" id="xScrim"></div>
+  <div class="expmodal-panel">
+
+    <div class="expshot">
+      <div class="expshot-head">
+        <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" style="flex:none"><path d="M1 10 L6 0 M7 10 L12 0 M13 10 L18 0" stroke="#FF8C42" stroke-width="1.6"/></svg>
+        <span class="mono" data-t="xSelected"></span>
+      </div>
+      <div class="expshot-frame">
+        <i></i><i></i><i></i><i></i>
+        <span class="expshot-rail mono" data-t="xRail"></span>
+        <div class="expshot-inner" id="xShot"></div>
+      </div>
+      <div class="expshot-foot mono" id="xShotFoot"></div>
+    </div>
+
+    <div class="expbody">
+      <div class="expbody-top">
+        <span class="expbody-period mono" id="xPeriod"></span>
+        <button class="expclose" id="xClose" aria-label="Cerrar">&#10005;</button>
+      </div>
+      <div class="expbody-head">
+        <div>
+          <h2 id="xTitle"></h2>
+          <div class="expbody-co mono" id="xCompany"></div>
+        </div>
+        <div class="exptabs">
+          <button class="exptab mono on" id="xTabResumen" data-tab="resumen" data-t="xTabResumen"></button>
+          <button class="exptab mono" id="xTabAnalisis" data-tab="analisis" data-t="xTabAnalisis"></button>
+        </div>
+      </div>
+      <p class="exptext" id="xText"></p>
+
+      <div class="exprule"></div>
+
+      <div class="expcols">
+        <div class="expcol">
+          <div class="expcol-h">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="#FF8C42" stroke-width="1.4"/><circle cx="8" cy="8" r="2" fill="#FF8C42"/></svg>
+            <span class="mono" data-t="xRetos"></span>
+          </div>
+          <ul class="mono" id="xRetosList"></ul>
+        </div>
+        <div class="expcol">
+          <div class="expcol-h">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 5 L8 2 L14 5 L8 8 Z" fill="none" stroke="#FF8C42" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 5 V11 L8 14 L14 11 V5" fill="none" stroke="#FF8C42" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            <span class="mono" data-t="xAprend"></span>
+          </div>
+          <ul class="mono" id="xAprendList"></ul>
+        </div>
+      </div>
+
+      <div class="exprule" style="margin-bottom:22px"></div>
+
+      <div class="expcol-h" style="margin-bottom:14px">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4 H9 M12 4 H14 M2 12 H5 M8 12 H14" stroke="#FF8C42" stroke-width="1.4" stroke-linecap="round"/><circle cx="10.5" cy="4" r="1.8" fill="none" stroke="#FF8C42" stroke-width="1.4"/><circle cx="6.5" cy="12" r="1.8" fill="none" stroke="#FF8C42" stroke-width="1.4"/></svg>
+        <span class="mono" data-t="xTools"></span>
+      </div>
+      <div class="exptools mono" id="xToolsList"></div>
+
+      <div class="expquote">
+        <q class="mono" id="xQuote"></q>
+        <small class="mono"><span data-t="xReflex"></span><b></b></small>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    DATOS REALES — Angelo Castillo / HERO
@@ -1040,7 +1210,13 @@ var CLIENTS = [
   {name:'Adium',      logo:'assets/img/clients/adium.png'}
 ];
 
-/* Trayectoria profesional real — de humano a máquina */
+/* Trayectoria profesional real — de humano a máquina.
+
+   El campo `detail` es opcional: la etapa que lo trae se vuelve clickeable y
+   abre el panel de detalle. La que no lo trae se queda como tarjeta muerta, sin
+   cursor ni foco, para no prometer algo que no hay detras.
+   `photo` es la ruta de una imagen del trabajo; si falta, el encuadre de la
+   izquierda muestra el marco vacio. */
 var STAGES = [
   {n:'01', period:'Abr 2021 — Sep 2021', morph:0.00, company:'Grupo Rocío',
    title:{es:'Auxiliar de Procesos',en:'Process Assistant'},
@@ -1049,19 +1225,71 @@ var STAGES = [
   {n:'02', period:'Sep 2021 — Abr 2022', morph:0.14, company:'Grupo Rocío',
    title:{es:'Asistente de Producción',en:'Production Assistant'},
    desc:{es:'Proyectos de mejora continua junto al equipo administrativo. Macros VBA, Business Intelligence y análisis de datos operativos.',en:'Continuous improvement projects with the administrative team. VBA Macros, Business Intelligence and operational data analysis.'},
-   skills:['Macros VBA','Business Intelligence','Excel']},
+   skills:['Macros VBA','Business Intelligence','Excel'],
+   detail:{photo:null,
+     es:{resumen:'Comencé mi camino profesional apoyando la gestión de procesos operativos y administrativos. Fue aquí donde desarrollé el pensamiento analítico y descubrí mi pasión por optimizar, automatizar y entender los datos que impulsan decisiones.',
+         analisis:'Automatizar reportes con Macros VBA redujo horas de trabajo manual y me mostró el impacto directo de los datos bien estructurados sobre la operación diaria.',
+         retos:['Estandarizar procesos manuales dispersos','Garantizar la calidad y consistencia de los datos','Generar reportes claros para la toma de decisiones'],
+         aprend:['Pensamiento analítico y resolución de problemas','Documentación y mapeo de procesos','Comunicación efectiva con equipos de negocio'],
+         tools:['Excel','Macros VBA','Power Query','Business Intelligence'],
+         quote:'“Esta experiencia me dio las bases para convertirme en el profesional que soy hoy.”'},
+     en:{resumen:'I started my career supporting the management of operational and administrative processes. This is where I built analytical thinking and found my passion for optimising, automating and understanding the data behind decisions.',
+         analisis:'Automating reports with VBA Macros cut hours of manual work and showed me the direct impact well-structured data has on day-to-day operations.',
+         retos:['Standardise scattered manual processes','Guarantee data quality and consistency','Produce clear reports for decision-making'],
+         aprend:['Analytical thinking and problem solving','Process documentation and mapping','Effective communication with business teams'],
+         tools:['Excel','VBA Macros','Power Query','Business Intelligence'],
+         quote:'“This experience gave me the foundations to become the professional I am today.”'}}},
   {n:'03', period:'2023', morph:0.28, company:'Dígito',
    title:{es:'Analista de BI',en:'BI Analyst'},
    desc:{es:'Dashboards ejecutivos en Power BI, modelos de datos y automatización de reportes para AUNOR y ASTARA.',en:'Executive Power BI dashboards, data models and report automation for AUNOR and ASTARA.'},
-   skills:['Power BI','DAX','SQL','ETL']},
+   skills:['Power BI','DAX','SQL','ETL'],
+   detail:{photo:null,
+     es:{resumen:'Dashboards ejecutivos en Power BI, modelos de datos y automatización de reportes para AUNOR y ASTARA. Aprendí a traducir preguntas de negocio en visualizaciones accionables.',
+         analisis:'El modelado en DAX y los pipelines ETL consolidaron mi criterio técnico: menos reportes, más decisiones respaldadas por datos confiables.',
+         retos:['Unificar fuentes de datos heterogéneas','Diseñar dashboards que respondan preguntas reales','Automatizar la actualización de reportes'],
+         aprend:['Modelado de datos y DAX avanzado','Storytelling con datos','Gestión de stakeholders'],
+         tools:['Power BI','DAX','SQL','ETL'],
+         quote:'“Aprendí que un buen dashboard no muestra datos: responde preguntas.”'},
+     en:{resumen:'Executive Power BI dashboards, data models and report automation for AUNOR and ASTARA. I learned to turn business questions into actionable visuals.',
+         analisis:'DAX modelling and ETL pipelines sharpened my technical judgement: fewer reports, more decisions backed by data you can trust.',
+         retos:['Unify heterogeneous data sources','Design dashboards that answer real questions','Automate report refreshes'],
+         aprend:['Data modelling and advanced DAX','Storytelling with data','Stakeholder management'],
+         tools:['Power BI','DAX','SQL','ETL'],
+         quote:'“I learned that a good dashboard does not show data: it answers questions.”'}}},
   {n:'04', period:'2023 — 2024', morph:0.43, company:'Dígito',
    title:{es:'Analista de Datos',en:'Data Analyst'},
    desc:{es:'Análisis avanzado con Python y Tableau. ETL y modelado de datos, KPIs estratégicos a nivel gerencial.',en:'Advanced analysis with Python and Tableau. ETL and data modeling, strategic KPIs at management level.'},
-   skills:['Python','Tableau','Pandas']},
+   skills:['Python','Tableau','Pandas'],
+   detail:{photo:null,
+     es:{resumen:'Análisis avanzado con Python y Tableau. ETL, modelado de datos y definición de KPIs estratégicos a nivel gerencial.',
+         analisis:'Python me abrió el análisis a escala: de reportes descriptivos a modelos que anticipan comportamientos y priorizan recursos.',
+         retos:['Escalar el análisis más allá de las hojas de cálculo','Definir KPIs estratégicos junto a gerencia','Mantener pipelines de datos confiables'],
+         aprend:['Python para análisis de datos','Visualización avanzada en Tableau','Pensamiento estadístico'],
+         tools:['Python','Pandas','Tableau','SQL'],
+         quote:'“Los datos a escala cambian las preguntas que te atreves a hacer.”'},
+     en:{resumen:'Advanced analysis with Python and Tableau. ETL, data modelling and strategic KPIs defined at management level.',
+         analisis:'Python opened up analysis at scale: from descriptive reports to models that anticipate behaviour and prioritise resources.',
+         retos:['Scale analysis beyond spreadsheets','Define strategic KPIs alongside management','Keep data pipelines reliable'],
+         aprend:['Python for data analysis','Advanced visualisation in Tableau','Statistical thinking'],
+         tools:['Python','Pandas','Tableau','SQL'],
+         quote:'“Data at scale changes the questions you dare to ask.”'}}},
   {n:'05', period:'2024 — 2025', morph:0.57, company:'Dígito',
    title:{es:'Analista de Proyectos de TI',en:'IT Project Analyst'},
    desc:{es:'Liderazgo de proyectos de transformación digital. Arquitecturas de datos en Azure Data Factory e intranet ENAPU.',en:'Leading digital transformation projects. Data architectures on Azure Data Factory and the ENAPU intranet.'},
-   skills:['Azure','SharePoint','n8n']},
+   skills:['Azure','SharePoint','n8n'],
+   detail:{photo:null,
+     es:{resumen:'Liderazgo de proyectos de transformación digital. Arquitecturas de datos en Azure Data Factory e intranet ENAPU.',
+         analisis:'Liderar proyectos end-to-end me llevó del análisis a la estrategia: alcance, equipos y arquitectura al servicio del negocio.',
+         retos:['Coordinar equipos técnicos y de negocio','Diseñar arquitecturas de datos en la nube','Entregar proyectos con impacto medible'],
+         aprend:['Liderazgo y gestión de proyectos','Arquitectura de datos en Azure','Visión de producto y negocio'],
+         tools:['Azure','Data Factory','Liderazgo','Scrum'],
+         quote:'“Dejé de construir reportes para empezar a construir el camino: el siguiente paso es fundar.”'},
+     en:{resumen:'Leading digital transformation projects. Data architectures on Azure Data Factory and the ENAPU intranet.',
+         analisis:'Leading projects end-to-end took me from analysis to strategy: scope, teams and architecture in service of the business.',
+         retos:['Coordinate technical and business teams','Design cloud data architectures','Deliver projects with measurable impact'],
+         aprend:['Leadership and project management','Data architecture on Azure','Product and business vision'],
+         tools:['Azure','Data Factory','Leadership','Scrum'],
+         quote:'“I stopped building reports and started building the path: the next step is founding.”'}}},
   {n:'06', period:'2025 — Abr 2026', morph:0.71, company:'Dígito',
    title:{es:'Líder de Proyectos',en:'Project Lead'},
    desc:{es:'Consultoría en Data & Analytics, IA y automatización. Equipos multidisciplinarios y entregas end-to-end para Yamaha Motors Perú.',en:'Consulting in Data & Analytics, AI and automation. Multidisciplinary teams and end-to-end delivery for Yamaha Motors Perú.'},
@@ -1088,7 +1316,10 @@ var T = {
       devRole:'Desarrollador & Arquitecto', availOn:'Disponible en', repo:'Enlace', lastUpd:'Última actualización',
       contactEyebrow:'[ CONTACTO ]', contactH:'¿Construimos algo juntos?',
       contactSub:'Disponible para proyectos, producto y consultoría técnica.',
-      start:'Empezar ahora', cat:'Categoría', status:'Estado', yearL:'Año'},
+      start:'Empezar ahora', cat:'Categoría', status:'Estado', yearL:'Año',
+      stageMore:'Ver detalle', xSelected:'Experiencia seleccionada', xRail:'• ARCHIVO •',
+      xTabResumen:'RESUMEN', xTabAnalisis:'ANÁLISIS', xRetos:'RETOS', xAprend:'APRENDIZAJES',
+      xTools:'HERRAMIENTAS', xReflex:'MI REFLEXIÓN', xNoPhoto:'Sin foto de este trabajo todavía'},
   en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
       shelfHint:'SCROLL DOWN TO BROWSE THE COVERS · CLICK TO OPEN',
       clientsLabel:'Solutions delivered for',
@@ -1100,13 +1331,16 @@ var T = {
       devRole:'Developer & Architect', availOn:'Available on', repo:'Link', lastUpd:'Last update',
       contactEyebrow:'[ CONTACT ]', contactH:'Shall we build something together?',
       contactSub:'Available for projects, product work and technical consulting.',
-      start:'Start now', cat:'Category', status:'Status', yearL:'Year'}
+      start:'Start now', cat:'Category', status:'Status', yearL:'Year',
+      stageMore:'View detail', xSelected:'Selected experience', xRail:'• ARCHIVE •',
+      xTabResumen:'SUMMARY', xTabAnalisis:'ANALYSIS', xRetos:'CHALLENGES', xAprend:'TAKEAWAYS',
+      xTools:'TOOLS', xReflex:'MY REFLECTION', xNoPhoto:'No photo from this role yet'}
 };
 
 /* ============================================================
    ESTADO + RENDER
    ============================================================ */
-var state = {lang:'es', cat:null, openId:null};
+var state = {lang:'es', cat:null, openId:null, expIdx:null, expTab:'resumen'};
 var $ = function(id){ return document.getElementById(id); };
 var catOf = function(k){ for(var i=0;i<CATS.length;i++){ if(CATS[i].k===k) return CATS[i]; } return CATS[0]; };
 var byId = function(id){ for(var i=0;i<PROJECTS.length;i++){ if(PROJECTS[i].id===id) return PROJECTS[i]; } return null; };
@@ -1289,16 +1523,30 @@ function renderTimeline(){
     d.className = 'stage' + (s.company==='HERO' ? ' hero-stage' : '');
     d.setAttribute('data-i', String(i));
     var skills = s.skills.map(function(k){ return '<span class="skill mono">'+k+'</span>'; }).join('');
+    var hay = !!s.detail;
     /* el nodo ya no lleva el numero de etapa: en el diseno es un aro punteado
        con un punto que late. El numero seguia en s.n por si hace falta. */
     d.innerHTML = '<div class="stage-dot"><i></i></div>'
       + '<div class="stage-period mono">'+s.period+'</div>'
-      + '<div class="stage-card">'
+      + '<div class="stage-card'+(hay ? ' has-detail' : '')+'">'
       +   '<h3>'+s.title[state.lang]+'</h3>'
       +   '<div class="stage-co mono">'+s.company+'</div>'
       +   '<p class="mono">'+s.desc[state.lang]+'</p>'
       +   '<div class="skills">'+skills+'</div>'
+      +   (hay ? '<div class="stage-more mono">'+T[state.lang].stageMore+'<b></b></div>' : '')
       + '</div>';
+    if(hay){
+      var card = d.querySelector('.stage-card');
+      /* boton de verdad y no un div con onclick: teclado y lector de pantalla
+         salen gratis, y no hay que reimplementar Enter/Espacio a mano. */
+      card.setAttribute('role','button');
+      card.setAttribute('tabindex','0');
+      card.setAttribute('aria-haspopup','dialog');
+      card.onclick = function(){ openExp(i); };
+      card.onkeydown = function(e){
+        if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openExp(i); }
+      };
+    }
     tl.appendChild(d);
   });
 }
@@ -1312,6 +1560,7 @@ function render(){
   renderShelf();
   renderTimeline();
   if(state.openId) fillModal();
+  if(state.expIdx !== null) fillExpModal();
   refresh();
 }
 
@@ -1396,6 +1645,91 @@ function stepModal(d){
   var i = PROJECTS.indexOf(byId(state.openId));
   var n = (i + d + PROJECTS.length) % PROJECTS.length;
   openModal(PROJECTS[n].id);
+}
+
+/* ============================================================
+   DETALLE DE EXPERIENCIA
+   Un segundo panel, aparte del modal de proyectos: comparten el patron
+   (abrir / cerrar / bloquear el scroll del body) pero no el markup, porque el
+   contenido no se parece en nada.
+   ============================================================ */
+function fillExpModal(){
+  var s = STAGES[state.expIdx];
+  if(!s || !s.detail) return;
+  var t = T[state.lang], d = s.detail[state.lang] || s.detail.es;
+
+  $('xPeriod').textContent  = s.period;
+  $('xTitle').textContent   = s.title[state.lang];
+  $('xCompany').textContent = s.company;
+  $('xText').textContent    = state.expTab === 'analisis' ? d.analisis : d.resumen;
+  $('xQuote').textContent   = d.quote;
+  $('xShotFoot').textContent = s.company + ' · ' + s.period;
+
+  $('xTabResumen').classList.toggle('on', state.expTab !== 'analisis');
+  $('xTabAnalisis').classList.toggle('on', state.expTab === 'analisis');
+
+  lista($('xRetosList'), d.retos);
+  lista($('xAprendList'), d.aprend);
+
+  var tools = $('xToolsList');
+  tools.innerHTML = '';
+  d.tools.forEach(function(x){
+    var e = document.createElement('span');
+    e.className = 'exptool';
+    e.textContent = x;
+    tools.appendChild(e);
+  });
+
+  /* la foto es opcional y hoy no hay ninguna: mientras `photo` sea null el
+     encuadre muestra el marco vacio en vez de un <img> roto. */
+  var shot = $('xShot');
+  shot.innerHTML = '';
+  if(s.detail.photo){
+    var img = document.createElement('img');
+    img.src = s.detail.photo;
+    img.alt = s.title[state.lang] + ' — ' + s.company;
+    img.loading = 'lazy';
+    shot.appendChild(img);
+  }else{
+    var box = document.createElement('div');
+    box.className = 'expshot-empty';
+    box.innerHTML = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" '
+      + 'stroke-width="1.2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/>'
+      + '<circle cx="8.5" cy="9.5" r="1.6"/><path d="M21 16l-5-5-4.5 4.5-2-2L3 19"/></svg>'
+      + '<span class="mono"></span>';
+    box.querySelector('span').textContent = t.xNoPhoto;
+    shot.appendChild(box);
+  }
+}
+function lista(ul, arr){
+  ul.innerHTML = '';
+  arr.forEach(function(x){
+    var li = document.createElement('li'), em = document.createElement('em');
+    em.textContent = x;
+    li.appendChild(em);
+    ul.appendChild(li);
+  });
+}
+function openExp(i){
+  if(!STAGES[i] || !STAGES[i].detail) return;
+  state.expIdx = i;
+  state.expTab = 'resumen';
+  fillExpModal();
+  $('expModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('expModal').querySelector('.expmodal-panel').scrollTop = 0;
+  $('xClose').focus();
+}
+function closeExp(){
+  if(state.expIdx === null) return;
+  var i = state.expIdx;
+  state.expIdx = null;
+  $('expModal').classList.remove('open');
+  /* si el modal de proyectos no esta abierto, se devuelve el scroll */
+  if(!state.openId) document.body.style.overflow = '';
+  /* el foco vuelve a la tarjeta que abrio el panel, no al principio del documento */
+  var card = document.querySelector('.stage[data-i="'+i+'"] .stage-card');
+  if(card) card.focus();
 }
 
 /* ============================================================
@@ -1677,7 +2011,19 @@ function paintMouse(){
   $('mPrev').onclick = function(){ stepModal(-1); };
   $('mNext').onclick = function(){ stepModal(1); };
 
+  $('xClose').onclick = closeExp;
+  $('xScrim').onclick = closeExp;
+  [$('xTabResumen'), $('xTabAnalisis')].forEach(function(b){
+    b.onclick = function(){ state.expTab = b.getAttribute('data-tab'); fillExpModal(); };
+  });
+
   document.addEventListener('keydown', function(e){
+    /* el panel de experiencia se abre por encima del de proyectos, asi que se
+       atiende primero y se corta: un solo Escape no puede cerrar los dos. */
+    if(state.expIdx !== null){
+      if(e.key === 'Escape') closeExp();
+      return;
+    }
     if(!state.openId) return;
     if(e.key === 'Escape') closeModal();
     if(e.key === 'ArrowLeft') stepModal(-1);
