@@ -110,8 +110,11 @@ jobs:
                    -of csv=p=0 "$f" | grep -c '^1$' || true)
             bytes=$(stat -c%s "$f")
             echo "$f -> $keys keyframes de $frames frames, $bytes bytes"
-            # si no todos los frames son keyframe, el re-encode no sirvio
-            if [ "$keys" != "$frames" ]; then
+            # Se tolera 1 frame sin keyframe: con -g 1 x264 igual puede dejar uno
+            # suelto, y un solo P entre 191 I no cambia nada al hacer seek. Lo que
+            # si importa es que no vuelva a quedar un puñado de keyframes sobre
+            # cientos de frames, que es el caso que este paso existe para atajar.
+            if [ "$keys" -lt "$(( frames - 1 ))" ]; then
               echo "ERROR: $f quedo con $keys keyframes de $frames. Se esperaba que fueran todos."
               exit 1
             fi
