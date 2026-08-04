@@ -248,14 +248,22 @@ button{font:inherit}
    position:sticky y eso crea un contexto de apilamiento, asi que el
    mix-blend-mode del video no alcanza el fondo de la pagina. Sin ese color el
    screen compone contra un backdrop transparente y sale un rectangulo NEGRO.
-   El morph.mp4 ya viene con fondo negro, asi que screen lo hace desaparecer
-   solo: sobre negro devuelve exactamente el color de abajo. Antes habia un
-   contrast(1.25) que estaba para aplastar el fondo azulado (6,6,20) que traia
-   el video viejo; ese fondo ya no existe y el filtro solo endurecia la figura.
-   El mask radial es del diseno: difumina el borde del encuadre para que la
-   figura no quede recortada en una caja. */
+   El fondo del morph.mp4 no es negro puro: medido sobre el primer frame da
+   (3,3,3) parejo en todos los bordes. screen sobre negro devuelve ese mismo 3,
+   o sea un rectangulo #030303 sobre el panel #000000 -- poco, pero de borde
+   recto, y eso se ve. contrast() lo aplasta: mapea v -> (v-0.5)*k + 0.5, asi
+   que con k >= 1.025 el 3/255 ya cae a cero. Con brightness(1.06) delante,
+   contrast(1.08) manda a negro todo lo que este por debajo de 8/255 y deja un
+   margen para el ruido de compresion en los frames mas oscuros. Sobre la
+   figura no se nota: un medio tono se queda donde estaba.
+   OJO con el mask: esta medido sobre la caja del elemento, que ocupa todo el
+   ancho del panel, pero object-fit:contain pinta el video en una franja
+   centrada mucho mas angosta. El difuminado cae en el vacio de los costados y
+   no llega a tocar los bordes del video. Queda asi a proposito: ajustarlo a la
+   caja del video le recortaria la cabeza y los pies a la figura, y con el fondo
+   ya en cero no hay ningun borde que difuminar. */
 .morph-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
-  mix-blend-mode:screen;filter:brightness(1.06);
+  mix-blend-mode:screen;filter:brightness(1.06) contrast(1.08);
   -webkit-mask-image:radial-gradient(ellipse 62% 55% at 50% 48%,#000 62%,transparent 98%);
           mask-image:radial-gradient(ellipse 62% 55% at 50% 48%,#000 62%,transparent 98%)}
 
