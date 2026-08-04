@@ -248,12 +248,14 @@ button{font:inherit}
    position:sticky y eso crea un contexto de apilamiento, asi que el
    mix-blend-mode del video no alcanza el fondo de la pagina. Sin ese color el
    screen compone contra un backdrop transparente y sale un rectangulo NEGRO.
-   contrast() aplasta el fondo propio del video (6,6,20) a negro puro, y screen
-   sobre negro devuelve exactamente el color de abajo.
+   El morph.mp4 ya viene con fondo negro, asi que screen lo hace desaparecer
+   solo: sobre negro devuelve exactamente el color de abajo. Antes habia un
+   contrast(1.25) que estaba para aplastar el fondo azulado (6,6,20) que traia
+   el video viejo; ese fondo ya no existe y el filtro solo endurecia la figura.
    El mask radial es del diseno: difumina el borde del encuadre para que la
    figura no quede recortada en una caja. */
 .morph-stage video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;
-  mix-blend-mode:screen;filter:contrast(1.25) brightness(1.06);
+  mix-blend-mode:screen;filter:brightness(1.06);
   -webkit-mask-image:radial-gradient(ellipse 62% 55% at 50% 48%,#000 62%,transparent 98%);
           mask-image:radial-gradient(ellipse 62% 55% at 50% 48%,#000 62%,transparent 98%)}
 
