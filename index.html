@@ -1215,18 +1215,33 @@ var CLIENTS = [
    El campo `detail` es opcional: la etapa que lo trae se vuelve clickeable y
    abre el panel de detalle. La que no lo trae se queda como tarjeta muerta, sin
    cursor ni foco, para no prometer algo que no hay detras.
-   `photo` es la ruta de una imagen del trabajo; si falta, el encuadre de la
-   izquierda muestra el marco vacio. */
+   La foto del panel va por convencion, no aqui: se deja el archivo en
+   assets/v2/experiencia/<n>.jpg, donde <n> es el numero de la etapa, y aparece
+   sola. `detail.photo` solo hace falta si una necesita otra ruta u otra
+   extension. */
 var STAGES = [
   {n:'01', period:'Abr 2021 — Sep 2021', morph:0.00, company:'Grupo Rocío',
    title:{es:'Auxiliar de Procesos',en:'Process Assistant'},
    desc:{es:'Apoyo en la gestión de procesos operativos y administrativos. Primeros pasos en análisis de datos y eficiencia de procesos.',en:'Support in operational and administrative process management. First steps into data analysis and process efficiency.'},
-   skills:['Eficiencia de procesos','Análisis de información']},
+   skills:['Eficiencia de procesos','Análisis de información'],
+   detail:{
+     es:{resumen:'Mi primera entrada al mundo laboral, apoyando la gestión de procesos operativos y administrativos. Fue el primer contacto real con datos que no vivían en un ejercicio de clase, sino en la operación de una empresa que dependía de ellos todos los días.',
+         analisis:'Aprendí lo que después me acompañó siempre: antes de automatizar algo hay que entenderlo. Los procesos que parecían desordenados casi nunca lo estaban, solo nadie los había escrito.',
+         retos:['Entender de punta a punta un proceso operativo ajeno','Ordenar información dispersa en planillas sueltas','Ganar la confianza del equipo siendo el nuevo'],
+         aprend:['Leer un proceso antes de intentar mejorarlo','Disciplina con el dato de origen','Preguntar hasta entender el porqué, no solo el cómo'],
+         tools:['Excel','Mapeo de procesos','Análisis de información'],
+         quote:'“Antes de automatizar algo hay que entenderlo. Ahí empezó todo.”'},
+     en:{resumen:'My first step into working life, supporting the management of operational and administrative processes. It was my first real contact with data that did not live in a classroom exercise but in a company that depended on it every single day.',
+         analisis:'I learned what stayed with me ever since: before automating something you have to understand it. Processes that looked messy almost never were — nobody had written them down.',
+         retos:['Understand an unfamiliar operational process end to end','Bring order to information scattered across loose spreadsheets','Earn the team trust as the new person'],
+         aprend:['Read a process before trying to improve it','Discipline with data at the source','Ask until you understand the why, not just the how'],
+         tools:['Excel','Process mapping','Information analysis'],
+         quote:'“Before you automate something you have to understand it. That is where it all started.”'}}},
   {n:'02', period:'Sep 2021 — Abr 2022', morph:0.14, company:'Grupo Rocío',
    title:{es:'Asistente de Producción',en:'Production Assistant'},
    desc:{es:'Proyectos de mejora continua junto al equipo administrativo. Macros VBA, Business Intelligence y análisis de datos operativos.',en:'Continuous improvement projects with the administrative team. VBA Macros, Business Intelligence and operational data analysis.'},
    skills:['Macros VBA','Business Intelligence','Excel'],
-   detail:{photo:null,
+   detail:{
      es:{resumen:'Comencé mi camino profesional apoyando la gestión de procesos operativos y administrativos. Fue aquí donde desarrollé el pensamiento analítico y descubrí mi pasión por optimizar, automatizar y entender los datos que impulsan decisiones.',
          analisis:'Automatizar reportes con Macros VBA redujo horas de trabajo manual y me mostró el impacto directo de los datos bien estructurados sobre la operación diaria.',
          retos:['Estandarizar procesos manuales dispersos','Garantizar la calidad y consistencia de los datos','Generar reportes claros para la toma de decisiones'],
@@ -1243,7 +1258,7 @@ var STAGES = [
    title:{es:'Analista de BI',en:'BI Analyst'},
    desc:{es:'Dashboards ejecutivos en Power BI, modelos de datos y automatización de reportes para AUNOR y ASTARA.',en:'Executive Power BI dashboards, data models and report automation for AUNOR and ASTARA.'},
    skills:['Power BI','DAX','SQL','ETL'],
-   detail:{photo:null,
+   detail:{
      es:{resumen:'Dashboards ejecutivos en Power BI, modelos de datos y automatización de reportes para AUNOR y ASTARA. Aprendí a traducir preguntas de negocio en visualizaciones accionables.',
          analisis:'El modelado en DAX y los pipelines ETL consolidaron mi criterio técnico: menos reportes, más decisiones respaldadas por datos confiables.',
          retos:['Unificar fuentes de datos heterogéneas','Diseñar dashboards que respondan preguntas reales','Automatizar la actualización de reportes'],
@@ -1260,7 +1275,7 @@ var STAGES = [
    title:{es:'Analista de Datos',en:'Data Analyst'},
    desc:{es:'Análisis avanzado con Python y Tableau. ETL y modelado de datos, KPIs estratégicos a nivel gerencial.',en:'Advanced analysis with Python and Tableau. ETL and data modeling, strategic KPIs at management level.'},
    skills:['Python','Tableau','Pandas'],
-   detail:{photo:null,
+   detail:{
      es:{resumen:'Análisis avanzado con Python y Tableau. ETL, modelado de datos y definición de KPIs estratégicos a nivel gerencial.',
          analisis:'Python me abrió el análisis a escala: de reportes descriptivos a modelos que anticipan comportamientos y priorizan recursos.',
          retos:['Escalar el análisis más allá de las hojas de cálculo','Definir KPIs estratégicos junto a gerencia','Mantener pipelines de datos confiables'],
@@ -1277,7 +1292,7 @@ var STAGES = [
    title:{es:'Analista de Proyectos de TI',en:'IT Project Analyst'},
    desc:{es:'Liderazgo de proyectos de transformación digital. Arquitecturas de datos en Azure Data Factory e intranet ENAPU.',en:'Leading digital transformation projects. Data architectures on Azure Data Factory and the ENAPU intranet.'},
    skills:['Azure','SharePoint','n8n'],
-   detail:{photo:null,
+   detail:{
      es:{resumen:'Liderazgo de proyectos de transformación digital. Arquitecturas de datos en Azure Data Factory e intranet ENAPU.',
          analisis:'Liderar proyectos end-to-end me llevó del análisis a la estrategia: alcance, equipos y arquitectura al servicio del negocio.',
          retos:['Coordinar equipos técnicos y de negocio','Diseñar arquitecturas de datos en la nube','Entregar proyectos con impacto medible'],
@@ -1293,15 +1308,54 @@ var STAGES = [
   {n:'06', period:'2025 — Abr 2026', morph:0.71, company:'Dígito',
    title:{es:'Líder de Proyectos',en:'Project Lead'},
    desc:{es:'Consultoría en Data & Analytics, IA y automatización. Equipos multidisciplinarios y entregas end-to-end para Yamaha Motors Perú.',en:'Consulting in Data & Analytics, AI and automation. Multidisciplinary teams and end-to-end delivery for Yamaha Motors Perú.'},
-   skills:['IA Generativa','LLMs','Make','Liderazgo']},
+   skills:['IA Generativa','LLMs','Make','Liderazgo'],
+   detail:{
+     es:{resumen:'El paso de ejecutar a dirigir. Consultoría en Data & Analytics, IA y automatización, con equipos multidisciplinarios y entregas end-to-end para Yamaha Motors Perú.',
+         analisis:'La IA generativa dejó de ser una demo y entró a producción. Cuando eso pasa, el cuello de botella deja de ser técnico: pasa a ser el alcance, y sobre todo la adopción.',
+         retos:['Llevar la IA generativa de la prueba de concepto a producción','Coordinar equipos multidisciplinarios sin perder el detalle técnico','Sostener el alcance en entregas end-to-end'],
+         aprend:['Liderar sin dejar de construir','Diseño de automatizaciones sobre LLMs','La adopción es parte de la entrega, no lo que viene después'],
+         tools:['IA Generativa','LLMs','Make','n8n','Liderazgo'],
+         quote:'“Un proyecto no termina cuando funciona, sino cuando alguien lo usa todos los días.”'},
+     en:{resumen:'The move from executing to leading. Consulting in Data & Analytics, AI and automation, with multidisciplinary teams and end-to-end delivery for Yamaha Motors Perú.',
+         analisis:'Generative AI stopped being a demo and went into production. Once that happens the bottleneck is no longer technical: it becomes scope, and above all adoption.',
+         retos:['Take generative AI from proof of concept to production','Coordinate multidisciplinary teams without losing the technical detail','Hold the scope on end-to-end deliveries'],
+         aprend:['Lead without stopping building','Designing automations on top of LLMs','Adoption is part of the delivery, not what comes after it'],
+         tools:['Generative AI','LLMs','Make','n8n','Leadership'],
+         quote:'“A project is not done when it works, but when someone uses it every day.”'}}},
   {n:'07', period:'Abr 2026 — Presente', morph:0.86, company:'Dígito',
    title:{es:'Consultor BI',en:'BI Consultant'},
    desc:{es:'Consultoría BI de punta a punta: arquitectura Medallion en Microsoft Fabric, modelo semántico y reportes financieros en Power BI para Agrovet Market.',en:'End-to-end BI consulting: Medallion architecture on Microsoft Fabric, semantic model and financial reporting in Power BI for Agrovet Market.'},
-   skills:['Microsoft Fabric','Power BI','Modelo semántico','DAX']},
+   skills:['Microsoft Fabric','Power BI','Modelo semántico','DAX'],
+   detail:{
+     es:{resumen:'Consultoría BI de punta a punta para Agrovet Market: arquitectura Medallion sobre Microsoft Fabric, ingesta conectada a los libros de Excel del cierre y a SharePoint, y un modelo semántico del que cuelgan EERR, balance, ratios y variación de deuda en Power BI.',
+         analisis:'El valor no está en el visual, está en la capa de contrato. Cuando el reporte lee una sola capa, la lógica puede cambiar aguas arriba sin que se caiga nada abajo.',
+         retos:['Reemplazar la consolidación manual del cierre mensual','Conectar la ingesta a los libros donde el negocio ya trabaja, sin archivos intermedios','Sostener cinco reportes distintos sobre un mismo modelo y las mismas medidas'],
+         aprend:['La arquitectura Medallion como columna vertebral, con capas que nadie saltea','El modelo semántico como fuente única de las medidas','Los objetivos viven en tabla: los ajusta finanzas, no el desarrollador'],
+         tools:['Microsoft Fabric','Power BI','DAX','SharePoint'],
+         quote:'“Un reporte confiable no hay que explicarlo: se abre y ya cuadra.”'},
+     en:{resumen:'End-to-end BI consulting for Agrovet Market: a Medallion architecture on Microsoft Fabric, ingestion wired to the Excel close workbooks and SharePoint, and a semantic model feeding P&L, balance sheet, ratios and debt variation in Power BI.',
+         analisis:'The value is not in the visual, it is in the contract layer. When the report reads a single layer, logic can change upstream without anything downstream breaking.',
+         retos:['Replace the manual consolidation of the monthly close','Wire ingestion to the workbooks the business already uses, with no files in between','Support five different reports on one model and one set of measures'],
+         aprend:['Medallion architecture as the backbone, with layers nobody skips','The semantic model as the single source of measures','Targets live in a table: finance adjusts them, not the developer'],
+         tools:['Microsoft Fabric','Power BI','DAX','SharePoint'],
+         quote:'“A report you can trust needs no explaining: you open it and it already ties out.”'}}},
   {n:'08', period:'2026 — Presente', morph:1.00, company:'HERO',
    title:{es:'Founder & CEO',en:'Founder & CEO'},
    desc:{es:'Agentes de IA, sistemas multi-agente y plataformas inteligentes para empresas (MATTIU).',en:'AI agents, multi-agent systems and intelligent platforms for companies (MATTIU).'},
-   skills:['AI Agents','Multi-agente','FastAPI','Claude AI']}
+   skills:['AI Agents','Multi-agente','FastAPI','Claude AI'],
+   detail:{
+     es:{resumen:'Fundé HERO para construir agentes de IA, sistemas multi-agente y plataformas inteligentes para empresas. MATTIU es la más grande: el ciclo completo del cliente en un solo sistema, de la captación del lead al proyecto entregado.',
+         analisis:'Pasar de consultor a fundador cambió la pregunta. Ya no es cómo resolver el encargo que llega, sino qué vale la pena construir y para quién.',
+         retos:['Construir producto y atender clientes al mismo tiempo','Llevar los agentes de IA a algo que una empresa pueda operar sola','Sostener el ciclo completo del cliente en un solo sistema'],
+         aprend:['Visión de producto por encima del entregable','Arquitectura multi-agente en producción, no en demo','Decidir con poca información y corregir rápido'],
+         tools:['AI Agents','Multi-agente','FastAPI','Claude AI'],
+         quote:'“Dejé de entregar proyectos para empezar a construir algo que me sobreviva.”'},
+     en:{resumen:'I founded HERO to build AI agents, multi-agent systems and intelligent platforms for companies. MATTIU is the largest one: the full client lifecycle in a single system, from lead capture to delivered project.',
+         analisis:'Going from consultant to founder changed the question. It is no longer how to solve the brief that arrives, but what is worth building and who for.',
+         retos:['Build product and serve clients at the same time','Take AI agents to something a company can run on its own','Hold the full client lifecycle in a single system'],
+         aprend:['Product vision above the deliverable','Multi-agent architecture in production, not in a demo','Decide on little information and correct fast'],
+         tools:['AI Agents','Multi-agent','FastAPI','Claude AI'],
+         quote:'“I stopped delivering projects to start building something that outlives me.”'}}}
 ];
 
 var T = {
@@ -1680,26 +1734,30 @@ function fillExpModal(){
     tools.appendChild(e);
   });
 
-  /* la foto es opcional y hoy no hay ninguna: mientras `photo` sea null el
-     encuadre muestra el marco vacio en vez de un <img> roto. */
+  /* La foto es por convencion, no por configuracion: basta con dejar el archivo
+     en assets/v2/experiencia/<n>.jpg (el <n> es el de la etapa: 01, 02, ...) y
+     aparece sola. Si no existe, onerror cambia al marco vacio, asi que una foto
+     que falta se ve como un encuadre vacio y nunca como un <img> roto.
+     `detail.photo` sigue existiendo por si alguna necesita otra ruta u otra
+     extension. */
   var shot = $('xShot');
   shot.innerHTML = '';
-  if(s.detail.photo){
-    var img = document.createElement('img');
-    img.src = s.detail.photo;
-    img.alt = s.title[state.lang] + ' — ' + s.company;
-    img.loading = 'lazy';
-    shot.appendChild(img);
-  }else{
-    var box = document.createElement('div');
-    box.className = 'expshot-empty';
-    box.innerHTML = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" '
-      + 'stroke-width="1.2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/>'
-      + '<circle cx="8.5" cy="9.5" r="1.6"/><path d="M21 16l-5-5-4.5 4.5-2-2L3 19"/></svg>'
-      + '<span class="mono"></span>';
-    box.querySelector('span').textContent = t.xNoPhoto;
-    shot.appendChild(box);
-  }
+  var img = document.createElement('img');
+  img.alt = s.title[state.lang] + ' — ' + s.company;
+  img.loading = 'lazy';
+  img.onerror = function(){ shot.innerHTML = ''; shot.appendChild(marcoVacio(t)); };
+  img.src = s.detail.photo || ('assets/v2/experiencia/' + s.n + '.jpg');
+  shot.appendChild(img);
+}
+function marcoVacio(t){
+  var box = document.createElement('div');
+  box.className = 'expshot-empty';
+  box.innerHTML = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" '
+    + 'stroke-width="1.2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/>'
+    + '<circle cx="8.5" cy="9.5" r="1.6"/><path d="M21 16l-5-5-4.5 4.5-2-2L3 19"/></svg>'
+    + '<span class="mono"></span>';
+  box.querySelector('span').textContent = t.xNoPhoto;
+  return box;
 }
 function lista(ul, arr){
   ul.innerHTML = '';
