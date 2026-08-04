@@ -1437,9 +1437,43 @@ function renderChips(container){
     var b = document.createElement('button');
     b.className = 'chip mono' + (state.cat===c.k ? ' on' : '');
     b.textContent = c.label;
-    b.onclick = function(){ state.cat = (state.cat===c.k || c.k===null) ? null : c.k; render(); };
+    b.onclick = function(){
+      state.cat = (state.cat===c.k || c.k===null) ? null : c.k;
+      renderSinMover();
+    };
     container.appendChild(b);
   });
+}
+
+/* Filtrar cambia el alto de la seccion de proyectos: measureShelf() lo calcula
+   como una pantalla mas lo que la estanteria tiene que recorrer en horizontal, y
+   con menos portadas ese recorrido es menor. La seccion se encoge DEBAJO del
+   lector, que no se movio ni un pixel, y de golpe aparece parado en Experiencia.
+
+   Asi que despues de renderizar se corrige el scroll a mano: quien estaba dentro
+   de la seccion conserva su avance relativo, y quien estaba debajo se corre lo
+   mismo que se encogio, para que tampoco le salte el contenido de mas abajo. */
+function renderSinMover(){
+  var proj = $('proyectos');
+  if(!proj){ render(); return; }
+  var arriba = proj.getBoundingClientRect().top + window.scrollY;
+  var altoAntes = proj.offsetHeight;
+  var y = window.scrollY;
+
+  render();
+
+  var altoDespues = proj.offsetHeight;
+  if(altoAntes === altoDespues || altoAntes === 0 || y <= arriba) return;
+
+  var nueva = y < arriba + altoAntes
+    ? arriba + (y - arriba) * (altoDespues / altoAntes)   /* dentro: mismo avance */
+    : y + (altoDespues - altoAntes);                      /* debajo: se corre igual */
+  /* behavior:'instant' es obligatorio: el html lleva scroll-behavior:smooth y sin
+     esto la correccion sale animada, que ademas de verse mal se pisa con el tick
+     del scroll y termina sin aplicarse. Esto no es navegar, es compensar un
+     cambio de alto que el lector no pidio: tiene que ser invisible. */
+  window.scrollTo({top:Math.max(0, Math.round(nueva)), behavior:'instant'});
+  requestTick();
 }
 
 function renderFloating(){
