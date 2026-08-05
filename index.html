@@ -407,6 +407,18 @@ button{font:inherit}
 .expshot-empty svg{opacity:.32}
 .expshot-empty span{font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.34);max-width:26ch;line-height:1.7}
 .expshot-foot{font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.42)}
+/* la tira solo existe cuando hay mas de una foto; con [hidden] no ocupa ni el
+   gap del flex de .expshot */
+.expthumbs{display:flex;gap:10px;flex:none}
+.expthumbs[hidden]{display:none}
+.expthumb{width:56px;height:56px;flex:none;padding:0;cursor:pointer;border-radius:6px;
+  background-color:#050505;background-size:cover;background-position:center;
+  border:1px solid rgba(255,255,255,.14);opacity:.5;
+  transition:opacity .25s ease,border-color .25s ease}
+.expthumb:hover{opacity:.85}
+.expthumb.on{opacity:1;border-color:#FF8C42;box-shadow:0 0 0 1px rgba(255,140,66,.45)}
+.expthumb:focus-visible{outline:2px solid #FF8C42;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){ .expthumb{transition:none} }
 
 /* --- columna derecha: el detalle --- */
 .expbody{padding:36px 44px 40px;display:flex;flex-direction:column;min-width:0}
@@ -854,6 +866,7 @@ button{font:inherit}
         <span class="expshot-rail mono" data-t="xRail"></span>
         <div class="expshot-inner" id="xShot"></div>
       </div>
+      <div class="expthumbs" id="xThumbs" hidden></div>
       <div class="expshot-foot mono" id="xShotFoot"></div>
     </div>
 
@@ -1383,7 +1396,7 @@ var T = {
       start:'Empezar ahora', cat:'Categoría', status:'Estado', yearL:'Año',
       stageMore:'Ver detalle', xSelected:'Experiencia seleccionada', xRail:'• ARCHIVO •',
       xTabResumen:'RESUMEN', xTabAnalisis:'ANÁLISIS', xRetos:'RETOS', xAprend:'APRENDIZAJES',
-      xTools:'HERRAMIENTAS', xReflex:'MI REFLEXIÓN', xNoPhoto:'Sin foto de este trabajo todavía'},
+      xTools:'HERRAMIENTAS', xReflex:'MI REFLEXIÓN', xNoPhoto:'Sin foto de este trabajo todavía', xPhoto:'Foto'},
   en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
       shelfHint:'SCROLL DOWN TO BROWSE THE COVERS · CLICK TO OPEN',
       clientsLabel:'Solutions delivered for',
@@ -1398,7 +1411,7 @@ var T = {
       start:'Start now', cat:'Category', status:'Status', yearL:'Year',
       stageMore:'View detail', xSelected:'Selected experience', xRail:'• ARCHIVE •',
       xTabResumen:'SUMMARY', xTabAnalisis:'ANALYSIS', xRetos:'CHALLENGES', xAprend:'TAKEAWAYS',
-      xTools:'TOOLS', xReflex:'MY REFLECTION', xNoPhoto:'No photo from this role yet'}
+      xTools:'TOOLS', xReflex:'MY REFLECTION', xNoPhoto:'No photo from this role yet', xPhoto:'Photo'}
 };
 
 /* ============================================================
@@ -1778,20 +1791,84 @@ function fillExpModal(){
     tools.appendChild(e);
   });
 
-  /* La foto es por convencion, no por configuracion: basta con dejar el archivo
-     en assets/v2/experiencia/<n>.jpg (el <n> es el de la etapa: 01, 02, ...) y
-     aparece sola. Si no existe, onerror cambia al marco vacio, asi que una foto
-     que falta se ve como un encuadre vacio y nunca como un <img> roto.
-     `detail.photo` sigue existiendo por si alguna necesita otra ruta u otra
-     extension. */
-  var shot = $('xShot');
+  cargarGaleria(s, t);
+}
+
+/* ---------- galeria del encuadre ----------
+   Las fotos van por convencion, no por configuracion: se dejan en
+   assets/v2/experiencia/ con el numero de la etapa (03.jpg) y las siguientes
+   con sufijo (03-2.jpg, 03-3.jpg). Un sitio estatico no puede listar un
+   directorio, asi que se descubren probando y se corta en la primera que falta.
+   El tope evita que un hueco raro dispare una cadena larga de peticiones: como
+   maximo se pide una imagen inexistente por etapa, y solo al abrir el panel.
+   `detail.photo` sigue existiendo por si alguna necesita otra ruta u otra
+   extension; en ese caso es una sola y no se sondea nada. */
+var MAX_FOTOS = 6;
+var galeria = {fotos:[], idx:0, alt:'', token:0};
+
+function cargarGaleria(s, t){
+  /* el token descarta lo que llegue tarde: si se cambia de etapa mientras una
+     foto viaja, su onload no tiene que pisar la galeria de la etapa nueva */
+  var token = ++galeria.token;
+  galeria.fotos = []; galeria.idx = 0;
+  galeria.alt = s.title[state.lang] + ' — ' + s.company;
+  $('xShot').innerHTML = '';
+  $('xThumbs').innerHTML = '';
+  $('xThumbs').hidden = true;
+
+  var base = 'assets/v2/experiencia/' + s.n;
+  var suelta = s.detail.photo;
+  sondear(suelta || (base + '.jpg'), 2);
+
+  function sondear(src, n){
+    var im = new Image();
+    im.onload = function(){
+      if(token !== galeria.token) return;
+      galeria.fotos.push(src);
+      pintarGaleria(t);
+      if(!suelta && n <= MAX_FOTOS) sondear(base + '-' + n + '.jpg', n + 1);
+    };
+    im.onerror = function(){
+      if(token !== galeria.token) return;
+      /* solo importa que falle la primera: ahi no hay foto y va el marco vacio.
+         Que falle una siguiente es el final normal de la serie. */
+      if(!galeria.fotos.length) $('xShot').appendChild(marcoVacio(t));
+    };
+    im.src = src;
+  }
+}
+
+function pintarGaleria(t){
+  var shot = $('xShot'), tira = $('xThumbs'), src = galeria.fotos[galeria.idx];
   shot.innerHTML = '';
+  if(!src){ shot.appendChild(marcoVacio(t)); tira.hidden = true; tira.innerHTML = ''; return; }
+
   var img = document.createElement('img');
-  img.alt = s.title[state.lang] + ' — ' + s.company;
-  img.loading = 'lazy';
-  img.onerror = function(){ shot.innerHTML = ''; shot.appendChild(marcoVacio(t)); };
-  img.src = s.detail.photo || ('assets/v2/experiencia/' + s.n + '.jpg');
+  img.src = src;
+  img.alt = galeria.alt + (galeria.fotos.length > 1 ? ' (' + (galeria.idx+1) + '/' + galeria.fotos.length + ')' : '');
   shot.appendChild(img);
+
+  /* con una sola foto la tira no aparece: dos miniaturas identicas a la de
+     arriba serian ruido */
+  var varias = galeria.fotos.length > 1;
+  tira.hidden = !varias;
+  tira.innerHTML = '';
+  if(!varias) return;
+  galeria.fotos.forEach(function(f, i){
+    var b = document.createElement('button');
+    b.className = 'expthumb' + (i === galeria.idx ? ' on' : '');
+    b.style.backgroundImage = "url('" + f + "')";
+    b.setAttribute('aria-label', t.xPhoto + ' ' + (i+1) + '/' + galeria.fotos.length);
+    b.setAttribute('aria-current', i === galeria.idx ? 'true' : 'false');
+    b.onclick = function(){ galeria.idx = i; pintarGaleria(t); };
+    tira.appendChild(b);
+  });
+}
+
+function pasarFoto(d){
+  if(galeria.fotos.length < 2) return;
+  galeria.idx = (galeria.idx + d + galeria.fotos.length) % galeria.fotos.length;
+  pintarGaleria(T[state.lang]);
 }
 function marcoVacio(t){
   var box = document.createElement('div');
@@ -2124,6 +2201,8 @@ function paintMouse(){
        atiende primero y se corta: un solo Escape no puede cerrar los dos. */
     if(state.expIdx !== null){
       if(e.key === 'Escape') closeExp();
+      if(e.key === 'ArrowLeft') pasarFoto(-1);
+      if(e.key === 'ArrowRight') pasarFoto(1);
       return;
     }
     if(!state.openId) return;
