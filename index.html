@@ -380,47 +380,11 @@ button{font:inherit}
 .expmodal.open{display:flex}
 .expmodal-scrim{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px)}
-.expmodal-panel{position:relative;width:100%;max-width:1360px;max-height:calc(100vh - 72px);overflow:auto;
+.expmodal-panel{position:relative;width:100%;max-width:880px;max-height:calc(100vh - 72px);overflow:auto;
   background:#000;border:1px solid rgba(255,140,66,.32);border-radius:18px;
-  display:grid;grid-template-columns:minmax(340px,42%) 1fr;box-shadow:0 40px 120px rgba(0,0,0,.8)}
+  box-shadow:0 40px 120px rgba(0,0,0,.8)}
 
-/* --- columna izquierda: el encuadre de la foto --- */
-.expshot{position:relative;border-right:1px solid rgba(255,255,255,.08);padding:26px 30px 24px;
-  display:flex;flex-direction:column;gap:18px;min-height:600px}
-.expshot-head{display:flex;align-items:center;gap:14px}
-.expshot-head span{font-size:11px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(255,255,255,.8)}
-.expshot-frame{position:relative;flex:1;background:#050505;border:1px solid rgba(255,255,255,.07);border-radius:10px}
-/* las cuatro escuadras del encuadre: solo bordes, cero imagenes */
-.expshot-frame i{position:absolute;width:22px;height:22px;z-index:2;pointer-events:none}
-.expshot-frame i:nth-child(1){left:6px;top:6px;border-left:2px solid #FF8C42;border-top:2px solid #FF8C42}
-.expshot-frame i:nth-child(2){right:6px;top:6px;border-right:2px solid #FF8C42;border-top:2px solid #FF8C42}
-.expshot-frame i:nth-child(3){left:6px;bottom:6px;border-left:2px solid #FF8C42;border-bottom:2px solid #FF8C42}
-.expshot-frame i:nth-child(4){right:6px;bottom:6px;border-right:2px solid #FF8C42;border-bottom:2px solid #FF8C42}
-.expshot-rail{position:absolute;left:-8px;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;
-  font-size:9px;letter-spacing:.3em;color:#FF8C42;pointer-events:none}
-.expshot-inner{position:absolute;inset:18px;border-radius:8px;overflow:hidden;
-  display:flex;align-items:center;justify-content:center}
-.expshot-inner img{width:100%;height:100%;object-fit:cover;display:block}
-.expshot-empty{border:1px dashed rgba(255,255,255,.14);border-radius:8px;width:100%;height:100%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:20px}
-.expshot-empty svg{opacity:.32}
-.expshot-empty span{font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.34);max-width:26ch;line-height:1.7}
-.expshot-foot{font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.42)}
-/* la tira solo existe cuando hay mas de una foto; con [hidden] no ocupa ni el
-   gap del flex de .expshot */
-.expthumbs{display:flex;gap:10px;flex:none}
-.expthumbs[hidden]{display:none}
-.expthumb{width:56px;height:56px;flex:none;padding:0;cursor:pointer;border-radius:6px;
-  background-color:#050505;background-size:cover;background-position:center;
-  border:1px solid rgba(255,255,255,.14);opacity:.5;
-  transition:opacity .25s ease,border-color .25s ease}
-.expthumb:hover{opacity:.85}
-.expthumb.on{opacity:1;border-color:#FF8C42;box-shadow:0 0 0 1px rgba(255,140,66,.45)}
-.expthumb:focus-visible{outline:2px solid #FF8C42;outline-offset:3px}
-@media (prefers-reduced-motion:reduce){ .expthumb{transition:none} }
-
-/* --- columna derecha: el detalle --- */
+/* --- el detalle --- */
 .expbody{padding:36px 44px 40px;display:flex;flex-direction:column;min-width:0}
 .expbody-top{display:flex;align-items:center;gap:20px}
 .expbody-period{font-size:13px;letter-spacing:.12em;color:#FF8C42}
@@ -459,9 +423,7 @@ button{font:inherit}
 
 @media (max-width:900px){
   .expmodal{padding:0}
-  .expmodal-panel{grid-template-columns:1fr;max-width:none;max-height:100vh;height:100vh;border:0;border-radius:0}
-  .expshot{border-right:0;border-bottom:1px solid rgba(255,255,255,.08);min-height:320px;padding:20px 20px 18px}
-  .expshot-rail{display:none}
+  .expmodal-panel{max-width:none;max-height:100vh;height:100vh;border:0;border-radius:0}
   .expbody{padding:26px 22px 34px}
   .expcols{grid-template-columns:1fr;gap:26px}
   .expcol:first-child{padding-right:0;border-right:0;padding-bottom:26px;
@@ -856,20 +818,6 @@ button{font:inherit}
   <div class="expmodal-scrim" id="xScrim"></div>
   <div class="expmodal-panel">
 
-    <div class="expshot">
-      <div class="expshot-head">
-        <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" style="flex:none"><path d="M1 10 L6 0 M7 10 L12 0 M13 10 L18 0" stroke="#FF8C42" stroke-width="1.6"/></svg>
-        <span class="mono" data-t="xSelected"></span>
-      </div>
-      <div class="expshot-frame">
-        <i></i><i></i><i></i><i></i>
-        <span class="expshot-rail mono" data-t="xRail"></span>
-        <div class="expshot-inner" id="xShot"></div>
-      </div>
-      <div class="expthumbs" id="xThumbs" hidden></div>
-      <div class="expshot-foot mono" id="xShotFoot"></div>
-    </div>
-
     <div class="expbody">
       <div class="expbody-top">
         <span class="expbody-period mono" id="xPeriod"></span>
@@ -1237,11 +1185,7 @@ var CLIENTS = [
 
    El campo `detail` es opcional: la etapa que lo trae se vuelve clickeable y
    abre el panel de detalle. La que no lo trae se queda como tarjeta muerta, sin
-   cursor ni foco, para no prometer algo que no hay detras.
-   La foto del panel va por convencion, no aqui: se deja el archivo en
-   assets/v2/experiencia/<n>.jpg, donde <n> es el numero de la etapa, y aparece
-   sola. `detail.photo` solo hace falta si una necesita otra ruta u otra
-   extension. */
+   cursor ni foco, para no prometer algo que no hay detras. */
 var STAGES = [
   {n:'01', period:'Abr 2021 — Sep 2021', morph:0.00, company:'Grupo Rocío',
    title:{es:'Auxiliar de Procesos',en:'Process Assistant'},
@@ -1394,9 +1338,9 @@ var T = {
       contactEyebrow:'[ CONTACTO ]', contactH:'¿Construimos algo juntos?',
       contactSub:'Disponible para proyectos, producto y consultoría técnica.',
       start:'Empezar ahora', cat:'Categoría', status:'Estado', yearL:'Año',
-      stageMore:'Ver detalle', xSelected:'Experiencia seleccionada', xRail:'• ARCHIVO •',
+      stageMore:'Ver detalle',
       xTabResumen:'RESUMEN', xTabAnalisis:'ANÁLISIS', xRetos:'RETOS', xAprend:'APRENDIZAJES',
-      xTools:'HERRAMIENTAS', xReflex:'MI REFLEXIÓN', xNoPhoto:'Sin foto de este trabajo todavía', xPhoto:'Foto'},
+      xTools:'HERRAMIENTAS', xReflex:'MI REFLEXIÓN'},
   en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
       shelfHint:'SCROLL DOWN TO BROWSE THE COVERS · CLICK TO OPEN',
       clientsLabel:'Solutions delivered for',
@@ -1409,9 +1353,9 @@ var T = {
       contactEyebrow:'[ CONTACT ]', contactH:'Shall we build something together?',
       contactSub:'Available for projects, product work and technical consulting.',
       start:'Start now', cat:'Category', status:'Status', yearL:'Year',
-      stageMore:'View detail', xSelected:'Selected experience', xRail:'• ARCHIVE •',
+      stageMore:'View detail',
       xTabResumen:'SUMMARY', xTabAnalisis:'ANALYSIS', xRetos:'CHALLENGES', xAprend:'TAKEAWAYS',
-      xTools:'TOOLS', xReflex:'MY REFLECTION', xNoPhoto:'No photo from this role yet', xPhoto:'Photo'}
+      xTools:'TOOLS', xReflex:'MY REFLECTION'}
 };
 
 /* ============================================================
@@ -1767,14 +1711,13 @@ function stepModal(d){
 function fillExpModal(){
   var s = STAGES[state.expIdx];
   if(!s || !s.detail) return;
-  var t = T[state.lang], d = s.detail[state.lang] || s.detail.es;
+  var d = s.detail[state.lang] || s.detail.es;
 
   $('xPeriod').textContent  = s.period;
   $('xTitle').textContent   = s.title[state.lang];
   $('xCompany').textContent = s.company;
   $('xText').textContent    = state.expTab === 'analisis' ? d.analisis : d.resumen;
   $('xQuote').textContent   = d.quote;
-  $('xShotFoot').textContent = s.company + ' · ' + s.period;
 
   $('xTabResumen').classList.toggle('on', state.expTab !== 'analisis');
   $('xTabAnalisis').classList.toggle('on', state.expTab === 'analisis');
@@ -1790,96 +1733,8 @@ function fillExpModal(){
     e.textContent = x;
     tools.appendChild(e);
   });
-
-  cargarGaleria(s, t);
 }
 
-/* ---------- galeria del encuadre ----------
-   Las fotos van por convencion, no por configuracion: se dejan en
-   assets/v2/experiencia/ con el numero de la etapa (03.jpg) y las siguientes
-   con sufijo (03-2.jpg, 03-3.jpg). Un sitio estatico no puede listar un
-   directorio, asi que se descubren probando y se corta en la primera que falta.
-   El tope evita que un hueco raro dispare una cadena larga de peticiones: como
-   maximo se pide una imagen inexistente por etapa, y solo al abrir el panel.
-   `detail.photo` sigue existiendo por si alguna necesita otra ruta u otra
-   extension; en ese caso es una sola y no se sondea nada. */
-var MAX_FOTOS = 6;
-var galeria = {fotos:[], idx:0, alt:'', token:0};
-
-function cargarGaleria(s, t){
-  /* el token descarta lo que llegue tarde: si se cambia de etapa mientras una
-     foto viaja, su onload no tiene que pisar la galeria de la etapa nueva */
-  var token = ++galeria.token;
-  galeria.fotos = []; galeria.idx = 0;
-  galeria.alt = s.title[state.lang] + ' — ' + s.company;
-  $('xShot').innerHTML = '';
-  $('xThumbs').innerHTML = '';
-  $('xThumbs').hidden = true;
-
-  var base = 'assets/v2/experiencia/' + s.n;
-  var suelta = s.detail.photo;
-  sondear(suelta || (base + '.jpg'), 2);
-
-  function sondear(src, n){
-    var im = new Image();
-    im.onload = function(){
-      if(token !== galeria.token) return;
-      galeria.fotos.push(src);
-      pintarGaleria(t);
-      if(!suelta && n <= MAX_FOTOS) sondear(base + '-' + n + '.jpg', n + 1);
-    };
-    im.onerror = function(){
-      if(token !== galeria.token) return;
-      /* solo importa que falle la primera: ahi no hay foto y va el marco vacio.
-         Que falle una siguiente es el final normal de la serie. */
-      if(!galeria.fotos.length) $('xShot').appendChild(marcoVacio(t));
-    };
-    im.src = src;
-  }
-}
-
-function pintarGaleria(t){
-  var shot = $('xShot'), tira = $('xThumbs'), src = galeria.fotos[galeria.idx];
-  shot.innerHTML = '';
-  if(!src){ shot.appendChild(marcoVacio(t)); tira.hidden = true; tira.innerHTML = ''; return; }
-
-  var img = document.createElement('img');
-  img.src = src;
-  img.alt = galeria.alt + (galeria.fotos.length > 1 ? ' (' + (galeria.idx+1) + '/' + galeria.fotos.length + ')' : '');
-  shot.appendChild(img);
-
-  /* con una sola foto la tira no aparece: dos miniaturas identicas a la de
-     arriba serian ruido */
-  var varias = galeria.fotos.length > 1;
-  tira.hidden = !varias;
-  tira.innerHTML = '';
-  if(!varias) return;
-  galeria.fotos.forEach(function(f, i){
-    var b = document.createElement('button');
-    b.className = 'expthumb' + (i === galeria.idx ? ' on' : '');
-    b.style.backgroundImage = "url('" + f + "')";
-    b.setAttribute('aria-label', t.xPhoto + ' ' + (i+1) + '/' + galeria.fotos.length);
-    b.setAttribute('aria-current', i === galeria.idx ? 'true' : 'false');
-    b.onclick = function(){ galeria.idx = i; pintarGaleria(t); };
-    tira.appendChild(b);
-  });
-}
-
-function pasarFoto(d){
-  if(galeria.fotos.length < 2) return;
-  galeria.idx = (galeria.idx + d + galeria.fotos.length) % galeria.fotos.length;
-  pintarGaleria(T[state.lang]);
-}
-function marcoVacio(t){
-  var box = document.createElement('div');
-  box.className = 'expshot-empty';
-  box.innerHTML = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" '
-    + 'stroke-width="1.2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/>'
-    + '<circle cx="8.5" cy="9.5" r="1.6"/><path d="M21 16l-5-5-4.5 4.5-2-2L3 19"/></svg>'
-    + '<span class="mono"></span>';
-  box.querySelector('span').textContent = t.xNoPhoto;
-  return box;
-}
 function lista(ul, arr){
   ul.innerHTML = '';
   arr.forEach(function(x){
@@ -2201,8 +2056,6 @@ function paintMouse(){
        atiende primero y se corta: un solo Escape no puede cerrar los dos. */
     if(state.expIdx !== null){
       if(e.key === 'Escape') closeExp();
-      if(e.key === 'ArrowLeft') pasarFoto(-1);
-      if(e.key === 'ArrowRight') pasarFoto(1);
       return;
     }
     if(!state.openId) return;
