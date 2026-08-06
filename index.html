@@ -437,7 +437,12 @@ button{font:inherit}
 .arch-grid{max-width:1180px;margin:0 auto;columns:4 240px;column-gap:14px}
 .arch-item{position:relative;display:block;width:100%;margin:0 0 14px;break-inside:avoid;
   border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden;background:#050505}
+/* pointer-events:none — el click derecho cae en el figure, no en la img, y el
+   menu contextual no ofrece guardarla ni copiarla. Es disuasion, no proteccion:
+   la foto viaja publica por la red y DevTools la saca igual. El hover no se
+   pierde porque vive en .arch-item. */
 .arch-item img{width:100%;height:auto;display:block;filter:grayscale(1);opacity:.72;
+  pointer-events:none;-webkit-user-drag:none;user-select:none;
   transition:filter .35s ease,opacity .35s ease,transform .35s ease}
 .arch-item figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;
   font-size:10px;letter-spacing:.14em;color:#FF8C42;opacity:0;transition:opacity .35s ease;
