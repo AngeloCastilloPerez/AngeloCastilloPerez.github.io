@@ -433,6 +433,26 @@ button{font:inherit}
   .stage-card.has-detail:hover,.stage-card.has-detail:focus-visible{transform:none}
   .stage-card.has-detail,.stage-more b{transition:none}
 }
+/* ---------- EL ARCHIVO ---------- */
+.arch-grid{max-width:1180px;margin:0 auto;columns:4 240px;column-gap:14px}
+.arch-item{position:relative;display:block;width:100%;margin:0 0 14px;break-inside:avoid;
+  border:1px solid rgba(255,255,255,.1);border-radius:8px;overflow:hidden;background:#050505}
+.arch-item img{width:100%;height:auto;display:block;filter:grayscale(1);opacity:.72;
+  transition:filter .35s ease,opacity .35s ease,transform .35s ease}
+.arch-item figcaption{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 10px;
+  font-size:10px;letter-spacing:.14em;color:#FF8C42;opacity:0;transition:opacity .35s ease;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.88))}
+.arch-item:hover{border-color:#FF8C42}
+.arch-item:hover img{filter:grayscale(0);opacity:1;transform:scale(1.03)}
+.arch-item:hover figcaption{opacity:1}
+@media (max-width:900px){
+  .arch-grid{columns:2 140px;column-gap:10px}
+  .arch-item{margin-bottom:10px}
+}
+@media (prefers-reduced-motion:reduce){
+  .arch-item img,.arch-item figcaption{transition:none}
+  .arch-item:hover img{transform:none}
+}
 /* ---------- CONTACTO ---------- */
 .contact{border-top:1px solid rgba(255,255,255,.08);text-align:center;padding:100px 24px 60px;position:relative}
 .contact h2{font-weight:300;font-size:clamp(30px,5vw,44px);letter-spacing:-.025em;text-wrap:balance;margin:0 0 14px}
@@ -718,6 +738,22 @@ button{font:inherit}
 
     </div>
   </div>
+</section>
+
+<!-- ============ EL ARCHIVO ============
+     Mural tipo contact sheet con las fotos de la trayectoria: las mismas que
+     antes vivian dentro del panel de experiencia, ahora juntas en un solo
+     lugar. La lista vive en MURAL (JS): un sitio estatico no puede listar el
+     directorio, y sondear a ciegas costaba peticiones fallidas. -->
+<section id="archivo" class="section">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow mono" data-t="archEyebrow"></div>
+      <h2 data-t="archTitle"></h2>
+    </div>
+    <div class="counter mono" id="archCount"></div>
+  </div>
+  <div class="arch-grid" id="archGrid"></div>
 </section>
 
 <!-- ============ CONTACTO ============ -->
@@ -1340,7 +1376,8 @@ var T = {
       start:'Empezar ahora', cat:'Categoría', status:'Estado', yearL:'Año',
       stageMore:'Ver detalle',
       xTabResumen:'RESUMEN', xTabAnalisis:'ANÁLISIS', xRetos:'RETOS', xAprend:'APRENDIZAJES',
-      xTools:'HERRAMIENTAS', xReflex:'MI REFLEXIÓN'},
+      xTools:'HERRAMIENTAS', xReflex:'MI REFLEXIÓN',
+      archEyebrow:'[ ARCHIVO ]', archTitle:'El archivo', archPhotos:'FOTOS'},
   en:{role:'Founder & CEO of HERO', all:'All', talk:'Let’s talk', view:'View projects', projects:'Projects',
       shelfHint:'SCROLL DOWN TO BROWSE THE COVERS · CLICK TO OPEN',
       clientsLabel:'Solutions delivered for',
@@ -1355,7 +1392,8 @@ var T = {
       start:'Start now', cat:'Category', status:'Status', yearL:'Year',
       stageMore:'View detail',
       xTabResumen:'SUMMARY', xTabAnalisis:'ANALYSIS', xRetos:'CHALLENGES', xAprend:'TAKEAWAYS',
-      xTools:'TOOLS', xReflex:'MY REFLECTION'}
+      xTools:'TOOLS', xReflex:'MY REFLECTION',
+      archEyebrow:'[ ARCHIVE ]', archTitle:'The archive', archPhotos:'PHOTOS'}
 };
 
 /* ============================================================
@@ -1614,6 +1652,7 @@ function render(){
   renderClients();
   renderShelf();
   renderTimeline();
+  renderArchivo();
   if(state.openId) fillModal();
   if(state.expIdx !== null) fillExpModal();
   refresh();
@@ -1764,6 +1803,54 @@ function closeExp(){
   /* el foco vuelve a la tarjeta que abrio el panel, no al principio del documento */
   var card = document.querySelector('.stage[data-i="'+i+'"] .stage-card');
   if(card) card.focus();
+}
+
+/* ============================================================
+   EL ARCHIVO
+   El mural del final: las mismas fotos que antes vivian en el panel de
+   experiencia, ahora juntas como contact sheet. La lista va a mano porque un
+   sitio estatico no puede listar el directorio; el prefijo del nombre (03 de
+   03-2.jpg) enlaza con STAGES para el pie de empresa y periodo.
+   ============================================================ */
+var MURAL = ['01','01-2','01-3','02','02-2','02-3','02-4','02-5',
+             '03','03-2','04','04-2','04-3','04-4','05','06','07','08'];
+
+function stageOf(f){
+  var n = f.split('-')[0];
+  return STAGES.filter(function(x){ return x.n === n; })[0];
+}
+
+function renderArchivo(){
+  var grid = $('archGrid');
+  if(!grid) return;
+
+  /* el DOM se arma una sola vez; cambiar de idioma no tiene que rehacer las
+     <img> ni arriesgar un parpadeo, solo toca el alt y el contador */
+  if(!grid.firstChild){
+    MURAL.forEach(function(f){
+      if(!stageOf(f)) return;
+      var fig = document.createElement('figure');
+      fig.className = 'arch-item';
+      fig.setAttribute('data-f', f);
+      var img = document.createElement('img');
+      img.src = 'assets/v2/experiencia/' + f + '.jpg';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      var cap = document.createElement('figcaption');
+      cap.className = 'mono';
+      fig.appendChild(img);
+      fig.appendChild(cap);
+      grid.appendChild(fig);
+    });
+  }
+
+  var t = T[state.lang], items = grid.children;
+  for(var i=0;i<items.length;i++){
+    var s = stageOf(items[i].getAttribute('data-f'));
+    items[i].firstChild.alt = s.title[state.lang] + ' — ' + s.company;
+    items[i].lastChild.textContent = s.company + ' · ' + s.period;
+  }
+  $('archCount').textContent = items.length + ' ' + t.archPhotos + ' · 2021—2026';
 }
 
 /* ============================================================
